@@ -33,7 +33,7 @@
 <summary><b>ER 다이어그램</b></summary>
 <div markdown="1">
   
-
+![lib_erd](https://github.com/user-attachments/assets/bf127fcc-6d8b-4e12-9daa-32bb324f1121)
 
 </div>
 </details>
