@@ -156,9 +156,9 @@ $RECYCLE.BIN/
 
 # 개인 설정
 sample/
-config/
-spring/
-sqlmap/
+dispatcher-servlet.xml
+egovframework/spring/
+egovframework/sqlmap/
 prop/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,git,java,maven,eclipse
