@@ -3,7 +3,9 @@
 <mapper namespace="member">
 	
 	<select id="list" resultType="java.lang.String">
-		select userid from lib_member
+		<![CDATA[
+			select userid from lib_member
+		]]>
 	</select>
 	
 </mapper>
