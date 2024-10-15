@@ -122,8 +122,8 @@ buildNumber.properties
 # 개인 설정
 sample/
 dispatcher-servlet.xml
-egovframework/spring/
-egovframework/sqlmap/
+**/egovframework/spring/
+**/egovframework/sqlmap/
 prop/
 
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
