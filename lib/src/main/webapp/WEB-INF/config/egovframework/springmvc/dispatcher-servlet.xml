@@ -59,6 +59,17 @@
         </property>
     </bean>
 	<!-- /For Pagination Tag -->
+	
+	<!-- 서지정보api -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:/prop/api-KEY.properties"/>
+	</bean>
 
     <mvc:view-controller path="/cmmn/validator.do" view-name="cmmn/validator"/>
 </beans>
+
+
+
+
+
+

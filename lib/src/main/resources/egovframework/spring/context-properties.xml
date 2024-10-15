@@ -11,4 +11,9 @@
 		</property>
 	</bean>
 	
+	<!-- 서지정보api -->
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations" value="classpath:/prop/api-KEY.properties"></property>
+	</bean>
+	
 </beans>	
