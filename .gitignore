@@ -119,9 +119,6 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-# 개인 설정
-sample/
-
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
 
@@ -156,5 +153,12 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+# 개인 설정
+sample/
+config/
+spring/
+sqlmap/
+prop/
 
 # End of https://www.toptal.com/developers/gitignore/api/windows,git,java,maven,eclipse
