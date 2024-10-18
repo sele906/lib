@@ -8,10 +8,93 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Tables - SB Admin</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <title>관리자 - 자료관리</title>
+        <!-- <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" /> -->
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        
+        <!-- grid -->
+        <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css" />
+        <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
+        <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
+		<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
+		
+		<style>
+		
+		/* 개인설정 */
+		#infoBar {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
+			margin: 0 0 15px 0;
+		}
+		#addBook {
+			background-color: white;
+		    color: #0d6efd;
+		    border: 2px solid #0d6efd;
+		    padding: 3px 10px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    border-radius: 0;
+		}
+		#addBook:hover, #addBook:active {
+		  background-color: #0d6efd;
+		  color: white;
+		}
+		#searchBar {
+			width: 300px;
+		}
+		
+		
+		.toastWord {
+			word-break: break-word;
+			word-wrap: break-word;
+			white-space: normal;
+		}
+		.tui-grid-table {
+    	    font-family: 'Nanum Gothic';
+	    }
+	    
+	    /* 이미지 크기 */
+	    .imgSize {
+	        width: 50px;
+    		height: 70px;
+    		border: 1px solid #aaaaaa;
+	    }
+	    .imgFakeBox {
+	        height: 70px; 
+	        display: flex; 
+	        align-items: center; 
+	        justify-content: center;
+	    }
+	    .imgBlank {
+	    	border: 1px solid #aaaaaa; 
+	    	width: 50px;
+    		height: 70px;
+    		display: flex; 
+	        align-items: center; 
+	        justify-content: center;
+	    }
+	    
+	    /* linkButton */
+	    .linkButton {
+	    	color: #424549;
+		    font-size: 0.9em;
+		    cursor: pointer;
+		    text-decoration: none;
+	    }
+		
+		.linkButton:hover, .linkButton:active {
+			color: #424549;
+		  	text-decoration: underline;
+		}
+		
+		</style>
+        
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
@@ -104,504 +187,44 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">Tables</h1>
+                        <h1 class="mt-4">자료관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                            <li class="breadcrumb-item active">Tables</li>
+                            <li class="breadcrumb-item">관리자</li>
+                            <li class="breadcrumb-item active">자료관리</li>
+                            <li class="breadcrumb-item active">자료관리</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                DataTables is a third party plugin that is used to generate the demo table below. For more information about DataTables, please visit the
-                                <a target="_blank" href="https://datatables.net/">official DataTables documentation</a>
-                                .
+                                책 등록/상세/수정/삭제를 한곳에서 관리하세요
                             </div>
                         </div>
                         <div class="card mb-4">
+                        
                             <div class="card-header">
-                                <i class="fas fa-table me-1"></i>
-                                DataTable Example
+								<i class="fas fa-table me-1"></i>
+                                <a href="/admin/books/wishList.do" class="linkButton">희망도서등록</a>
+								|
+                                <a href="/admin/books/addBook.do" class="linkButton">자료등록</a>
+                                |
+                                 <b>자료관리</b>
                             </div>
+                            
                             <div class="card-body">
-                                <table id="datatablesSimple">
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th>Position</th>
-                                            <th>Office</th>
-                                            <th>Age</th>
-                                            <th>Start date</th>
-                                            <th>Salary</th>
-                                        </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <tr>
-                                            <td>Tiger Nixon</td>
-                                            <td>System Architect</td>
-                                            <td>Edinburgh</td>
-                                            <td>61</td>
-                                            <td>2011/04/25</td>
-                                            <td>$320,800</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Garrett Winters</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>63</td>
-                                            <td>2011/07/25</td>
-                                            <td>$170,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Ashton Cox</td>
-                                            <td>Junior Technical Author</td>
-                                            <td>San Francisco</td>
-                                            <td>66</td>
-                                            <td>2009/01/12</td>
-                                            <td>$86,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cedric Kelly</td>
-                                            <td>Senior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2012/03/29</td>
-                                            <td>$433,060</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Airi Satou</td>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Brielle Williamson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2012/12/02</td>
-                                            <td>$372,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Herrod Chandler</td>
-                                            <td>Sales Assistant</td>
-                                            <td>San Francisco</td>
-                                            <td>59</td>
-                                            <td>2012/08/06</td>
-                                            <td>$137,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Rhona Davidson</td>
-                                            <td>Integration Specialist</td>
-                                            <td>Tokyo</td>
-                                            <td>55</td>
-                                            <td>2010/10/14</td>
-                                            <td>$327,900</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Colleen Hurst</td>
-                                            <td>Javascript Developer</td>
-                                            <td>San Francisco</td>
-                                            <td>39</td>
-                                            <td>2009/09/15</td>
-                                            <td>$205,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sonya Frost</td>
-                                            <td>Software Engineer</td>
-                                            <td>Edinburgh</td>
-                                            <td>23</td>
-                                            <td>2008/12/13</td>
-                                            <td>$103,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jena Gaines</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>30</td>
-                                            <td>2008/12/19</td>
-                                            <td>$90,560</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Quinn Flynn</td>
-                                            <td>Support Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>22</td>
-                                            <td>2013/03/03</td>
-                                            <td>$342,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Charde Marshall</td>
-                                            <td>Regional Director</td>
-                                            <td>San Francisco</td>
-                                            <td>36</td>
-                                            <td>2008/10/16</td>
-                                            <td>$470,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Haley Kennedy</td>
-                                            <td>Senior Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>43</td>
-                                            <td>2012/12/18</td>
-                                            <td>$313,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Tatyana Fitzpatrick</td>
-                                            <td>Regional Director</td>
-                                            <td>London</td>
-                                            <td>19</td>
-                                            <td>2010/03/17</td>
-                                            <td>$385,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michael Silva</td>
-                                            <td>Marketing Designer</td>
-                                            <td>London</td>
-                                            <td>66</td>
-                                            <td>2012/11/27</td>
-                                            <td>$198,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Paul Byrd</td>
-                                            <td>Chief Financial Officer (CFO)</td>
-                                            <td>New York</td>
-                                            <td>64</td>
-                                            <td>2010/06/09</td>
-                                            <td>$725,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gloria Little</td>
-                                            <td>Systems Administrator</td>
-                                            <td>New York</td>
-                                            <td>59</td>
-                                            <td>2009/04/10</td>
-                                            <td>$237,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bradley Greer</td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
-                                            <td>41</td>
-                                            <td>2012/10/13</td>
-                                            <td>$132,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dai Rios</td>
-                                            <td>Personnel Lead</td>
-                                            <td>Edinburgh</td>
-                                            <td>35</td>
-                                            <td>2012/09/26</td>
-                                            <td>$217,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jenette Caldwell</td>
-                                            <td>Development Lead</td>
-                                            <td>New York</td>
-                                            <td>30</td>
-                                            <td>2011/09/03</td>
-                                            <td>$345,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Yuri Berry</td>
-                                            <td>Chief Marketing Officer (CMO)</td>
-                                            <td>New York</td>
-                                            <td>40</td>
-                                            <td>2009/06/25</td>
-                                            <td>$675,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Caesar Vance</td>
-                                            <td>Pre-Sales Support</td>
-                                            <td>New York</td>
-                                            <td>21</td>
-                                            <td>2011/12/12</td>
-                                            <td>$106,450</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Doris Wilder</td>
-                                            <td>Sales Assistant</td>
-                                            <td>Sidney</td>
-                                            <td>23</td>
-                                            <td>2010/09/20</td>
-                                            <td>$85,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Angelica Ramos</td>
-                                            <td>Chief Executive Officer (CEO)</td>
-                                            <td>London</td>
-                                            <td>47</td>
-                                            <td>2009/10/09</td>
-                                            <td>$1,200,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gavin Joyce</td>
-                                            <td>Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>42</td>
-                                            <td>2010/12/22</td>
-                                            <td>$92,575</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jennifer Chang</td>
-                                            <td>Regional Director</td>
-                                            <td>Singapore</td>
-                                            <td>28</td>
-                                            <td>2010/11/14</td>
-                                            <td>$357,650</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Brenden Wagner</td>
-                                            <td>Software Engineer</td>
-                                            <td>San Francisco</td>
-                                            <td>28</td>
-                                            <td>2011/06/07</td>
-                                            <td>$206,850</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Fiona Green</td>
-                                            <td>Chief Operating Officer (COO)</td>
-                                            <td>San Francisco</td>
-                                            <td>48</td>
-                                            <td>2010/03/11</td>
-                                            <td>$850,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Shou Itou</td>
-                                            <td>Regional Marketing</td>
-                                            <td>Tokyo</td>
-                                            <td>20</td>
-                                            <td>2011/08/14</td>
-                                            <td>$163,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michelle House</td>
-                                            <td>Integration Specialist</td>
-                                            <td>Sidney</td>
-                                            <td>37</td>
-                                            <td>2011/06/02</td>
-                                            <td>$95,400</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Suki Burks</td>
-                                            <td>Developer</td>
-                                            <td>London</td>
-                                            <td>53</td>
-                                            <td>2009/10/22</td>
-                                            <td>$114,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Prescott Bartlett</td>
-                                            <td>Technical Author</td>
-                                            <td>London</td>
-                                            <td>27</td>
-                                            <td>2011/05/07</td>
-                                            <td>$145,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Gavin Cortez</td>
-                                            <td>Team Leader</td>
-                                            <td>San Francisco</td>
-                                            <td>22</td>
-                                            <td>2008/10/26</td>
-                                            <td>$235,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Martena Mccray</td>
-                                            <td>Post-Sales support</td>
-                                            <td>Edinburgh</td>
-                                            <td>46</td>
-                                            <td>2011/03/09</td>
-                                            <td>$324,050</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Unity Butler</td>
-                                            <td>Marketing Designer</td>
-                                            <td>San Francisco</td>
-                                            <td>47</td>
-                                            <td>2009/12/09</td>
-                                            <td>$85,675</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Howard Hatfield</td>
-                                            <td>Office Manager</td>
-                                            <td>San Francisco</td>
-                                            <td>51</td>
-                                            <td>2008/12/16</td>
-                                            <td>$164,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hope Fuentes</td>
-                                            <td>Secretary</td>
-                                            <td>San Francisco</td>
-                                            <td>41</td>
-                                            <td>2010/02/12</td>
-                                            <td>$109,850</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Vivian Harrell</td>
-                                            <td>Financial Controller</td>
-                                            <td>San Francisco</td>
-                                            <td>62</td>
-                                            <td>2009/02/14</td>
-                                            <td>$452,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Timothy Mooney</td>
-                                            <td>Office Manager</td>
-                                            <td>London</td>
-                                            <td>37</td>
-                                            <td>2008/12/11</td>
-                                            <td>$136,200</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jackson Bradshaw</td>
-                                            <td>Director</td>
-                                            <td>New York</td>
-                                            <td>65</td>
-                                            <td>2008/09/26</td>
-                                            <td>$645,750</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Olivia Liang</td>
-                                            <td>Support Engineer</td>
-                                            <td>Singapore</td>
-                                            <td>64</td>
-                                            <td>2011/02/03</td>
-                                            <td>$234,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Bruno Nash</td>
-                                            <td>Software Engineer</td>
-                                            <td>London</td>
-                                            <td>38</td>
-                                            <td>2011/05/03</td>
-                                            <td>$163,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Sakura Yamamoto</td>
-                                            <td>Support Engineer</td>
-                                            <td>Tokyo</td>
-                                            <td>37</td>
-                                            <td>2009/08/19</td>
-                                            <td>$139,575</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Thor Walton</td>
-                                            <td>Developer</td>
-                                            <td>New York</td>
-                                            <td>61</td>
-                                            <td>2013/08/11</td>
-                                            <td>$98,540</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Finn Camacho</td>
-                                            <td>Support Engineer</td>
-                                            <td>San Francisco</td>
-                                            <td>47</td>
-                                            <td>2009/07/07</td>
-                                            <td>$87,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Serge Baldwin</td>
-                                            <td>Data Coordinator</td>
-                                            <td>Singapore</td>
-                                            <td>64</td>
-                                            <td>2012/04/09</td>
-                                            <td>$138,575</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Zenaida Frank</td>
-                                            <td>Software Engineer</td>
-                                            <td>New York</td>
-                                            <td>63</td>
-                                            <td>2010/01/04</td>
-                                            <td>$125,250</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Zorita Serrano</td>
-                                            <td>Software Engineer</td>
-                                            <td>San Francisco</td>
-                                            <td>56</td>
-                                            <td>2012/06/01</td>
-                                            <td>$115,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jennifer Acosta</td>
-                                            <td>Junior Javascript Developer</td>
-                                            <td>Edinburgh</td>
-                                            <td>43</td>
-                                            <td>2013/02/01</td>
-                                            <td>$75,650</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Cara Stevens</td>
-                                            <td>Sales Assistant</td>
-                                            <td>New York</td>
-                                            <td>46</td>
-                                            <td>2011/12/06</td>
-                                            <td>$145,600</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Hermione Butler</td>
-                                            <td>Regional Director</td>
-                                            <td>London</td>
-                                            <td>47</td>
-                                            <td>2011/03/21</td>
-                                            <td>$356,250</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lael Greer</td>
-                                            <td>Systems Administrator</td>
-                                            <td>London</td>
-                                            <td>21</td>
-                                            <td>2009/02/27</td>
-                                            <td>$103,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Jonas Alexander</td>
-                                            <td>Developer</td>
-                                            <td>San Francisco</td>
-                                            <td>30</td>
-                                            <td>2010/07/14</td>
-                                            <td>$86,500</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Shad Decker</td>
-                                            <td>Regional Director</td>
-                                            <td>Edinburgh</td>
-                                            <td>51</td>
-                                            <td>2008/11/13</td>
-                                            <td>$183,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Michael Bruce</td>
-                                            <td>Javascript Developer</td>
-                                            <td>Singapore</td>
-                                            <td>29</td>
-                                            <td>2011/06/27</td>
-                                            <td>$183,000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Donna Snider</td>
-                                            <td>Customer Support</td>
-                                            <td>New York</td>
-                                            <td>27</td>
-                                            <td>2011/01/25</td>
-                                            <td>$112,000</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            
+                            <div id="infoBar">
+                            	<div><button class="btn btn-primary" id="addBook">등록하기</button></div>
+								
+                            	<!-- 검색창 -->
+                            	<div class="input-group" id="searchBar">
+								  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="searchInput" value=""/>
+								  <button type="button" class="btn btn-outline-primary" id="searchButton" data-mdb-ripple-init>search</button>
+								</div>
+                            </div>
+                            
+                            <!-- 그리드 -->
+                            <div id="grid"></div>
+                            <div id="pagination" class="tui-pagination"></div>
+
                             </div>
                         </div>
                     </div>
@@ -623,6 +246,277 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="/template/admin/js/datatables-simple-demo.js"></script>
+        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
+        
+        <script type="text/javascript">
+        
+        $(function() {
+            bookGrid.init();
+        });
+
+        let bookGrid = {
+            apiData: {},
+            paramData: {}, 
+            currentPage: 1,
+            kwd: '토지',
+            grid: null,
+
+            init: function() {
+                this.fetchData(this.currentPage, this.kwd);
+                this.applyGridTheme();
+                this.drawGrid();
+                this.bindSearchEvent();
+                this.bindAddBookEvent(); 
+            },
+
+            fetchData: function(pagenum, kwdData) {
+                
+                let _this = this;
+                $.ajax({
+                    async: false,
+                    type: 'get',
+                    url: '/admin/books/apiData.do',
+                    data: {
+                        kwd: kwdData,
+                        page : pagenum
+                    },
+                    dataType: 'json',
+                    success: function(data) {
+                        
+        				var paramData = data[0];
+        				var items = data[1].items;
+                        
+                        _this.apiData = items;
+                        _this.paramData = paramData;
+                        _this.currentPage = pagenum;
+                        _this.updateGrid();
+                        _this.updatePagination();
+                    }
+                });
+            },
+
+            applyGridTheme: function() {
+                tui.Grid.applyTheme('default', {
+                    row: {
+                        hover: {
+                            background: '#ecf7fc'
+                        }
+                    },
+                    cell: {
+                        normal: {
+                            background: '#fff',
+                            border: '#e0e0e0',
+                            showVerticalBorder: true
+                        },
+                        header: {
+                            background: '#f9f9f9',
+                            border: '#e0e0e0'
+                        },
+                        rowHeader: {
+                            border: '#e0e0e0',
+                            showVerticalBorder: true
+                        }
+                    }
+                });
+            },
+
+            drawGrid: function() {
+                let _this = this;
+
+                if (this.grid) {
+                    this.grid.destroy();
+                    $("#grid").empty();
+                }
+
+                this.grid = new tui.Grid({
+                    el: document.getElementById('grid'),
+                    data: _this.apiData,
+                    rowHeaders: ['checkbox'],
+                    scrollX: true,
+                    scrollY: false,
+                    bodyHeight: 'auto',
+                    rowHeight: 'auto',
+                    columns: [
+                        {
+                            header: '표지',
+                            name: 'image_url',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 70,
+                            formatter: function(value) {
+                                let result = "";
+                                let src = value.value.toString();
+                                if (src.includes('.jpg')) {
+                                    result = "<img class='imgSize' src='" + src + "'/>";
+                                } else {
+                                    result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
+                                }
+                                return result;
+                            }
+                        },
+                        {
+                            header: '자료구분',
+                            name: 'type_name',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 100
+                        },
+                        {
+                            header: '주제구분',
+                            name: 'kdc_name_1s',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 100
+                        },
+                        {
+                            header: '제목',
+                            name: 'title_info',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            formatter: function(value) {
+                                let detailUrl = value.row.detail_link ? value.row.detail_link.toString() : "";
+                                return "<a href=https://www.nl.go.kr/" + detailUrl + " target='_blank'>" + value.value + "</a>";
+                            }
+                        },
+                        {
+                            header: '저자',
+                            name: 'author_info',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 150
+                        },
+                        {
+                            header: '출판사',
+                            name: 'pub_info',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 120
+                        },
+                        {
+                            header: '청구기호',
+                            name: 'call_no',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 120
+                        }
+                    ],
+                    
+                 	// 데이터 소스 설정
+                    dataSource: {
+                        readData: this.readData
+                        }
+                    }
+                );
+                
+                // 페이지네이션 초기화
+                this.updatePagination();
+            },
+            
+            //데이터 읽어오기
+            readData: function(params) {
+                let _this = this; 
+                
+                return $.ajax({
+                    type: 'get',
+                    url: '/admin/books/apiData.do',
+                    data: {
+                        kwd: _this.kwd,
+                        page: params.page 
+                    },
+                    dataType: 'json'
+                }).done(function(data) {
+                    var paramData = data[0];
+                    var items = data[1].items;
+                    _this.apiData = items;
+                    _this.paramData = paramData;
+                    _this.currentPage = params.page; 
+                    _this.updateGrid();
+                    _this.updatePagination();
+                }).fail(function() {
+                    console.error('데이터를 가져오는 데 실패했습니다.');
+                });
+            },
+            
+            //검색
+            bindSearchEvent: function() {
+                let _this = this;
+                $('#searchButton').on('click', function() {
+                    let kwdData = $('#searchInput').val().trim();
+                    _this.kwd = kwdData; 
+                    _this.currentPage = 1; 
+                    _this.fetchData(_this.currentPage, _this.kwd); 
+                });
+
+                $('#searchInput').on('keypress', function(event) {
+                    if (event.key === 'Enter') {
+                        $('#searchButton').click();
+                    }
+                });
+            },
+            
+            //db에 등록
+            bindAddBookEvent: function() {
+                $('#addBook').on('click', function() {
+                    let checkedRows = bookGrid.grid.getCheckedRows();
+
+                    if (checkedRows.length === 0) {
+                        alert('선택된 책이 없습니다.');
+                        return;
+                    }
+
+                    let bookList = checkedRows.map(function(row)  {
+                        return {
+                            title: row.title_info ? row.title_info.toString().replace(/'/g, "&#39;") : "",
+                            author: row.author_info ? row.author_info.toString() : "",
+                            ctg: row.type_name ? row.type_name.toString() : "",
+                            publisher: row.pub_info ? row.pub_info.toString() : "",
+                            cheonggu: row.call_no ? row.call_no.toString() : "",
+                            isbn: row.isbn ? row.isbn.toString() : ""
+                        };
+                    });
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/admin/books/insertBook.do',
+                        data: JSON.stringify(bookList), 
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'text',
+                        success: function(data) {
+                            if (data === 'success') {
+                                alert('책이 등록되었습니다.');
+                            } else {
+                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                            }
+                        }
+                    });
+                });
+            },
+            
+            updateGrid: function() {
+                if (this.grid && this.apiData) {
+                    this.grid.resetData(this.apiData);
+                }
+            },
+
+            updatePagination: function() {
+                let _this = this;
+
+                this.pagination = new tui.Pagination(document.getElementById('pagination'), {
+                    visiblePages: 10,
+                    totalItems: _this.paramData.total || 0, 
+                    itemsPerPage: 10, 
+                    centerAlign: true,
+                    page: _this.currentPage
+                });
+
+                // 페이지 이동 이벤트 처리
+                this.pagination.on('afterMove', function(ev) {
+                    _this.currentPage = ev.page;
+                    _this.fetchData(ev.page, _this.kwd); 
+                });
+            }
+        };
+        
+        </script>
     </body>
 </html>
