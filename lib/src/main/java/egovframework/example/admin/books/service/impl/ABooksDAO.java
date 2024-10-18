@@ -1,5 +1,6 @@
 package egovframework.example.admin.books.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -35,6 +36,11 @@ public class ABooksDAO {
 		sqlSession.insert("books.books_insert", map);
 
 		return "success";
+	}
+
+	public List<EgovMap> booklist() throws Exception {
+		List<EgovMap> list = sqlSession.selectList("books.books_list");
+		return list;
 	}
 
 }
