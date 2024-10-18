@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import egovframework.example.admin.books.service.BookVO;
 import egovframework.example.admin.books.service.impl.ABooksDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -141,7 +142,45 @@ public class ABooksController {
 
 	@RequestMapping(value = "bookList.do", method = RequestMethod.GET)
 	public String bookList() throws Exception {
+
+		List<EgovMap> list = AbooksDao.booklist();
+
+		JSONArray JArray = new JSONArray();
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		for (EgovMap map : list) {
+
+			BookVO book = objectMapper.convertValue(map, BookVO.class);
+			String jsonString = objectMapper.writeValueAsString(book);
+
+			JArray.put(new JSONObject(jsonString));
+		}
+
+		System.out.println(JArray);
+
 		return "/admin/books/bookList";
+	}
+
+	//도서 데이터
+	@ResponseBody
+	@RequestMapping(value = "bookData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public String bookData() throws Exception {
+		List<EgovMap> list = AbooksDao.booklist();
+
+		JSONArray JArray = new JSONArray();
+		ObjectMapper objectMapper = new ObjectMapper();
+
+		for (EgovMap map : list) {
+
+			BookVO book = objectMapper.convertValue(map, BookVO.class);
+			String jsonString = objectMapper.writeValueAsString(book);
+
+			JArray.put(new JSONObject(jsonString));
+		}
+
+		System.out.println(JArray);
+
+		return "helo";
 	}
 
 }

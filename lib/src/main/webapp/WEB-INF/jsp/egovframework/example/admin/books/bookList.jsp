@@ -195,7 +195,7 @@
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                책 등록/상세/수정/삭제를 한곳에서 관리하세요
+                                자료를 한곳에서 관리하세요
                             </div>
                         </div>
                         <div class="card mb-4">
@@ -255,39 +255,34 @@
         });
 
         let bookGrid = {
-            apiData: {},
+            bookData: {},
             paramData: {}, 
             currentPage: 1,
             kwd: '토지',
             grid: null,
 
             init: function() {
-                this.fetchData(this.currentPage, this.kwd);
+                this.fetchData();
                 this.applyGridTheme();
                 this.drawGrid();
-                this.bindSearchEvent();
-                this.bindAddBookEvent(); 
+                /* this.bindSearchEvent();
+                this.bindAddBookEvent();  */
             },
 
-            fetchData: function(pagenum, kwdData) {
+            fetchData: function() {
                 
                 let _this = this;
                 $.ajax({
                     async: false,
                     type: 'get',
-                    url: '/admin/books/apiData.do',
+                    url: '/admin/books/bookData.do',
                     data: {
-                        kwd: kwdData,
-                        page : pagenum
                     },
                     dataType: 'json',
                     success: function(data) {
+                        console.log(data);
                         
-        				var paramData = data[0];
-        				var items = data[1].items;
-                        
-                        _this.apiData = items;
-                        _this.paramData = paramData;
+                        _this.bookData = data;
                         _this.currentPage = pagenum;
                         _this.updateGrid();
                         _this.updatePagination();
@@ -330,13 +325,30 @@
 
                 this.grid = new tui.Grid({
                     el: document.getElementById('grid'),
-                    data: _this.apiData,
+                    data: _this.bookData,
                     rowHeaders: ['checkbox'],
                     scrollX: true,
                     scrollY: false,
                     bodyHeight: 'auto',
                     rowHeight: 'auto',
                     columns: [
+                        {
+                            header: '표지',
+                            name: 'image_url',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 70,
+                            formatter: function(value) {
+                                let result = "";
+                                let src = value.value.toString();
+                                if (src.includes('.jpg')) {
+                                    result = "<img class='imgSize' src='" + src + "'/>";
+                                } else {
+                                    result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
+                                }
+                                return result;
+                            }
+                        },
                         {
                             header: '표지',
                             name: 'image_url',
@@ -418,17 +430,13 @@
                 
                 return $.ajax({
                     type: 'get',
-                    url: '/admin/books/apiData.do',
+                    url: '/admin/books/bookData.do',
                     data: {
-                        kwd: _this.kwd,
-                        page: params.page 
                     },
                     dataType: 'json'
                 }).done(function(data) {
-                    var paramData = data[0];
-                    var items = data[1].items;
-                    _this.apiData = items;
-                    _this.paramData = paramData;
+                    console.log(data);
+                    _this.bookData = data;
                     _this.currentPage = params.page; 
                     _this.updateGrid();
                     _this.updatePagination();
@@ -438,7 +446,7 @@
             },
             
             //검색
-            bindSearchEvent: function() {
+            /* bindSearchEvent: function() {
                 let _this = this;
                 $('#searchButton').on('click', function() {
                     let kwdData = $('#searchInput').val().trim();
@@ -452,10 +460,10 @@
                         $('#searchButton').click();
                     }
                 });
-            },
+            }, */
             
             //db에 등록
-            bindAddBookEvent: function() {
+            /* bindAddBookEvent: function() {
                 $('#addBook').on('click', function() {
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
@@ -490,11 +498,11 @@
                         }
                     });
                 });
-            },
+            }, */
             
             updateGrid: function() {
-                if (this.grid && this.apiData) {
-                    this.grid.resetData(this.apiData);
+                if (this.grid && this.bookData) {
+                    this.grid.resetData(this.bookData);
                 }
             },
 
