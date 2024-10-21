@@ -346,7 +346,7 @@
                             formatter: function(value) {
                                 let result = "";
                                 let src = value.value.toString();
-                                if (src.includes('.jpg')) {
+                                if (src.includes('.jpg') || src.includes('.png')) {
                                     result = "<img class='imgSize' src='" + src + "'/>";
                                 } else {
                                     result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
@@ -397,7 +397,14 @@
                             name: 'call_no',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 120
+                            width: 80
+                        },
+                        {
+                            header: 'isbn',
+                            name: 'isbn',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 80
                         }
                     ],
                     
@@ -466,6 +473,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
+                            img: row.image_url ? row.image_url.toString() : "",
                             title: row.title_info ? row.title_info.toString().replace(/'/g, "&#39;") : "",
                             author: row.author_info ? row.author_info.toString() : "",
                             ctg: row.type_name ? row.type_name.toString() : "",

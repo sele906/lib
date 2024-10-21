@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import egovframework.example.Pagination;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -27,7 +28,7 @@ public class ABooksDAO {
 		return result;
 	}
 
-	public String booksInsert(Map<String, Object> map) throws Exception {
+	public int booksInsert(Map<String, Object> map) throws Exception {
 
 		/** ID Generation */
 		int id = bookIds.getNextIntegerId();
@@ -35,12 +36,26 @@ public class ABooksDAO {
 
 		sqlSession.insert("books.books_insert", map);
 
-		return "success";
+		return id;
 	}
 
-	public List<EgovMap> booklist() throws Exception {
-		List<EgovMap> list = sqlSession.selectList("books.books_list");
+	public List<EgovMap> booklist(Pagination pinfo) throws Exception {
+		List<EgovMap> list = sqlSession.selectList("books.books_list", pinfo);
 		return list;
+	}
+
+	public int bookCount(Pagination pinfo) throws Exception {
+		int count = 0;
+		try {
+			count = sqlSession.selectOne("books.books_count", pinfo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
+	}
+
+	public void insertFile(Map<String, Object> map) {
+		sqlSession.insert("book_file_insert", map);
 	}
 
 }
