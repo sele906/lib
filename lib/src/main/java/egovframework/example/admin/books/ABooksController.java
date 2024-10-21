@@ -7,6 +7,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
@@ -25,13 +26,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import egovframework.example.admin.books.service.BookVO;
+import egovframework.example.Pagination;
+import egovframework.example.admin.books.service.AFileService;
 import egovframework.example.admin.books.service.impl.ABooksDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 @RequestMapping("/admin/books/*")
 public class ABooksController {
+
+	@Resource(name = "AFileService")
+	private AFileService AFileService;
 
 	//임시
 	@Resource(name = "ABooksDAO")
@@ -43,13 +49,14 @@ public class ABooksController {
 
 	@RequestMapping(value = "addBook.do")
 	public String addBook() throws Exception {
+
 		return "/admin/books/addBook";
 	}
 
 	//api 데이터 불러오기
 	@ResponseBody
 	@RequestMapping(value = "apiData.do", method = RequestMethod.GET, produces = "application/xml; charset=utf-8")
-	public String apiData(@RequestParam(name = "page") int pageNum, @RequestParam(name = "kwd", defaultValue = "토지") String kwdData) throws Exception {
+	public String apiData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "토지") String kwdData) throws Exception {
 
 		String key = URLEncoder.encode(nlApiKey, "UTF-8");
 		String kwd = URLEncoder.encode(kwdData, "UTF-8");
@@ -105,8 +112,6 @@ public class ABooksController {
 	@ResponseBody
 	@RequestMapping(value = "insertBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertBook(@RequestBody String param) throws Exception {
-
-		System.out.println(param);
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -125,8 +130,20 @@ public class ABooksController {
 			bookMap.remove("ctg");
 
 			//데이터 삽입
-			result = AbooksDao.booksInsert(bookMap);
+			int id = AbooksDao.booksInsert(bookMap);
+
+			//이미지 처리
+			String imgURL = (String) bookMap.get("img");
+			String fileExtension = imgURL.contains(".png") ? ".png" : imgURL.contains(".jpg") ? ".jpg" : null;
+
+			if (fileExtension != null) {
+				String fileOriNm = ctgMap.get("sclsCd") + "_" + UUID.randomUUID() + fileExtension;
+				AFileService.insertImage(id, imgURL, fileOriNm);
+			}
+
 		}
+
+		result = "success";
 
 		if (result.equals("success")) {
 			return "success";
@@ -143,44 +160,54 @@ public class ABooksController {
 	@RequestMapping(value = "bookList.do", method = RequestMethod.GET)
 	public String bookList() throws Exception {
 
-		List<EgovMap> list = AbooksDao.booklist();
-
-		JSONArray JArray = new JSONArray();
-		ObjectMapper objectMapper = new ObjectMapper();
-
-		for (EgovMap map : list) {
-
-			BookVO book = objectMapper.convertValue(map, BookVO.class);
-			String jsonString = objectMapper.writeValueAsString(book);
-
-			JArray.put(new JSONObject(jsonString));
-		}
-
-		System.out.println(JArray);
-
 		return "/admin/books/bookList";
 	}
 
 	//도서 데이터
 	@ResponseBody
 	@RequestMapping(value = "bookData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String bookData() throws Exception {
-		List<EgovMap> list = AbooksDao.booklist();
+	public String bookData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
 
-		JSONArray JArray = new JSONArray();
+		//키워드와 페이지 전달
+		Pagination pinfo = new Pagination();
+		pinfo.setsKey(kwdData);
+		pinfo.setPage(pageNum);
+
+		int count = AbooksDao.bookCount(pinfo);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<EgovMap> list = AbooksDao.booklist(pinfo);
+
+		//param
+		JSONObject paramData = new JSONObject();
+		paramData.put("total", count);
+		paramData.put("pageSize", pinfo.getRecordCountPerPage());
+		paramData.put("page", pinfo.getFirstIndex());
+
+		//items
 		ObjectMapper objectMapper = new ObjectMapper();
+		String items = objectMapper.writeValueAsString(list);
 
-		for (EgovMap map : list) {
+		//item param 합치기
+		JSONArray RArray = new JSONArray();
+		RArray.put(paramData);
 
-			BookVO book = objectMapper.convertValue(map, BookVO.class);
-			String jsonString = objectMapper.writeValueAsString(book);
+		JSONArray jarray = new JSONArray(items);
+		JSONObject itemData = new JSONObject();
+		itemData.put("items", jarray);
+		RArray.put(itemData);
 
-			JArray.put(new JSONObject(jsonString));
-		}
-
-		System.out.println(JArray);
-
-		return "helo";
+		return RArray.toString();
 	}
 
 }

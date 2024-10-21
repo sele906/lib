@@ -31,7 +31,7 @@
 			align-items: center;
 			margin: 0 0 15px 0;
 		}
-		#addBook {
+		#deleteBtn {
 			background-color: white;
 		    color: #0d6efd;
 		    border: 2px solid #0d6efd;
@@ -41,7 +41,7 @@
 		    display: inline-block;
 		    border-radius: 0;
 		}
-		#addBook:hover, #addBook:active {
+		#deleteBtn:hover, #deleteBtn:active {
 		  background-color: #0d6efd;
 		  color: white;
 		}
@@ -212,7 +212,7 @@
                             <div class="card-body">
                             
                             <div id="infoBar">
-                            	<div><button class="btn btn-primary" id="addBook">등록하기</button></div>
+                            	<div><button class="btn btn-primary" id="deleteBtn">삭제하기</button></div>
 								
                             	<!-- 검색창 -->
                             	<div class="input-group" id="searchBar">
@@ -255,34 +255,38 @@
         });
 
         let bookGrid = {
-            bookData: {},
+            apiData: {},
             paramData: {}, 
             currentPage: 1,
-            kwd: '토지',
+            kwd: '',
             grid: null,
 
             init: function() {
-                this.fetchData();
+                this.fetchData(this.currentPage, this.kwd);
                 this.applyGridTheme();
                 this.drawGrid();
-                /* this.bindSearchEvent();
-                this.bindAddBookEvent();  */
+                this.bindSearchEvent();
             },
 
-            fetchData: function() {
+            fetchData: function(pagenum, kwdData) {
                 
                 let _this = this;
                 $.ajax({
                     async: false,
-                    type: 'get',
+                    type: 'post',
                     url: '/admin/books/bookData.do',
                     data: {
+                        kwd: kwdData,
+                        page : pagenum
                     },
                     dataType: 'json',
                     success: function(data) {
-                        console.log(data);
                         
-                        _this.bookData = data;
+        				var paramData = data[0];
+        				var items = data[1].items;
+                        
+                        _this.apiData = items;
+                        _this.paramData = paramData;
                         _this.currentPage = pagenum;
                         _this.updateGrid();
                         _this.updatePagination();
@@ -325,7 +329,7 @@
 
                 this.grid = new tui.Grid({
                     el: document.getElementById('grid'),
-                    data: _this.bookData,
+                    data: _this.apiData,
                     rowHeaders: ['checkbox'],
                     scrollX: true,
                     scrollY: false,
@@ -333,33 +337,23 @@
                     rowHeight: 'auto',
                     columns: [
                         {
-                            header: '표지',
-                            name: 'image_url',
+                            header: 'id',
+                            name: 'bookId',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 70,
-                            formatter: function(value) {
-                                let result = "";
-                                let src = value.value.toString();
-                                if (src.includes('.jpg')) {
-                                    result = "<img class='imgSize' src='" + src + "'/>";
-                                } else {
-                                    result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
-                                }
-                                return result;
-                            }
+                            width: 50
                         },
                         {
                             header: '표지',
-                            name: 'image_url',
+                            name: 'fileName',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 70,
                             formatter: function(value) {
                                 let result = "";
                                 let src = value.value.toString();
-                                if (src.includes('.jpg')) {
-                                    result = "<img class='imgSize' src='" + src + "'/>";
+                                if (src.includes('.jpg') || src.includes('.png')) {
+                                    result = "<img class='imgSize' src='/bookfile/" + src + "'/>";
                                 } else {
                                     result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
                                 }
@@ -368,48 +362,44 @@
                         },
                         {
                             header: '자료구분',
-                            name: 'type_name',
-                            align: "center",
-                            whiteSpace: 'normal',
-                            width: 100
-                        },
-                        {
-                            header: '주제구분',
-                            name: 'kdc_name_1s',
+                            name: 'ctgNm',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 100
                         },
                         {
                             header: '제목',
-                            name: 'title_info',
+                            name: 'title',
                             align: "center",
-                            whiteSpace: 'normal',
-                            formatter: function(value) {
-                                let detailUrl = value.row.detail_link ? value.row.detail_link.toString() : "";
-                                return "<a href=https://www.nl.go.kr/" + detailUrl + " target='_blank'>" + value.value + "</a>";
-                            }
+                            whiteSpace: 'normal'
                         },
                         {
                             header: '저자',
-                            name: 'author_info',
+                            name: 'author',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 150
                         },
                         {
                             header: '출판사',
-                            name: 'pub_info',
+                            name: 'publisher',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 120
                         },
                         {
                             header: '청구기호',
-                            name: 'call_no',
+                            name: 'cheonggu',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 120
+                            width: 80
+                        },
+                        {
+                            header: 'isbn',
+                            name: 'isbn',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 50
                         }
                     ],
                     
@@ -426,17 +416,22 @@
             
             //데이터 읽어오기
             readData: function(params) {
+                console.log(params);
                 let _this = this; 
                 
                 return $.ajax({
-                    type: 'get',
+                    type: 'post',
                     url: '/admin/books/bookData.do',
                     data: {
+                        kwd: _this.kwd,
+                        page: params.page 
                     },
                     dataType: 'json'
                 }).done(function(data) {
-                    console.log(data);
-                    _this.bookData = data;
+                    var paramData = data[0];
+                    var items = data[1].items;
+                    _this.apiData = items;
+                    _this.paramData = paramData;
                     _this.currentPage = params.page; 
                     _this.updateGrid();
                     _this.updatePagination();
@@ -446,7 +441,7 @@
             },
             
             //검색
-            /* bindSearchEvent: function() {
+            bindSearchEvent: function() {
                 let _this = this;
                 $('#searchButton').on('click', function() {
                     let kwdData = $('#searchInput').val().trim();
@@ -460,49 +455,11 @@
                         $('#searchButton').click();
                     }
                 });
-            }, */
-            
-            //db에 등록
-            /* bindAddBookEvent: function() {
-                $('#addBook').on('click', function() {
-                    let checkedRows = bookGrid.grid.getCheckedRows();
-
-                    if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
-                        return;
-                    }
-
-                    let bookList = checkedRows.map(function(row)  {
-                        return {
-                            title: row.title_info ? row.title_info.toString().replace(/'/g, "&#39;") : "",
-                            author: row.author_info ? row.author_info.toString() : "",
-                            ctg: row.type_name ? row.type_name.toString() : "",
-                            publisher: row.pub_info ? row.pub_info.toString() : "",
-                            cheonggu: row.call_no ? row.call_no.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
-                        };
-                    });
-
-                    $.ajax({
-                        type: 'post',
-                        url: '/admin/books/insertBook.do',
-                        data: JSON.stringify(bookList), 
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'text',
-                        success: function(data) {
-                            if (data === 'success') {
-                                alert('책이 등록되었습니다.');
-                            } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
-                            }
-                        }
-                    });
-                });
-            }, */
+            },
             
             updateGrid: function() {
-                if (this.grid && this.bookData) {
-                    this.grid.resetData(this.bookData);
+                if (this.grid && this.apiData) {
+                    this.grid.resetData(this.apiData);
                 }
             },
 
@@ -524,6 +481,8 @@
                 });
             }
         };
+        
+       
         
         </script>
     </body>
