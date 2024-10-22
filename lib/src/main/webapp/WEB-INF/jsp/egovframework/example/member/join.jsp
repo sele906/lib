@@ -75,88 +75,90 @@
                     <div class="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
                         <div class="text-center mb-5">
                             <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-envelope"></i></div>
-                            <h1 class="fw-bolder">Get in touch</h1>
-                            <p class="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
+                            <h1 class="fw-bolder">회원가입</h1>
                         </div>
                         <div class="row gx-5 justify-content-center">
                             <div class="col-lg-8 col-xl-6">
-                                <!-- * * * * * * * * * * * * * * *-->
-                                <!-- * * SB Forms Contact Form * *-->
-                                <!-- * * * * * * * * * * * * * * *-->
-                                <!-- This form is pre-integrated with SB Forms.-->
-                                <!-- To make this form functional, sign up at-->
-                                <!-- https://startbootstrap.com/solution/contact-forms-->
-                                <!-- to get an API token!-->
-                                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                                <form id="joinForm" action="/member/join.do" method="post">
+                                
+	                                <!-- User Role Toggle-->
+					                <div class="mb-3">
+					                    <div class="d-flex align-items-center">
+					                        <div class="form-check me-3">
+					                            <input class="form-check-input" type="radio" id="roleUser" name="level" value="ROLE_USER" checked="checked" required>
+					                            <label class="form-check-label" for="roleUser">사용자</label>
+					                        </div>
+					                        <div class="form-check">
+					                            <input class="form-check-input" type="radio" id="roleAdmin" name="level" value="ROLE_ADMIN" required>
+					                            <label class="form-check-label" for="roleAdmin">관리자</label>
+					                        </div>
+					                    </div>
+					                </div>
+                                
                                     <!-- Name input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="name" type="text" placeholder="Enter your name..." data-sb-validations="required" />
-                                        <label for="name">Full name</label>
-                                        <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
+                                        <input class="form-control" id="name" name="name" type="text" placeholder="이름을 입력하세요" required/>
+                                        <label for="name">이름</label>
                                     </div>
-                                    <!-- Email address input-->
+                                    
+                                    <!-- Userid input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="email" type="email" placeholder="name@example.com" data-sb-validations="required,email" />
-                                        <label for="email">Email address</label>
-                                        <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
-                                        <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
+                                        <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" required/>
+                                        <label for="userid">아이디</label>
                                     </div>
+                                    
+                                    <!-- Passwd  input-->
+									<div class="form-floating mb-1">
+									    <input class="form-control" id="passwd" name="passwd" type="password" placeholder="비밀번호를 입력하세요" required />
+									    <label for="passwd">비밀번호</label>
+									</div>
+									
+									<!-- Password confirmation input-->
+									<div class="form-floating mb-3">
+									    <input class="form-control" id="passwd-chk" type="password" placeholder="다시 한번 입력하세요" required />
+									    <label for="passwd-chk">비밀번호 확인</label>
+									</div>
+                                    
+                                    <!-- birth input-->
+                                    <div class="form-floating mb-3">
+                                        <input class="form-control" id="birth" name="birthdate" type="text" placeholder="생년월일을 입력하세요" required/>
+                                        <label for="birth">생년월일</label>
+                                    </div>
+                                    
                                     <!-- Phone number input-->
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="phone" type="tel" placeholder="(123) 456-7890" data-sb-validations="required" />
-                                        <label for="phone">Phone number</label>
-                                        <div class="invalid-feedback" data-sb-feedback="phone:required">A phone number is required.</div>
+                                        <input class="form-control" id="phone" name="phone" type="tel" placeholder="1234567890" required/>
+                                        <label for="phone">전화번호</label>
                                     </div>
-                                    <!-- Message input-->
-                                    <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="message" type="text" placeholder="Enter your message here..." style="height: 10rem" data-sb-validations="required"></textarea>
-                                        <label for="message">Message</label>
-                                        <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
-                                    </div>
-                                    <!-- Submit success message-->
-                                    <!---->
-                                    <!-- This is what your users will see when the form-->
-                                    <!-- has successfully submitted-->
-                                    <div class="d-none" id="submitSuccessMessage">
-                                        <div class="text-center mb-3">
-                                            <div class="fw-bolder">Form submission successful!</div>
-                                            To activate this form, sign up at
-                                            <br />
-                                            <a href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
-                                        </div>
-                                    </div>
-                                    <!-- Submit error message-->
-                                    <!---->
-                                    <!-- This is what your users will see when there is-->
-                                    <!-- an error submitting the form-->
-                                    <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                                    
+                                    <!-- Email address input-->
+                                    <div class="mb-3 d-flex">
+								    <div class="form-floating flex-grow-1 me-2">
+								        <input class="form-control" id="email" name="email" type="email" placeholder="name" required />
+								        <label for="email">이메일 주소</label>
+								    </div>
+								    <button class="btn btn-primary">인증하기</button>
+									</div>
+                                    
+                                    <!-- Address input-->
+									<div class="mb-3 d-flex">
+										<div class="form-floating flex-grow-1 me-2">
+										    <input class="form-control" id="addr1" name="addr1" type="text" placeholder="주소를 입력하세요" required />
+										    <label for="addr1">주소</label>
+									    </div>
+									    <button class="btn btn-primary">주소 찾기</button>
+									</div>
+									
+									<!-- Detailed address input-->
+									<div class="form-floating mb-3">
+									    <input class="form-control" id="addr2" name="addr2" type="text" placeholder="상세주소를 입력하세요" />
+									    <label for="addr2">상세주소</label>
+									</div>
+
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Submit</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">가입하기</button></div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                    <!-- Contact cards-->
-                    <div class="row gx-5 row-cols-2 row-cols-lg-4 py-5">
-                        <div class="col">
-                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-chat-dots"></i></div>
-                            <div class="h5 mb-2">Chat with us</div>
-                            <p class="text-muted mb-0">Chat live with one of our support specialists.</p>
-                        </div>
-                        <div class="col">
-                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-people"></i></div>
-                            <div class="h5">Ask the community</div>
-                            <p class="text-muted mb-0">Explore our community forums and communicate with other users.</p>
-                        </div>
-                        <div class="col">
-                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-question-circle"></i></div>
-                            <div class="h5">Support center</div>
-                            <p class="text-muted mb-0">Browse FAQ's and support articles to find solutions.</p>
-                        </div>
-                        <div class="col">
-                            <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-telephone"></i></div>
-                            <div class="h5">Call us</div>
-                            <p class="text-muted mb-0">Call us during normal business hours at (555) 892-9403.</p>
                         </div>
                     </div>
                 </div>
@@ -181,10 +183,5 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <!-- * *                               SB Forms JS                               * *-->
-        <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
-        <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
-        <script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
     </body>
 </html>
