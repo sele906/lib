@@ -216,8 +216,8 @@
 								
                             	<!-- 검색창 -->
                             	<div class="input-group" id="searchBar">
-								  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="searchInput" value=""/>
-								  <button type="button" class="btn btn-outline-primary" id="searchButton" data-mdb-ripple-init>search</button>
+								  <input type="search" class="form-control rounded" placeholder="검색어를 입력하세요" aria-label="Search" aria-describedby="search-addon" id="searchInput" value=""/>
+								  <button type="button" class="btn btn-outline-primary" id="searchButton" data-mdb-ripple-init><i class="fa-solid fa-magnifying-glass"></i></button>
 								</div>
                             </div>
                             

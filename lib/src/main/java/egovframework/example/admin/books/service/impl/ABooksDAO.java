@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
+import egovframework.example.admin.books.service.BookVO;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -22,12 +23,18 @@ public class ABooksDAO {
 	@Resource(name = "bookIds")
 	private EgovIdGnrService bookIds;
 
+	//코드
+	public List<EgovMap> dataCtg() {
+		return sqlSession.selectList("data_ctg");
+	}
+
 	public EgovMap codeChange(Map<String, Object> map) throws Exception {
 
 		EgovMap result = sqlSession.selectOne("books.code_change", map);
 		return result;
 	}
 
+	//삽입
 	public int booksInsert(Map<String, Object> map) throws Exception {
 
 		/** ID Generation */
@@ -39,11 +46,17 @@ public class ABooksDAO {
 		return id;
 	}
 
+	public void insertFile(Map<String, Object> map) {
+		sqlSession.insert("books.book_file_insert", map);
+	}
+
+	//리스트
 	public List<EgovMap> booklist(Pagination pinfo) throws Exception {
 		List<EgovMap> list = sqlSession.selectList("books.books_list", pinfo);
 		return list;
 	}
 
+	//리스트개수
 	public int bookCount(Pagination pinfo) throws Exception {
 		int count = 0;
 		try {
@@ -54,8 +67,24 @@ public class ABooksDAO {
 		return count;
 	}
 
-	public void insertFile(Map<String, Object> map) {
-		sqlSession.insert("book_file_insert", map);
+	//수정
+	public void updateBook(BookVO vo) {
+		sqlSession.update("books.books_update", vo);
+	}
+
+	public String selectFile(int id) {
+		String path = null;
+		path = sqlSession.selectOne("books.book_file_select", id);
+		return path;
+	}
+
+	public void deleteFile(int id) {
+		sqlSession.delete("book_file_delete", id);
+	}
+
+	//삭제
+	public void deleteBook(int id) {
+		sqlSession.delete("book_delete", id);
 	}
 
 }
