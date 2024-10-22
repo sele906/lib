@@ -17,17 +17,20 @@ import org.json.JSONObject;
 import org.json.XML;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.books.service.AFileService;
+import egovframework.example.admin.books.service.BookVO;
 import egovframework.example.admin.books.service.impl.ABooksDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -46,6 +49,11 @@ public class ABooksController {
 	//서지정보 api 불러오기
 	@Value("${nl.KEY}")
 	private String nlApiKey;
+
+	@RequestMapping(value = "wishList.do", method = RequestMethod.GET)
+	public String wishList() throws Exception {
+		return "/admin/books/wishList";
+	}
 
 	@RequestMapping(value = "addBook.do")
 	public String addBook() throws Exception {
@@ -152,13 +160,11 @@ public class ABooksController {
 		}
 	}
 
-	@RequestMapping(value = "wishList.do", method = RequestMethod.GET)
-	public String wishList() throws Exception {
-		return "/admin/books/wishList";
-	}
-
 	@RequestMapping(value = "bookList.do", method = RequestMethod.GET)
-	public String bookList() throws Exception {
+	public String bookList(Model model) throws Exception {
+
+		List<EgovMap> ctgList = AbooksDao.dataCtg();
+		model.addAttribute("ctgList", ctgList);
 
 		return "/admin/books/bookList";
 	}
@@ -208,6 +214,50 @@ public class ABooksController {
 		RArray.put(itemData);
 
 		return RArray.toString();
+	}
+
+	//책 정보 저장
+	@ResponseBody
+	@RequestMapping(value = "updateData.do", method = RequestMethod.POST)
+	public String updateData(BookVO vo, @RequestParam(name = "multifile") MultipartFile multifile) throws Exception {
+
+		AbooksDao.updateBook(vo);
+
+		AFileService.updateImage(vo.getBookId(), vo.getCtgId(), multifile);
+
+		return "success";
+	}
+
+	//책 정보 삭제
+	//DB에 삽입
+	@ResponseBody
+	@RequestMapping(value = "deleteBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public String deleteBook(@RequestBody String param) throws Exception {
+
+		String result = "";
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Map<String, Object>> dataList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+
+		for (Map<String, Object> data : dataList) {
+
+			int id = Integer.parseInt(data.get("id").toString());
+
+			//파일 삭제
+			AFileService.deleteFile(id);
+
+			//데이터 삭제
+			AbooksDao.deleteBook(id);
+
+		}
+
+		result = "success";
+
+		if (result.equals("success")) {
+			return "success";
+		} else {
+			return "error";
+		}
 	}
 
 }
