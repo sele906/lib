@@ -21,13 +21,24 @@ public class MemberDAO {
 		return list;
 	}
 
+	public MemberVO login(MemberVO vo) {
+		MemberVO rvo = sqlSession.selectOne("member.mem_login", vo);
+		return rvo;
+	}
+
 	public void join(MemberVO vo) throws Exception {
 		sqlSession.insert("member.mem_insert", vo);
 	}
 
-	public MemberVO login(MemberVO vo) {
-		MemberVO rvo = sqlSession.selectOne("member.mem_login", vo);
-		return rvo;
+	public String checkUserid(MemberVO vo) {
+		String result = "";
+		int check = (int) sqlSession.selectOne("member.mem_countUserid", vo);
+		if (check > 0) {
+			result = "unusable";
+		} else if (check == 0) {
+			result = "usable";
+		}
+		return result;
 	}
 
 }
