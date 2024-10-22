@@ -25,7 +25,7 @@ public class ABooksDAO {
 
 	//코드
 	public List<EgovMap> dataCtg() {
-		return sqlSession.selectList("data_ctg");
+		return sqlSession.selectList("books.data_ctg");
 	}
 
 	public EgovMap codeChange(Map<String, Object> map) throws Exception {
@@ -79,12 +79,12 @@ public class ABooksDAO {
 	}
 
 	public void deleteFile(int id) {
-		sqlSession.delete("book_file_delete", id);
+		sqlSession.delete("books.book_file_delete", id);
 	}
 
 	//삭제
 	public void deleteBook(int id) {
-		sqlSession.delete("book_delete", id);
+		sqlSession.delete("books.book_delete", id);
 	}
 
 }
