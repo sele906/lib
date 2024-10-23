@@ -41,4 +41,19 @@ public class MemberDAO {
 		return result;
 	}
 
+	//아이디 찾기
+	public MemberVO findId(MemberVO vo) throws Exception {
+		return (MemberVO) sqlSession.selectOne("member.mem_findId", vo);
+	}
+
+	//이메일 찾기
+	public MemberVO findEmail(MemberVO vo) throws Exception {
+		return (MemberVO) sqlSession.selectOne("member.mem_findEmail", vo);
+	}
+
+	//비밀번호 세팅
+	public void setPwd(MemberVO vo) throws Exception {
+		sqlSession.update("mem_setPwd", vo);
+	}
+
 }
