@@ -17,57 +17,9 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
-            <!-- Navigation-->
-			<nav class="navbar navbar-expand-lg navbar-dark bg-light">
-                <div class="container px-5">
-                    <a class="navbar-brand" href="/">Start Bootstrap</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        
-                            <li class="nav-item"><a class="nav-link" href="/info/about.do">도서관안내</a></li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">자료찾기</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
-                                    <li><a class="dropdown-item" href="/books/search.do">통합검색</a></li>
-                                    <li><a class="dropdown-item" href="/books/newBooks.do">신착자료</a></li>
-                                    <li><a class="dropdown-item" href="/books/bestBooks.do">베스트자료</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="nav-item"><a class="nav-link" href="/info/guidlines.do">이용안내</a></li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">신청/참여</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
-                                    <li><a class="dropdown-item" href="/service/wishBooks.do">희망도서 신청</a></li>
-                                    <li><a class="dropdown-item" href="/service/programs.do">프로그램 신청</a></li>
-                                    <li><a class="dropdown-item" href="/service/multiSeats.do">멀티미디어 좌석예약</a></li>
-                                    <li><a class="dropdown-item" href="/service/qna.do">QNA</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMyPage" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">내서재</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMyPage">
-                                    <li><a class="dropdown-item" href="/mypage/loanList.do">대출 조회/연기</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/loanHistory.do">대출이력</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/resvList.do">예약도서조회</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/wishList.do">희망도서 신청내역</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/programList.do">프로그램 신청 내역</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/seatList.do">좌석 예약 조회</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/likedList.do">관심도서 조회</a></li>
-                                </ul>
-                            </li>
-                            
-                            <!-- 로그인/회원가입 -->
-                            <li class="nav-item"><a class="nav-link" href="/member/login.do">로그인</a></li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+        	<!-- Navigation-->
+            <%@ include file="../main/menu.jsp" %>
+        
             <!-- Header-->
             <header class="py-5">
                 <div class="container px-5">

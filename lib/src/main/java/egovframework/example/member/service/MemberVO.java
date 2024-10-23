@@ -5,13 +5,22 @@ import java.sql.Date;
 public class MemberVO {
 	private String userid;
 	private String passwd;
-	private int level;
+	private String level;
 	private String name;
 	private Date birth;
+	private String birthdate;
 	private String phone;
 	private String email;
 	private String addr1;
 	private String addr2;
+
+	public String getBirthdate() {
+		return birthdate;
+	}
+
+	public void setBirthdate(String birthdate) {
+		this.birthdate = birthdate;
+	}
 
 	/**
 	 * @userid@ getter
@@ -49,7 +58,7 @@ public class MemberVO {
 	 * @level@ getter
 	 * @return	level
 	 */
-	public int getLevel() {
+	public String getLevel() {
 		return level;
 	}
 
@@ -57,7 +66,7 @@ public class MemberVO {
 	 * @level@ setter
 	 * @param	level
 	 */
-	public void setLevel(int level) {
+	public void setLevel(String level) {
 		this.level = level;
 	}
 
@@ -167,7 +176,7 @@ public class MemberVO {
 
 	@Override
 	public String toString() {
-		return "MemberVO [userid=" + userid + ", passwd=" + passwd + ", level=" + level + ", name=" + name + ", birth=" + birth + ", phone=" + phone + ", email=" + email + ", addr1=" + addr1 + ", addr2=" + addr2 + "]";
+		return "MemberVO [userid=" + userid + ", passwd=" + passwd + ", level=" + level + ", name=" + name + ", birth=" + birth + ", birthdate=" + birthdate + ", phone=" + phone + ", email=" + email + ", addr1=" + addr1 + ", addr2=" + addr2 + "]";
 	}
 
 }

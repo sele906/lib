@@ -15,62 +15,28 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="/template/user/css/styles.css" rel="stylesheet" />
+        <style>
+			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+		</style>
+        
+       	<style type="text/css">
+       	
+       	#bgImg {
+       		background: url("/images/egovframework/lib/main/library_main.jpg") no-repeat fixed center;
+       		opacity: 0.7;
+       	}
+       	
+       	</style>
+        
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
             <!-- Navigation-->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-light">
-                <div class="container px-5">
-                    <a class="navbar-brand" href="/main.do">Start Bootstrap</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                        
-                            <li class="nav-item"><a class="nav-link" href="/info/about.do">도서관안내</a></li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">자료찾기</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
-                                    <li><a class="dropdown-item" href="/books/search.do">통합검색</a></li>
-                                    <li><a class="dropdown-item" href="/books/newBooks.do">신착자료</a></li>
-                                    <li><a class="dropdown-item" href="/books/bestBooks.do">베스트자료</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="nav-item"><a class="nav-link" href="/info/guidlines.do">이용안내</a></li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">신청/참여</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
-                                    <li><a class="dropdown-item" href="/service/wishBooks.do">희망도서 신청</a></li>
-                                    <li><a class="dropdown-item" href="/service/programs.do">프로그램 신청</a></li>
-                                    <li><a class="dropdown-item" href="/service/multiSeats.do">멀티미디어 좌석예약</a></li>
-                                    <li><a class="dropdown-item" href="/service/qna.do">QNA</a></li>
-                                </ul>
-                            </li>
-                            
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" id="navbarDropdownMyPage" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">내서재</a>
-                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMyPage">
-                                    <li><a class="dropdown-item" href="/mypage/loanList.do">대출 조회/연기</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/loanHistory.do">대출이력</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/resvList.do">예약도서조회</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/wishList.do">희망도서 신청내역</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/programList.do">프로그램 신청 내역</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/seatList.do">좌석 예약 조회</a></li>
-                                    <li><a class="dropdown-item" href="/mypage/likedList.do">관심도서 조회</a></li>
-                                </ul>
-                            </li>
-                            
-                            <!-- 로그인/회원가입 -->
-                            <li class="nav-item"><a class="nav-link" href="/member/login.do">로그인</a></li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+            <%@ include file="../main/menu.jsp" %>
+            
             <!-- Header-->
-            <header class="bg-white py-5">
+            <header class="bg-white">
+            	<div id="bgImg">
                 <div class="container px-5">
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-8 col-xl-7 col-xxl-6">
@@ -86,60 +52,10 @@
                         <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div>
                     </div>
                 </div>
+                </div>
             </header>
-            <!-- Features section-->
-            <section class="py-5" id="features">
-                <div class="container px-5 my-5">
-                    <div class="row gx-5">
-                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
-                        <div class="col-lg-8">
-                            <div class="row gx-5 row-cols-1 row-cols-md-2">
-                                <div class="col mb-5 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
-                                </div>
-                                <div class="col mb-5 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
-                                </div>
-                                <div class="col mb-5 mb-md-0 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
-                                </div>
-                                <div class="col h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5">Featured title</h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <!-- Testimonial section-->
-            <div class="py-5 bg-light">
-                <div class="container px-5 my-5">
-                    <div class="row gx-5 justify-content-center">
-                        <div class="col-lg-10 col-xl-7">
-                            <div class="text-center">
-                                <div class="fs-4 mb-4 fst-italic">"Working with Start Bootstrap templates has saved me tons of development time when building new projects! Starting with a Bootstrap template just makes things easier!"</div>
-                                <div class="d-flex align-items-center justify-content-center">
-                                    <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
-                                    <div class="fw-bold">
-                                        Tom Ato
-                                        <span class="fw-bold text-primary mx-1">/</span>
-                                        CEO, Pomodoro
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- Blog preview section-->
+            
+                        <!-- Blog preview section-->
             <section class="py-5">
                 <div class="container px-5 my-5">
                     <div class="row gx-5 justify-content-center">
@@ -215,8 +131,9 @@
                             </div>
                         </div>
                     </div>
+                    
                     <!-- Call to action-->
-                    <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
+                    <!-- <aside class="bg-primary bg-gradient rounded-3 p-4 p-sm-5 mt-5">
                         <div class="d-flex align-items-center justify-content-between flex-column flex-xl-row text-center text-xl-start">
                             <div class="mb-4 mb-xl-0">
                                 <div class="fs-3 fw-bold text-white">New products, delivered to you.</div>
@@ -230,15 +147,72 @@
                                 <div class="small text-white-50">We care about privacy, and will never share your data.</div>
                             </div>
                         </div>
-                    </aside>
+                    </aside> -->
                 </div>
             </section>
+            
+            
+            <!-- Features section-->
+            <section class="py-5" id="features">
+                <div class="container px-5 my-5">
+                    <div class="row gx-5">
+                        <div class="col-lg-4 mb-5 mb-lg-0"><h2 class="fw-bolder mb-0">A better way to start building.</h2></div>
+                        <div class="col-lg-8">
+                            <div class="row gx-5 row-cols-1 row-cols-md-2">
+                                <div class="col mb-5 h-100">
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
+                                    <h2 class="h5">Featured title</h2>
+                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                </div>
+                                <div class="col mb-5 h-100">
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
+                                    <h2 class="h5">Featured title</h2>
+                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                </div>
+                                <div class="col mb-5 mb-md-0 h-100">
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                                    <h2 class="h5">Featured title</h2>
+                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                </div>
+                                <div class="col h-100">
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
+                                    <h2 class="h5">Featured title</h2>
+                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Testimonial section-->
+            <!-- <div class="py-5 bg-light">
+                <div class="container px-5 my-5">
+                    <div class="row gx-5 justify-content-center">
+                        <div class="col-lg-10 col-xl-7">
+                            <div class="text-center">
+                                <div class="fs-4 mb-4 fst-italic">"Working with Start Bootstrap templates has saved me tons of development time when building new projects! Starting with a Bootstrap template just makes things easier!"</div>
+                                <div class="d-flex align-items-center justify-content-center">
+                                    <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
+                                    <div class="fw-bold">
+                                        Tom Ato
+                                        <span class="fw-bold text-primary mx-1">/</span>
+                                        CEO, Pomodoro
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+            
+
         </main>
         <!-- Footer-->
         <footer class="bg-dark py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LIBLIO 2023</div></div>
                     <div class="col-auto">
                         <a class="link-light small" href="#!">Privacy</a>
                         <span class="text-white mx-1">&middot;</span>
@@ -252,6 +226,10 @@
         
         <c:if test="${msg eq 'error'}">
 			<script>alert('로그인 후 이용해주세요')</script>
+		</c:if>
+        
+        <c:if test="${msg eq 'logout'}">
+			<script>alert('로그아웃되었습니다.')</script>
 		</c:if>
         
         <!-- Bootstrap core JS-->
