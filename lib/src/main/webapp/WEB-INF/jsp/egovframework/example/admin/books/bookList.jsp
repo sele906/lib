@@ -13,6 +13,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     
     	<style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
@@ -223,7 +224,6 @@
         </div>
         
         <!-- 모달창 -->
-		<!-- 모달창 -->
 		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
 		    <div class="modal-dialog modal-lg">
 		        <div class="modal-content">
@@ -254,7 +254,7 @@
 		                	</div>
 		                	
 		                	<!-- 우측 -->
-		                	<div id="m-right">
+		                	<div id="m-right" class="d-flex flex-column justify-content-center">
 		                	
 		                	<!-- 제목 -->
 		                    <div class="mb-3 row">

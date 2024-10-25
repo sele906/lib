@@ -1,5 +1,7 @@
 package egovframework.example.books;
 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,9 +13,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.Pagination;
+import egovframework.example.books.service.LoanVO;
 import egovframework.example.books.service.impl.BooksDAO;
+import egovframework.example.books.service.impl.LoanDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -23,6 +28,9 @@ public class BooksController {
 
 	@Resource(name = "BooksDAO")
 	private BooksDAO booksDao;
+
+	@Resource(name = "LoanDAO")
+	private LoanDAO loanDao;
 
 	@RequestMapping(value = "search.do", method = RequestMethod.GET)
 	public String search(@RequestParam(name = "ctgId", defaultValue = "") String ctgId, @RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "sKey", defaultValue = "") String sKey, Model model) throws Exception {
@@ -63,6 +71,25 @@ public class BooksController {
 		model.addAttribute("pageInfo", paginationInfo);
 
 		return "books/search";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "loan.do", method = RequestMethod.GET)
+	public String loan(@RequestParam(name = "bookId") int bookId, @RequestParam(name = "userid") String userid) throws Exception {
+
+		LoanVO vo = new LoanVO();
+		vo.setUserid(userid);
+		vo.setBookId(bookId);
+
+		LocalDate today = LocalDate.now();
+		LocalDate returnDateLocal = today.plusDays(14);
+
+		vo.setLoanDate(Date.valueOf(today));
+		vo.setReturnDate(Date.valueOf(returnDateLocal));
+
+		int idx = loanDao.loanInsert(vo);
+
+		return "success";
 	}
 
 	@RequestMapping(value = "newBooks.do")

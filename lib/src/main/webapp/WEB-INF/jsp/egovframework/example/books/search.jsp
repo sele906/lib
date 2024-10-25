@@ -163,11 +163,25 @@
 			    margin: 5px 0;
 			    font-weight: bold;
 			}
-			.loanState {
-				color: var(--bs-link-hover-color);
-			}
+			
 			.resvState {
 			    color: var(--bs-orange);
+			}
+			
+			.loanBtn {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-primary);
+			}
+			.loanBtn:hover {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-link-hover-color);
+			}
+			.loanBtn:active {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-link-hover-color);
+			}
+			.loanTrue {
+				color: var(--bs-link-hover-color);
 			}
 			
 			
@@ -202,7 +216,7 @@
                         	<div class="ctgTable">
                         	
                         	  <div class="hidden">
-                        	  <form id="ctgForm" action="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}" method="get" style="display:none;">
+                        	  <form id="ctgForm" action="/books/search.do" method="get" style="display:none;">
 							    <select name="ctgId">
 							        <c:forEach var="c" items="${ctgList}">
 							            <option value="${c.sclsCd}">${c.sclsNm}</option>
@@ -242,7 +256,7 @@
                                 <form id="searchForm" action="/books/search.do" method="get">
                                     <div class="d-flex searchBar">
                                     
-                                    	<input class="insertSearch" id="searchBar" name="sKey" type="text" placeholder="제목 혹은 저자를 검색하세요">
+                                    	<input class="insertSearch" id="searchBar" name="sKey" type="text" placeholder="제목 혹은 저자를 검색하세요" value="${map.sKey}">
                                     	<div id="searchBtn">
                                     		<i class="fa-solid fa-magnifying-glass searchIcon"></i>
                                     	</div>
@@ -302,10 +316,10 @@
 								      </td>
 								      <td class="bookSelect align-middle">
 								      	<div class="selectBox">
-									      	<button class="btn btn-primary selectBtn" >대출하기</button>
+									      	<button class="btn selectBtn loanBtn">대출하기</button>
 									      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
 									      	<div class="selectInfo">
-									      		<div class="loanState">대출가능</div>
+									      		<div class="loanState loanTrue">대출가능</div>
 									      		<div class="resvState">예약현황: 0/5</div>
 									      	</div>
 									      	
@@ -383,6 +397,55 @@
 			$(document).ready(function() {
 			    $('#searchBtn').on('click', function(event){
 			        $('#searchForm').submit();
+			    });
+			    
+			    $('.selectBtn').on('click', function(event){
+			        
+			        var row = $(this).closest('tr');
+			        var bookId = row.find('input[name="bookId"]').val();
+			        var userid = "${sessionScope.userid}";
+			        
+			        if ($(this).hasClass('loanBtn')) {
+			            
+			            if (userid != "") {
+				            $.ajax({
+								type: 'get',
+								url: '/books/loan.do',
+								data: {
+								    bookId: bookId,
+								    userid: userid
+								}, 
+								success: function (response) {
+								    console.log(response);
+								    if (response === 'success') {
+								        
+								        alert('대출되었습니다.');
+								        
+								        //대출 버튼 예약하기로 바꾸기
+								        row.find('.loanBtn')
+				                           .removeClass('loanBtn')
+				                           .addClass('resvBtn')
+				                           .text('예약하기');  
+				                        
+				                        row.find('.loanState')
+				                           .removeClass('loanTrue')
+				                           .addClass('loanFalse')
+				                           .text('대출중');
+				                        
+				                    } else {
+				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                    }
+							    }
+							});
+				        } else {
+				            alert('로그인 후 이용해주세요.');
+				            //로그인 화면
+				        }
+			            
+			        } else if ($(this).hasClass('resvBtn')) {
+			            
+			        }
+			        
 			    });
 			});
 			
