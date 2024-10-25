@@ -58,7 +58,7 @@
                 </div>
             </header>
             
-                        <!-- Blog preview section-->
+            <!-- Blog preview section-->
             <section class="py-5">
                 <div class="container px-5 my-5">
                     <div class="row gx-5 justify-content-center">
