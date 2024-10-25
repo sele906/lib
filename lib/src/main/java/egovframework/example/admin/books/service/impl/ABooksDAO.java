@@ -25,12 +25,12 @@ public class ABooksDAO {
 
 	//코드
 	public List<EgovMap> dataCtg() {
-		return sqlSession.selectList("books.data_ctg");
+		return sqlSession.selectList("Abooks.data_ctg");
 	}
 
 	public EgovMap codeChange(Map<String, Object> map) throws Exception {
 
-		EgovMap result = sqlSession.selectOne("books.code_change", map);
+		EgovMap result = sqlSession.selectOne("Abooks.code_change", map);
 		return result;
 	}
 
@@ -41,18 +41,18 @@ public class ABooksDAO {
 		int id = bookIds.getNextIntegerId();
 		map.put("bookId", id);
 
-		sqlSession.insert("books.books_insert", map);
+		sqlSession.insert("Abooks.books_insert", map);
 
 		return id;
 	}
 
 	public void insertFile(Map<String, Object> map) {
-		sqlSession.insert("books.book_file_insert", map);
+		sqlSession.insert("Abooks.book_file_insert", map);
 	}
 
 	//리스트
 	public List<EgovMap> booklist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("books.books_list", pinfo);
+		List<EgovMap> list = sqlSession.selectList("Abooks.books_list", pinfo);
 		return list;
 	}
 
@@ -60,7 +60,7 @@ public class ABooksDAO {
 	public int bookCount(Pagination pinfo) throws Exception {
 		int count = 0;
 		try {
-			count = sqlSession.selectOne("books.books_count", pinfo);
+			count = sqlSession.selectOne("Abooks.books_count", pinfo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,22 +69,22 @@ public class ABooksDAO {
 
 	//수정
 	public void updateBook(BookVO vo) {
-		sqlSession.update("books.books_update", vo);
+		sqlSession.update("Abooks.books_update", vo);
 	}
 
 	public String selectFile(int id) {
 		String path = null;
-		path = sqlSession.selectOne("books.book_file_select", id);
+		path = sqlSession.selectOne("Abooks.book_file_select", id);
 		return path;
 	}
 
 	public void deleteFile(int id) {
-		sqlSession.delete("books.book_file_delete", id);
+		sqlSession.delete("Abooks.book_file_delete", id);
 	}
 
 	//삭제
 	public void deleteBook(int id) {
-		sqlSession.delete("books.book_delete", id);
+		sqlSession.delete("Abooks.book_delete", id);
 	}
 
 }
