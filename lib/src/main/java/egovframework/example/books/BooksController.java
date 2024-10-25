@@ -33,7 +33,7 @@ public class BooksController {
 	private LoanDAO loanDao;
 
 	@RequestMapping(value = "search.do", method = RequestMethod.GET)
-	public String search(@RequestParam(name = "ctgId", defaultValue = "") String ctgId, @RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "sKey", defaultValue = "") String sKey, Model model) throws Exception {
+	public String search(@RequestParam(name = "ctgId", defaultValue = "") String ctgId, @RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "sKey", defaultValue = "") String sKey, @RequestParam(name = "sort", defaultValue = "new") String sort, Model model) throws Exception {
 
 		//키워드
 		List<EgovMap> ctgList = booksDao.dataCtg();
@@ -48,6 +48,7 @@ public class BooksController {
 		map.put("sKey", sKey);
 		map.put("pageNum", pageNum);
 		map.put("ctgId", ctgId);
+		map.put("sort", sort);
 
 		int count = booksDao.bookCount(map);
 

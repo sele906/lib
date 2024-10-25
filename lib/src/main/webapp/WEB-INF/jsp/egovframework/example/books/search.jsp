@@ -27,6 +27,9 @@
 				color:var(--bs-link-hover-color);
 				font-weight: bold;
 			}
+			.sortSelected {
+				font-weight: bold;
+			}
 			.hidden {
 				display: none;
 			}
@@ -106,8 +109,21 @@
 			}
 			.searchOption a {
 				padding: 0 5px;
+				color: #434343;
+				text-decoration: none;
 			}
-			
+			.searchOption a:hover {
+				text-decoration: underline;
+			}
+			#searchInfoBox {
+				display: flex;
+				align-items: center;
+			}
+			#ctgId {
+			    height: 35px;
+    			width: 150px;
+    			margin: 0 0 0 10px;
+			}
 			
 			
 			/* table */
@@ -168,15 +184,12 @@
 			    color: var(--bs-orange);
 			}
 			
+			/* 대출가능 */
 			.loanBtn {
 				color: var(--bs-body-bg);
 				background-color: var(--bs-primary);
 			}
-			.loanBtn:hover {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-link-hover-color);
-			}
-			.loanBtn:active {
+			.loanBtn:hover, .loanBtn:active {
 				color: var(--bs-body-bg);
 				background-color: var(--bs-link-hover-color);
 			}
@@ -184,6 +197,18 @@
 				color: var(--bs-link-hover-color);
 			}
 			
+			/* 예약중 */
+			.resvBtn {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-orange);
+			}
+			.resvBtn:hover, .resvBtn:active {
+				color: var(--bs-body-bg);
+				background-color: #ee7612;
+			}
+			.loanFalse {
+				color: var(--bs-danger);
+			}
 			
 			/* 페이징 */
 			.pagination {
@@ -201,6 +226,24 @@
 	    		color: var(--bs-pagination-active-color);
 			}
 			
+			/* 반응형 */
+			@media (min-width: 992px) {
+				#cntLeft {
+					display: block;
+				}
+				#ctgBox {
+					display: none;
+				}
+			}
+			@media (max-width: 992px) {
+				#cntLeft {
+					display: none;
+				}
+				#ctgBox {
+					display: block;
+				}
+			}
+			
 		</style>
     </head>
     <body class="d-flex flex-column">
@@ -212,19 +255,9 @@
             <section class="py-5">
                 <div class="container px-5 my-5">
                     <div class="row">
-                        <div class="col-lg-3 ">
+                        <div class="col-lg-3 " id="cntLeft">
                         	<div class="ctgTable">
                         	
-                        	  <div class="hidden">
-                        	  <form id="ctgForm" action="/books/search.do" method="get" style="display:none;">
-							    <select name="ctgId">
-							        <c:forEach var="c" items="${ctgList}">
-							            <option value="${c.sclsCd}">${c.sclsNm}</option>
-							        </c:forEach>
-							    </select>
-								</form>
-                        	  </div>   
-							
 						    <!-- Sidebar -->
 						    <nav id="sidebar" class="bg-light border-end">
 						        <div class="p-3">
@@ -240,7 +273,7 @@
 						    </nav>
                             </div>
                         </div>
-                        <div class="col-lg-8">
+                        <div class="col-lg-8" id="cntRight">
                             <!-- Post content-->
                             <article>
                                 <!-- Post header-->
@@ -266,14 +299,30 @@
                                 <!-- Post content-->
                                 <section class="d-flex flex-column align-items-center justify-items-center mb-5">
                                 <div class="d-flex align-items-center justify-content-between searchInfo">
+                                
 	                                <div class="searchCount">
 	                                	<span>총 <span class="hightlight">${count}</span>건이 검색되었습니다.</span>
 	                                </div>
-	                                <div class="searchOption">
-	                                	<a>정확도순</a>
-		                                 <a>인기순</a>
-		                                 <a>최신순</a>
+                                
+                                	<div id="searchInfoBox">
+                                	
+                                	<div class="searchOption">
+		                                 <a href="/books/search.do?sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}&sort=best" <c:if test="${map.sort eq 'best'}">class="sortSelected"</c:if>>인기순</a>
+		                                 <a href="/books/search.do?sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}&sort=new"  <c:if test="${map.sort eq 'new'}">class="sortSelected"</c:if>>최신순</a>
 	                                </div>
+	                                
+	                                <div id="ctgBox">
+	                               	<form id="ctgForm" action="/books/search.do" method="get">
+									    <select class="form-select" name="ctgId" id="ctgId">
+									        <c:forEach var="c" items="${ctgList}">
+									            <option value="${c.sclsCd}" <c:if test="${c.sclsCd == map.ctgId}">selected</c:if>>${c.sclsNm}</option>
+									        </c:forEach>
+									    </select>
+									</form> 
+	                                </div>
+                                	
+                                	</div>
+	                                
                                </div>
                                
                                <table class="table">
@@ -316,12 +365,26 @@
 								      </td>
 								      <td class="bookSelect align-middle">
 								      	<div class="selectBox">
-									      	<button class="btn selectBtn loanBtn">대출하기</button>
+								      	
+								      	<c:if test="${row.loanCount > 0}">
+								      		<button class="btn selectBtn resvBtn">예약하기</button>
+									      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
+									      	<div class="selectInfo">
+									      		<div class="loanState loanFalse">대출중</div>
+									      		<div class="resvState">예약현황: 0/5</div>
+									      	</div>
+								      	</c:if>
+								      	
+								      	<c:if test="${row.loanCount == 0}">
+								      		<button class="btn selectBtn loanBtn">대출하기</button>
 									      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
 									      	<div class="selectInfo">
 									      		<div class="loanState loanTrue">대출가능</div>
 									      		<div class="resvState">예약현황: 0/5</div>
 									      	</div>
+								      	</c:if>
+								      	
+									      	
 									      	
 								      	</div>
 								      </td>
@@ -439,7 +502,7 @@
 							});
 				        } else {
 				            alert('로그인 후 이용해주세요.');
-				            //로그인 화면
+				            location.href = '/member/login.do';
 				        }
 			            
 			        } else if ($(this).hasClass('resvBtn')) {
@@ -447,22 +510,37 @@
 			        }
 			        
 			    });
+			    
+			    // Category link click handler
+			    const categoryLinks = document.querySelectorAll('.category-link');
+			    categoryLinks.forEach(link => {
+			        link.addEventListener('click', function(e) {
+			            e.preventDefault();
+			            const ctgId = this.getAttribute('data-ctgid');
+			            const form = document.getElementById('ctgForm');
+			            form.querySelector('select[name="ctgId"]').value = ctgId;
+			            form.submit(); 
+			        });
+			    });
+
+			    
+			    var ctgSelect = document.getElementById('ctgId');
+    			console.log(ctgSelect); 
+    			
+    			if (ctgSelect) {
+    		        ctgSelect.addEventListener('change', function() {
+    		            console.log('Change event triggered');
+    		            console.log(this.value); 
+    		            const form = document.getElementById('ctgForm');
+    		            form.querySelector('select[name="ctgId"]').value = this.value; 
+    		            form.submit(); 
+    		        });
+    		    }
+    			
+    
 			});
 			
-	        const categoryLinks = document.querySelectorAll('.category-link');
 	        
-	        categoryLinks.forEach(link => {
-	            link.addEventListener('click', function(e) {
-	                e.preventDefault();
-	                
-	                const ctgId = this.getAttribute('data-ctgid');
-	                
-	                // Submit the form with the selected category (optional if using form submission)
-	                const form = document.getElementById('ctgForm');
-	                form.querySelector('select[name="ctgId"]').value = ctgId;
-	                form.submit(); // Submits form to filter results on the server
-	            });
-	        });
 			
 		</script>
         
