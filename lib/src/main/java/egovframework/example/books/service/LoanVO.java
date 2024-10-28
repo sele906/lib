@@ -10,6 +10,7 @@ public class LoanVO {
 	private int dueDate;
 	private Date returnDate;
 	private int loanNum;
+	private String loanState;
 
 	/**
 	 * @loanId@ getter
@@ -123,6 +124,14 @@ public class LoanVO {
 		this.loanNum = loanNum;
 	}
 
+	public String getLoanState() {
+		return loanState;
+	}
+
+	public void setLoanState(String loanState) {
+		this.loanState = loanState;
+	}
+
 	/** 
 	 *
 	 * @return
@@ -133,7 +142,7 @@ public class LoanVO {
 
 	@Override
 	public String toString() {
-		return "LoanVO [loanId=" + loanId + ", bookId=" + bookId + ", userid=" + userid + ", loanDate=" + loanDate + ", dueDate=" + dueDate + ", returnDate=" + returnDate + ", loanNum=" + loanNum + "]";
+		return "LoanVO [loanId=" + loanId + ", bookId=" + bookId + ", userid=" + userid + ", loanDate=" + loanDate + ", dueDate=" + dueDate + ", returnDate=" + returnDate + ", loanNum=" + loanNum + ", loanState=" + loanState + "]";
 	}
 
 }

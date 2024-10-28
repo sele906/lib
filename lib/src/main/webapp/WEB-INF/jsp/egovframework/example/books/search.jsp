@@ -39,12 +39,24 @@
 			    margin: 0 10%;
 			    max-width: 190px;
 			    display: grid;
-			    grid-template-rows: repeat(50, 40px);
+			    grid-template-rows: repeat(30, 40px);
 			    color: #2d2d2d;
+			    box-shadow: 5px 0 5px #f3f3f36e;
+			    word-break: keep-all;
 			}
-			.ctgTableItem {
-				border-top: 1px #b3b3b3 solid;
-			    border-bottom: 1px #b3b3b3 solid;
+			.ctgTableHeading {
+			    border-bottom: 1px solid #dadada;
+			}
+			.ctgTableItem a {
+				color: #2e2e2e;
+			    padding: 10px 5px;
+			    border-radius: 10px;
+			    
+			}
+			.ctgTableItem a:hover, a:focus {
+				color: #2e2e2e;
+			    background-color: #dedede;
+			    font-weight: bold;
 			}
 			
 			/* 검색 */
@@ -166,10 +178,7 @@
 			.bookSelect {
 				width: 100px;
 			}
-			.selectBtn {
-				font-size: 0.9em;
-				font-weight: bold;
-			}
+			
 			.selectInfo {
 				font-size: 0.8em;
 			    display: flex;
@@ -182,6 +191,28 @@
 			
 			.resvState {
 			    color: var(--bs-orange);
+			}
+			
+			/* 기능 */
+			.selectBtn {
+				font-size: 0.9em;
+				font-weight: bold;
+				color: var(--bs-body-bg);
+			}
+			
+			/* 예약 */
+			.likeBtn {
+				font-size: 0.9em;
+				font-weight: bold;
+			}
+			.liked {
+				color: var(--bs-danger);
+				border: 1px solid var(--bs-danger);
+				margin: 5px 0;
+			}
+			.liked:hover, .liked:active {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-danger);
 			}
 			
 			/* 대출가능 */
@@ -259,18 +290,18 @@
                         	<div class="ctgTable">
                         	
 						    <!-- Sidebar -->
-						    <nav id="sidebar" class="bg-light border-end">
+						    <div id="sidebar">
 						        <div class="p-3">
-						            <h4 class="fw-bold">카테고리</h4>
-						            <ul class="nav flex-column">
+						            <h4 class="fw-bold pb-3 ctgTableHeading">카테고리</h4>
+						            <ul class="nav flex-column mt-2">
 						                <c:forEach var="c" items="${ctgList}">
-						                    <li class="nav-item">
+						                    <li class="nav-item ctgTableItem">
 						                        <a href="#" class="nav-link category-link" data-ctgid="${c.sclsCd}">${c.sclsNm}</a>
 						                    </li>
 						                </c:forEach>
 						            </ul>
 						        </div>
-						    </nav>
+						    </div>
                             </div>
                         </div>
                         <div class="col-lg-8" id="cntRight">
@@ -327,6 +358,7 @@
                                
                                <table class="table">
 								  <tbody>
+								  
 								    <c:forEach var="row" items="${list}">
 								    
 								    <tr>
@@ -366,25 +398,21 @@
 								      <td class="bookSelect align-middle">
 								      	<div class="selectBox">
 								      	
-								      	<c:if test="${row.loanCount > 0}">
+								      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
+								      	
+								      	<button class="btn likeBtn liked">관심도서</button>
+								      	
+								      	<c:if test="${row.loanState eq 'Y'}">
 								      		<button class="btn selectBtn resvBtn">예약하기</button>
-									      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
-									      	<div class="selectInfo">
-									      		<div class="loanState loanFalse">대출중</div>
-									      		<div class="resvState">예약현황: 0/5</div>
-									      	</div>
+									      	<div class="selectInfo loanState loanFalse">대출중</div>
 								      	</c:if>
 								      	
-								      	<c:if test="${row.loanCount == 0}">
+								      	<c:if test="${row.loanState eq 'N'}">
 								      		<button class="btn selectBtn loanBtn">대출하기</button>
-									      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
-									      	<div class="selectInfo">
-									      		<div class="loanState loanTrue">대출가능</div>
-									      		<div class="resvState">예약현황: 0/5</div>
-									      	</div>
+								      		<div class="selectInfo loanState loanTrue">대출가능</div>
 								      	</c:if>
 								      	
-									      	
+									     <div class="selectInfo resvState">예약현황: 0/5</div>
 									      	
 								      	</div>
 								      </td>
@@ -458,6 +486,7 @@
         <!-- script -->
 		<script>
 			$(document).ready(function() {
+			    
 			    $('#searchBtn').on('click', function(event){
 			        $('#searchForm').submit();
 			    });
@@ -511,7 +540,6 @@
 			        
 			    });
 			    
-			    // Category link click handler
 			    const categoryLinks = document.querySelectorAll('.category-link');
 			    categoryLinks.forEach(link => {
 			        link.addEventListener('click', function(e) {
@@ -525,12 +553,10 @@
 
 			    
 			    var ctgSelect = document.getElementById('ctgId');
-    			console.log(ctgSelect); 
     			
     			if (ctgSelect) {
     		        ctgSelect.addEventListener('change', function() {
     		            console.log('Change event triggered');
-    		            console.log(this.value); 
     		            const form = document.getElementById('ctgForm');
     		            form.querySelector('select[name="ctgId"]').value = this.value; 
     		            form.submit(); 

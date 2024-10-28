@@ -15,6 +15,9 @@ public class Pagination implements Serializable {
 	/** 검색Keyword */
 	private String sKey = "";
 
+	/*카테고리*/
+	private String ctgId = "";
+
 	/** 현재페이지 */
 	private int pageIndex = 1;
 
@@ -92,6 +95,14 @@ public class Pagination implements Serializable {
 		this.sKey = sKey;
 	}
 
+	public String getCtgId() {
+		return ctgId;
+	}
+
+	public void setCtgId(String ctgId) {
+		this.ctgId = ctgId;
+	}
+
 	public int getPageIndex() {
 		return pageIndex;
 	}
@@ -166,7 +177,7 @@ public class Pagination implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Pagenation [sKey=" + sKey + ", pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", firstIndex=" + firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage=" + recordCountPerPage + ", page=" + page + "]";
+		return "Pagination [sKey=" + sKey + ", ctgId=" + ctgId + ", pageIndex=" + pageIndex + ", pageUnit=" + pageUnit + ", pageSize=" + pageSize + ", firstIndex=" + firstIndex + ", lastIndex=" + lastIndex + ", recordCountPerPage=" + recordCountPerPage + ", page=" + page + "]";
 	}
 
 }
