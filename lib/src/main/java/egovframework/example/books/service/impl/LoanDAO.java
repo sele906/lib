@@ -40,17 +40,17 @@ public class LoanDAO {
 
 		List<EgovMap> list = null;
 		try {
-			list = sqlSession.selectList("loan_list", map);
+			list = sqlSession.selectList("loan.loan_list", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	public int loanCount() {
+	public int loanCount(Map<String, Object> map) {
 		int count = 0;
 		try {
-			count = sqlSession.selectOne("loan_count");
+			count = sqlSession.selectOne("loan.loan_count", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -60,7 +60,7 @@ public class LoanDAO {
 	public EgovMap loanDateInfo(int loanId) {
 		EgovMap map = null;
 		try {
-			map = sqlSession.selectOne("loan_date_info", loanId);
+			map = sqlSession.selectOne("loan.loan_date_info", loanId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,7 +69,7 @@ public class LoanDAO {
 
 	public void extendsDate(int loanId) {
 		try {
-			sqlSession.update("loan_extends", loanId);
+			sqlSession.update("loan.loan_extends", loanId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -77,7 +77,7 @@ public class LoanDAO {
 
 	public void returnState(int loanId) {
 		try {
-			sqlSession.update("loan_return", loanId);
+			sqlSession.update("loan.loan_return", loanId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -85,7 +85,7 @@ public class LoanDAO {
 
 	public void loanDuedateUpdate(Map<String, Object> map) {
 		try {
-			sqlSession.update("loan_duedate_update", map);
+			sqlSession.update("loan.loan_duedate_update", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,10 +93,33 @@ public class LoanDAO {
 
 	public void returndateUpdate(Map<String, Object> map) {
 		try {
-			sqlSession.update("loan_returndate_update", map);
+			sqlSession.update("loan.loan_returndate_update", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	//	대출 기록
+	public List<EgovMap> loanHistoryList(Map<String, Object> map) throws Exception {
+
+		List<EgovMap> list = null;
+		try {
+			list = sqlSession.selectList("loan.loan_history", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public int loanHistoryCount(Map<String, Object> map) throws Exception {
+
+		int count = 0;
+		try {
+			count = sqlSession.selectOne("loan.loan_history_count", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count;
 	}
 
 }

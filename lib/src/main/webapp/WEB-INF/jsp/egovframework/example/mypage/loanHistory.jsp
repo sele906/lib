@@ -22,6 +22,13 @@
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
+		
+		<style type="text/css">
+			.page-link.select {
+				background-color: var(--bs-pagination-active-bg);
+	    		color: var(--bs-pagination-active-color);
+			}
+		</style>
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
@@ -32,10 +39,10 @@
             <section class="bg-light py-5">
                 <div class="container px-5 my-5">
                     <div class="text-center mb-5">
-                        <h1 class="fw-bolder">Pay as you grow</h1>
+                        <h1 class="fw-bolder">대출 이력</h1>
+                        <p class="lead fw-normal text-muted mb-0">${sessionScope.userid}님의 대출 이력입니다.</p>
                     </div>
                     <div class="row gx-5 justify-content-center">
-                    
                         <!-- Pricing card free-->
                         <div class="col-lg-6 col-xl-12">
                             <div class="card mb-5 mb-xl-0">
@@ -48,12 +55,24 @@
 							    <hr style="margin: 0;">
                                 <table class="table">
 								  <tbody>
-								    <tr>
-								      <th scope="row" class="align-middle">1</th>
+								  
+								  <c:forEach var="row" items="${list}">
+								  
+								  <tr>
+								      <th scope="row" class="align-middle">${row.idx}</th>
 								      <td class="bookCover align-middle" >
 								     	<div class="imgContainer">
 								     	<div class="imgBox">
-								     		<img/>
+								     		
+											<c:choose>
+								            <c:when test="${not empty row.fileName}">
+								                <img alt="" src="/bookfile/${row.fileName}">
+								            </c:when>
+								            <c:otherwise>
+								                <img alt="" src="/images/egovframework/lib/cmmn/blank.png">
+								            </c:otherwise>
+								        	</c:choose>
+
 								     	</div>
 								     	</div>
 								     </td>
@@ -61,13 +80,13 @@
 									      <div class="infoBox">
 									      
 									      <div class="t_title">
-									      	<b>공개하지 아니한 회의내용의 공표에 관하여는 법률이 정하는 바에 의한다</b>
+									      	<b>${row.title}</b>
 									      </div>
 									      <div class="t-cnt">
-									      	저자 아무개 | 출판사
+									      	${row.author} | ${row.publisher}
 									      </div>
 									      <div class="t-idx">
-									      	 <b>청구기호 : 재적의원 과반수의</b>
+									      	 <b>청구기호 : ${row.cheonggu}</b>
 									      </div>
 									      
 									      </div>
@@ -75,41 +94,19 @@
 								      <td class="bookSelect align-middle">
 								      		<div class="selectBox">
 								      			<div class="dateBox">
-								      				반납일: 2019.02.10
+								      				반납일: <span class="returnDateVal">${row.returnDate}</span>
 								      			</div>
-								      			<div class="selectBtn">
+								      			<!-- <div class="selectBtn">
 								      				<button class="btn btn-outline-primary extendsBtn">대출연장</button>
 								      				
-								      				<!-- <button class="btn btn-outline-danger disabled">연장불가</button> -->
+								      				<button class="btn btn-outline-danger disabled">연장불가</button>
 								      				
-								      			</div>
+								      			</div> -->
 								      		</div>
 								      </td>
 								    </tr>
-								    <tr>
-								      <th scope="row">2</th>
-								      <td>Jacob</td>
-								      <td>Thornton</td>
-								      <td>@fat</td>
-								    </tr>
-								    <tr>
-								      <th scope="row">3</th>
-								      <td>Larry</td>
-								      <td>the Bird</td>
-								      <td>@twitter</td>
-								    </tr>
-								    <tr>
-								      <th scope="row">3</th>
-								      <td>Larry</td>
-								      <td>the Bird</td>
-								      <td>@twitter</td>
-								    </tr>
-								    <tr>
-								      <th scope="row">3</th>
-								      <td>Larry</td>
-								      <td>the Bird</td>
-								      <td>@twitter</td>
-								    </tr>
+								  
+								  </c:forEach>
 								    
 								  </tbody>
 								</table>
@@ -117,20 +114,41 @@
 							    </div>
 							    <div class="pageBox">
 							    
-							    <ul class="pagination">
-            
-					            <li class="page-item"><a class="page-link">1</a></li>
-					            <li class="page-item"><a class="page-link">2</a></li>
-					            <li class="page-item"><a class="page-link">3</a></li>
-					            <li class="page-item"><a class="page-link">4</a></li>
-					            <li class="page-item"><a class="page-link">5</a></li>
-					            <li class="page-item"><a class="page-link">6</a></li>
-					            <li class="page-item"><a class="page-link">7</a></li>
-					            <li class="page-item"><a class="page-link">8</a></li>
-					            <li class="page-item"><a class="page-link">9</a></li>
-					            <li class="page-item"><a class="page-link">10</a></li>
-					            
-					            </ul>
+							    <!-- 페이징 -->
+								
+								<ul class="pagination">
+									
+						 			<c:choose>
+								        <c:when test="${pageInfo.currentPageNo<=1}">
+								        </c:when>
+								
+								    <c:otherwise>
+								    	<li class="page-item"><a class="page-link" href="/mypage/loanHistory.do?page=${pageInfo.currentPageNo-1}">이전</a></li>
+								    </c:otherwise>
+								    </c:choose>
+								    
+								    <c:forEach begin="${pageInfo.firstPageNoOnPageList}" end="${pageInfo.lastPageNoOnPageList}" var="i" step="1">
+									    <c:choose>
+									        <c:when test="${i eq pageInfo.currentPageNo}">
+									            <li class="page-item"><a class="page-link select">${i}</a></li>
+									        </c:when>
+									
+									        <c:otherwise>
+									        	<li class="page-item"><a class="page-link" href="/mypage/loanHistory.do?page=${i}">${i}</a></li>
+									        </c:otherwise>
+									
+										</c:choose>
+									</c:forEach>
+									
+									<c:choose>
+							            <c:when test="${pageInfo.currentPageNo>=pageInfo.totalPageCount}">
+							            </c:when>
+							            <c:otherwise>
+							            	<li class="page-item"><a class="page-link" href="/mypage/loanHistory.do?page=${pageInfo.currentPageNo+1}">다음</a></li>
+							            </c:otherwise>
+							        </c:choose>
+							        
+							        </ul>
 							    
 							    </div>
 							    
@@ -143,46 +161,6 @@
                     </div>
                 </div>
             </section>
-            
-            
-            <!-- paging -->
-            
-            
-									
- 			<%-- 
- 			<ul class="pagination">
- 			
- 			<c:choose>
-		        <c:when test="${pageInfo.currentPageNo<=1}">
-		        </c:when>
-		
-		    <c:otherwise>
-		    	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}&ctgId=${map.ctgId}">이전</a></li>
-		    </c:otherwise>
-		    </c:choose>
-		    
-		    <c:forEach begin="${pageInfo.firstPageNoOnPageList}" end="${pageInfo.lastPageNoOnPageList}" var="i" step="1">
-			    <c:choose>
-			        <c:when test="${i eq pageInfo.currentPageNo}">
-			            <li class="page-item"><a class="page-link select">${i}</a></li>
-			        </c:when>
-			
-			        <c:otherwise>
-			        	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}">${i}</a></li>
-			        </c:otherwise>
-			
-				</c:choose>
-			</c:forEach>
-			
-			<c:choose>
-	            <c:when test="${pageInfo.currentPageNo>=pageInfo.totalPageCount}">
-	            </c:when>
-	            <c:otherwise>
-	            	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo+1}&ctgId=${map.ctgId}">다음</a></li>
-	            </c:otherwise>
-	        </c:choose> --%>
-	        
-	        </ul> 
             
         </main>
         <!-- Footer-->
