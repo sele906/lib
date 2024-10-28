@@ -58,7 +58,6 @@
                                 <table class="table">
 								  <tbody>
 								  	<c:forEach var="row" items="${list}">
-							    
 							    	<tr>
 								      <th scope="row" class="align-middle">${row.idx}</th>
 								      <td class="bookCover align-middle" >
@@ -97,7 +96,15 @@
 								      				반납일: <span class="returnDateVal">${row.returnDate}</span>
 								      			</div>
 								      			<div class="selectBtn">
-								      				<button class="btn btn-outline-primary extendsBtn">대출연장</button>
+								      			
+									      			<c:if test="${row.dueDate >= 28}">
+									      			<button class="btn btn-outline-primary extendsBtn disabled">연장불가</button>
+									      			</c:if>
+									      			
+									      			<c:if test="${row.dueDate < 28}">
+									      			<button class="btn btn-outline-primary extendsBtn">대출연장</button>
+									      			</c:if>
+								      			
 								      				<button class="btn btn-outline-danger returnBtn">반납하기</button>
 								      				<input type="hidden" class="loanId" value="${row.loanId}"/>
 								      				<input type="hidden" class="dateVal" value="${row.returnDate}">
@@ -187,6 +194,7 @@
 		    
 		    $('.extendsBtn').on('click', function(event){
 		        
+		        var row = $(this).closest('tr');
 		        const loanId = $(this).closest('.bookSelect').find('.loanId').val();
 		        const dateElmt = $(this).closest('.bookSelect').find('.dateVal');
 		        const returnDateSpan = $(this).closest('.bookSelect').find('.returnDateVal');
@@ -211,6 +219,10 @@
 					        returnDateSpan.text(newReturnDate);
 	                    } else {
 	                        alert('연장이 불가능합니다.');
+	                        
+	                        row.find('.extendsBtn')
+	                           .addClass('disabled')
+	                           .text('연장불가');
 	                    }
 				    }
 				});

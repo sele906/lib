@@ -33,10 +33,13 @@ public class MypageController {
 
 		String userid = (String) session.getAttribute("userid");
 
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userid);
+
 		Pagination pinfo = new Pagination();
 		pinfo.setPage(page);
 
-		int count = loanDao.loanCount();
+		int count = loanDao.loanCount(map);
 
 		//페이징처리
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -49,8 +52,6 @@ public class MypageController {
 		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userid", userid);
 		map.put("recordCountPerPage", paginationInfo.getRecordCountPerPage());
 		map.put("firstIndex", paginationInfo.getFirstRecordIndex());
 
@@ -129,7 +130,39 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "loanHistory.do", method = RequestMethod.GET)
-	public String loanHistory() throws Exception {
+	public String loanHistory(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpSession session) throws Exception {
+
+		String userid = (String) session.getAttribute("userid");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userid", userid);
+
+		Pagination pinfo = new Pagination();
+		pinfo.setPage(page);
+
+		int count = loanDao.loanHistoryCount(map);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		map.put("recordCountPerPage", paginationInfo.getRecordCountPerPage());
+		map.put("firstIndex", paginationInfo.getFirstRecordIndex());
+
+		List<EgovMap> list = loanDao.loanHistoryList(map);
+
+		model.addAttribute("list", list);
+		model.addAttribute("count", count);
+		model.addAttribute("pinfo", pinfo);
+		model.addAttribute("pageInfo", paginationInfo);
+
 		return "mypage/loanHistory";
 	}
 
