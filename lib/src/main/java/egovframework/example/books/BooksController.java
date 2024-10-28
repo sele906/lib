@@ -63,6 +63,9 @@ public class BooksController {
 		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
+		map.put("recordCountPerPage", paginationInfo.getRecordCountPerPage());
+		map.put("firstIndex", paginationInfo.getFirstRecordIndex());
+
 		List<EgovMap> list = booksDao.booklist(map);
 
 		model.addAttribute("list", list);
