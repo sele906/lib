@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.Pagination;
+import egovframework.example.books.service.impl.LikeDAO;
 import egovframework.example.books.service.impl.LoanDAO;
+import egovframework.example.books.service.impl.ResvDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -27,6 +29,12 @@ public class MypageController {
 
 	@Resource(name = "LoanDAO")
 	private LoanDAO loanDao;
+
+	@Resource(name = "LikeDAO")
+	private LikeDAO LikeDao;
+
+	@Resource(name = "ResvDAO")
+	private ResvDAO ResvDao;
 
 	@RequestMapping(value = "loanList.do", method = RequestMethod.GET)
 	public String loanList(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpSession session) throws Exception {
@@ -122,6 +130,10 @@ public class MypageController {
 			loanDao.loanDuedateUpdate(map);
 			loanDao.returndateUpdate(map);
 
+			//만약 예약 테이블에 책이 있다면
+			//에약 날짜 순으로 정렬
+			//가장 첫번째 사람에게 메일 보내기
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -167,7 +179,45 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "resvList.do", method = RequestMethod.GET)
-	public String resvList() throws Exception {
+	public String resvList(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "sKey", defaultValue = "") String sKey, HttpSession session, Model model) throws Exception {
+
+		//키워드와 페이지 전달
+		String userid = (String) session.getAttribute("userid");
+
+		Pagination pinfo = new Pagination();
+		pinfo.setsKey(sKey);
+		pinfo.setPage(pageNum);
+
+		Map<String, Object> map = new HashMap();
+		map.put("sKey", sKey);
+		map.put("pageNum", pageNum);
+		map.put("userid", userid);
+
+		int count = ResvDao.resvCount(map);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		map.put("recordCountPerPage", paginationInfo.getRecordCountPerPage());
+		map.put("firstIndex", paginationInfo.getFirstRecordIndex());
+
+		List<EgovMap> list = ResvDao.resvList(map);
+
+		model.addAttribute("list", list);
+		model.addAttribute("count", count);
+		model.addAttribute("map", map);
+		model.addAttribute("pinfo", pinfo);
+		model.addAttribute("pageInfo", paginationInfo);
+
+		model.addAttribute("list", list);
 		return "mypage/resvList";
 	}
 
@@ -187,7 +237,52 @@ public class MypageController {
 	}
 
 	@RequestMapping(value = "likedList.do", method = RequestMethod.GET)
-	public String likedList() throws Exception {
+	public String likedList(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "sKey", defaultValue = "") String sKey, HttpSession session, Model model) throws Exception {
+
+		//키워드와 페이지 전달
+		String userid = (String) session.getAttribute("userid");
+
+		Pagination pinfo = new Pagination();
+		pinfo.setsKey(sKey);
+		pinfo.setPage(pageNum);
+
+		Map<String, Object> map = new HashMap();
+		map.put("sKey", sKey);
+		map.put("pageNum", pageNum);
+		map.put("userid", userid);
+
+		int count = LikeDao.count(map);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		map.put("recordCountPerPage", paginationInfo.getRecordCountPerPage());
+		map.put("firstIndex", paginationInfo.getFirstRecordIndex());
+
+		List<EgovMap> list = LikeDao.likeList(map);
+
+		//대출상태가 N이면 대출버튼 
+		//		String loanState = LikeDao.showLoanState(bookId);
+
+		//사용자 + 대출상태가 Y이면 반납버튼  
+		//다른사용자 + 대출상태가 Y이면 예약버튼 ㅖ약여부
+
+		model.addAttribute("list", list);
+		model.addAttribute("count", count);
+		model.addAttribute("map", map);
+		model.addAttribute("pinfo", pinfo);
+		model.addAttribute("pageInfo", paginationInfo);
+
+		model.addAttribute("list", list);
+
 		return "mypage/likedList";
 	}
 

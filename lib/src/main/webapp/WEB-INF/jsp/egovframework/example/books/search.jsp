@@ -191,6 +191,7 @@
 			
 			.resvState {
 			    color: var(--bs-orange);
+			    flex-direction: row;
 			}
 			
 			/* 기능 */
@@ -204,16 +205,26 @@
 			.likeBtn {
 				font-size: 0.9em;
 				font-weight: bold;
-			}
-			.liked {
-				color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
 				margin: 5px 0;
+			}/* 
+			.like {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-danger);
+				border: 1px solid var(--bs-danger);
 			}
-			.liked:hover, .liked:active {
+			.like:hover, .like:active {
 				color: var(--bs-body-bg);
 				background-color: var(--bs-danger);
 			}
+			.liked {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-danger);
+				margin: 5px 0;
+			}
+			.like:hover, .like:active {
+				color: var(--bs-danger);
+				border: 1px solid var(--bs-danger);
+			} */
 			
 			/* 대출가능 */
 			.loanBtn {
@@ -399,11 +410,31 @@
 								      	<div class="selectBox">
 								      	
 								      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
+								      	<input type="hidden" id="loanId" name="loanId" value="${row.loanId}">
 								      	
-								      	<button class="btn likeBtn liked">관심도서</button>
+								      	<c:if test="${sessionScope.userid != null}">
+								      	<c:choose>
+								        <c:when test="${row.likedId eq row.bookId}">
+								      		<button class="btn btn-danger likeBtn liked">관심해제</button>
+								      	</c:when>
+									
+									    <c:otherwise>
+									    	<button class="btn btn-danger likeBtn like">관심도서</button>
+									    </c:otherwise>
+									    </c:choose>
+									    </c:if>
 								      	
 								      	<c:if test="${row.loanState eq 'Y'}">
-								      		<button class="btn selectBtn resvBtn">예약하기</button>
+								      		<c:choose>
+									        <c:when test="${row.resvId eq row.bookId}">
+									      		<button class="btn selectBtn resvBtn">예약취소</button>
+									      	</c:when>
+										
+										    <c:otherwise>
+										    	<button class="btn selectBtn resvBtn">예약하기</button>
+										    </c:otherwise>
+										    </c:choose>
+										    
 									      	<div class="selectInfo loanState loanFalse">대출중</div>
 								      	</c:if>
 								      	
@@ -412,7 +443,8 @@
 								      		<div class="selectInfo loanState loanTrue">대출가능</div>
 								      	</c:if>
 								      	
-									     <div class="selectInfo resvState">예약현황: 0/5</div>
+									     <div class="selectInfo resvState">예약현황: <span class="spanClass resvCountShow">${row.resvCount}</span>/5</div>
+									     <input type="hidden" name="resvCount" value="${row.resvCount}">
 									      	
 								      	</div>
 								      </td>
@@ -491,10 +523,82 @@
 			        $('#searchForm').submit();
 			    });
 			    
+			    $('.likeBtn').on('click', function(event){
+			        var row = $(this).closest('tr');
+			        var bookId = row.find('input[name="bookId"]').val();
+			        var userid = "${sessionScope.userid}";
+			        
+			        if ($(this).hasClass('like')) {
+			            
+			            if (userid != "") {
+				            $.ajax({
+								type: 'get',
+								url: '/books/like.do',
+								data: {
+								    bookId: bookId,
+								    userid: userid
+								}, 
+								success: function (response) {
+								    console.log(response);
+								    if (response === 'success') {
+								        
+								        alert('관심 도서로 등록되었습니다.');
+								        
+								        //관심버튼 관심 해제로 바꾸기
+								        row.find('.likeBtn')
+								        	.removeClass('like')
+				                           	.addClass('liked')
+				                           	.text('관심해제'); 
+				                        
+				                    } else {
+				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                    }
+							    }
+							});
+				        } else {
+				            alert('로그인 후 이용해주세요.');
+				            location.href = '/member/login.do';
+				        }
+			            
+			        } else if ($(this).hasClass('liked')) {
+			            
+			            if (userid != "") {
+				            $.ajax({
+								type: 'get',
+								url: '/books/liked.do',
+								data: {
+								    bookId: bookId,
+								    userid: userid
+								}, 
+								success: function (response) {
+								    console.log(response);
+								    if (response === 'success') {
+								        
+								        alert('관심도서 목록에서 해제되었습니다.');
+								        
+								        //관심해제버튼 관심으로 바꾸기
+								        row.find('.likeBtn')
+								        	.removeClass('liked')
+				                           	.addClass('like')
+				                           	.text('관심도서'); 
+				                        
+				                    } else {
+				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                    }
+							    }
+							});
+				        } else {
+				            alert('로그인 후 이용해주세요.');
+				            location.href = '/member/login.do';
+				        }
+			        }
+			    });
+			    
 			    $('.selectBtn').on('click', function(event){
 			        
 			        var row = $(this).closest('tr');
 			        var bookId = row.find('input[name="bookId"]').val();
+			        var loanId = row.find('input[name="loanId"]');
 			        var userid = "${sessionScope.userid}";
 			        
 			        if ($(this).hasClass('loanBtn')) {
@@ -508,11 +612,13 @@
 								    userid: userid
 								}, 
 								success: function (response) {
+								    alert('대출되었습니다.');
 								    console.log(response);
-								    if (response === 'success') {
-								        
-								        alert('대출되었습니다.');
-								        
+								    if (!isNaN(response)) {
+								    
+								    	loanId.val(response);
+								    	
+								    	//대출 버튼 대출중으로 바꾸기
 								        //대출 버튼 예약하기로 바꾸기
 								        row.find('.loanBtn')
 				                           .removeClass('loanBtn')
@@ -523,7 +629,75 @@
 				                           .removeClass('loanTrue')
 				                           .addClass('loanFalse')
 				                           .text('대출중');
-				                        
+				                    } 
+							    }
+							});
+				        } else {
+				            alert('로그인 후 이용해주세요.');
+				            location.href = '/member/login.do';
+				        }
+			            
+			        } else if ($(this).hasClass('resvBtn')) {
+			            
+			            if (userid != "") {
+			                
+			                $.ajax({
+								type: 'get',
+								url: '/books/resv.do',
+								data: {
+								    bookId: bookId,
+								    userid: userid,
+								    loanId: loanId.val()
+								}, 
+								success: function (response) {
+								    console.log(response);
+								    if (response === 'success') {
+								        
+								        alert('예약되었습니다.');
+								        
+								      	//예약 버튼 예약취소로 바꾸기
+								        row.find('.resvBtn')
+				                           .text('예약취소');  
+								        
+								        //예약 숫자 업데이트
+								        var cnt = parseInt(row.find('input[name="resvCount"]').val());
+								        cnt += 1; 
+
+								        row.find('input[name="resvCount"]').val(cnt); 
+								        row.find('.resvCountShow').text(cnt);
+								        
+				                    } else if (response === 'alreadyLoaned') {
+				                        alert('이미 대출한 도서입니다.');
+				                    } else if (response === 'alreadyReserved') {
+				                        if (confirm('예약 취소하시겠습니까?')) {
+				                            $.ajax({
+												type: 'get',
+												url: '/books/resvDelete.do',
+												data: {
+												    bookId: bookId,
+												    userid: userid
+												}, 
+												success: function (response) {
+												    console.log(response);
+												    if (response == 'success') {
+												        alert('예약 취소 되었습니다.');
+												        
+												      	//예약 버튼 예약으로 바꾸기
+												        row.find('.resvBtn')
+								                           .text('예약하기');  
+												        
+												      	//예약 숫자 업데이트
+												        var cnt = parseInt(row.find('input[name="resvCount"]').val());
+												        cnt -= 1; 
+
+												        row.find('input[name="resvCount"]').val(cnt); 
+												        row.find('.resvCountShow').text(cnt);
+								                    } 
+											    }
+											});
+				                        }
+				                    } else if (response === 'fullyReserved') {
+				                        alert('예약이 불가능합니다.');
 				                    } else {
 				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
 				                    }
@@ -533,8 +707,6 @@
 				            alert('로그인 후 이용해주세요.');
 				            location.href = '/member/login.do';
 				        }
-			            
-			        } else if ($(this).hasClass('resvBtn')) {
 			            
 			        }
 			        
@@ -562,12 +734,7 @@
     		            form.submit(); 
     		        });
     		    }
-    			
-    
 			});
-			
-	        
-			
 		</script>
         
         <!-- Bootstrap core JS-->
