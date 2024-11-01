@@ -122,4 +122,14 @@ public class LoanDAO {
 		return count;
 	}
 
+	public EgovMap loanChkResv(int loanId) {
+		EgovMap emap = null;
+		try {
+			emap = sqlSession.selectOne("loan.loan_chk_resv", loanId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return emap;
+	}
+
 }

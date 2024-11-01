@@ -611,25 +611,26 @@
 								    bookId: bookId,
 								    userid: userid
 								}, 
+								dataType : 'json',
 								success: function (response) {
 								    alert('대출되었습니다.');
 								    console.log(response);
-								    if (!isNaN(response)) {
 								    
-								    	loanId.val(response);
-								    	
-								    	//대출 버튼 대출중으로 바꾸기
-								        //대출 버튼 예약하기로 바꾸기
-								        row.find('.loanBtn')
-				                           .removeClass('loanBtn')
-				                           .addClass('resvBtn')
-				                           .text('예약하기');  
-				                        
-				                        row.find('.loanState')
-				                           .removeClass('loanTrue')
-				                           .addClass('loanFalse')
-				                           .text('대출중');
-				                    } 
+								    row.find('input[name="resvCount"]').val(response.resvCnt); 
+							        row.find('.resvCountShow').text(response.resvCnt);
+								    
+							    	loanId.val(response.idx);
+							    	
+							        //대출 버튼 예약하기로 바꾸기
+							        row.find('.loanBtn')
+			                           .removeClass('loanBtn')
+			                           .addClass('resvBtn')
+			                           .text('예약하기');  
+			                        
+			                        row.find('.loanState')
+			                           .removeClass('loanTrue')
+			                           .addClass('loanFalse')
+			                           .text('대출중');
 							    }
 							});
 				        } else {
@@ -662,6 +663,9 @@
 								        //예약 숫자 업데이트
 								        var cnt = parseInt(row.find('input[name="resvCount"]').val());
 								        cnt += 1; 
+								        if (cnt > 5) {
+								            cnt = 5;
+								        }
 
 								        row.find('input[name="resvCount"]').val(cnt); 
 								        row.find('.resvCountShow').text(cnt);
@@ -689,6 +693,9 @@
 												      	//예약 숫자 업데이트
 												        var cnt = parseInt(row.find('input[name="resvCount"]').val());
 												        cnt -= 1; 
+												        if (cnt < 0) {
+												            cnt = 0;
+												        }
 
 												        row.find('input[name="resvCount"]').val(cnt); 
 												        row.find('.resvCountShow').text(cnt);

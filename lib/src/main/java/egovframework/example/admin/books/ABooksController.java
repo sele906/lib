@@ -32,6 +32,7 @@ import egovframework.example.Pagination;
 import egovframework.example.admin.books.service.AFileService;
 import egovframework.example.admin.books.service.BookVO;
 import egovframework.example.admin.books.service.impl.ABooksDAO;
+import egovframework.example.service.impl.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -45,6 +46,9 @@ public class ABooksController {
 	//임시
 	@Resource(name = "ABooksDAO")
 	private ABooksDAO AbooksDao;
+
+	@Resource(name = "WishFileService")
+	private WishFileService WishFileService;
 
 	//서지정보 api 불러오기
 	@Value("${nl.KEY}")
@@ -244,7 +248,7 @@ public class ABooksController {
 			int id = Integer.parseInt(data.get("id").toString());
 
 			//파일 삭제
-			AFileService.deleteFile(id);
+			WishFileService.deleteFile(id);
 
 			//데이터 삭제
 			AbooksDao.deleteBook(id);

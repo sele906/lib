@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import egovframework.example.Pagination;
 import egovframework.example.books.service.LoanVO;
 import egovframework.example.books.service.impl.BooksDAO;
@@ -93,6 +95,8 @@ public class BooksController {
 	@RequestMapping(value = "loan.do", method = RequestMethod.GET)
 	public String loan(@RequestParam(name = "bookId") int bookId, @RequestParam(name = "userid") String userid) throws Exception {
 
+		Map<String, Object> map = new HashMap<String, Object>();
+
 		LoanVO vo = new LoanVO();
 		vo.setUserid(userid);
 		vo.setBookId(bookId);
@@ -104,8 +108,26 @@ public class BooksController {
 		vo.setReturnDate(Date.valueOf(returnDateLocal));
 
 		int idx = loanDao.loanInsert(vo);
+		map.put("idx", idx);
 
-		return String.valueOf(idx);
+		//예약도서라면
+		EgovMap param = new EgovMap();
+		param.put("userid", userid);
+		param.put("bookId", bookId);
+
+		int resvCnt = 0;
+		try {
+			ResvDao.resvDelete(param);
+			resvCnt = ResvDao.resvChkResvCnt(bookId);
+			map.put("resvCnt", resvCnt);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		String result = objectMapper.writeValueAsString(map);
+
+		return result;
 	}
 
 	@ResponseBody

@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.member.service.MemberVO;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("MemberDAO")
 public class MemberDAO {
@@ -54,6 +55,10 @@ public class MemberDAO {
 	//비밀번호 세팅
 	public void setPwd(MemberVO vo) throws Exception {
 		sqlSession.update("mem_setPwd", vo);
+	}
+
+	public EgovMap getInfo(String userid) throws Exception {
+		return (EgovMap) sqlSession.selectOne("member.get_info", userid);
 	}
 
 }

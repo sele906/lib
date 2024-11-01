@@ -78,6 +78,16 @@ public class ResvDAO {
 		return cnt;
 	}
 
+	public EgovMap resvUserSelect(EgovMap param) {
+		EgovMap emap = null;
+		try {
+			emap = sqlSession.selectOne("resv.resv_user_select", param);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return emap;
+	}
+
 	public void resvDelete(Map<String, Object> map) {
 		try {
 			sqlSession.delete("resv.resv_delete", map);
