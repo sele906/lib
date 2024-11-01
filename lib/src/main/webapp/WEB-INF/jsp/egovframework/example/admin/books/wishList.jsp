@@ -50,6 +50,20 @@
 		  background-color: #0d6efd;
 		  color: white;
 		}
+		#deleteBtn {
+			background-color: white;
+		    color: #dc3545;
+		    border: 2px solid #dc3545;
+		    padding: 3px 10px;
+		    text-align: center;
+		    text-decoration: none;
+		    display: inline-block;
+		    border-radius: 0;
+		}
+		#deleteBtn:hover, #deleteBtn:active {
+		  background-color: #dc3545;
+		  color: white;
+		}
 		#searchBar {
 			width: 300px;
 		}
@@ -190,7 +204,10 @@
                             <div class="card-body">
                             
                             <div id="infoBar">
-                            	<div><button class="btn btn-primary" id="addBook">등록하기</button></div>
+                            	<div>
+	                            	<button class="btn btn-primary" id="addBook">등록하기</button>
+	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
+                            	</div>
 								
                             	<!-- 검색창 -->
                             	<div class="input-group" id="searchBar">
@@ -350,7 +367,7 @@
                 $.ajax({
                     async: false,
                     type: 'post',
-                    url: '/admin/books/bookData.do',
+                    url: '/admin/books/wishData.do',
                     data: {
                         kwd: kwdData,
                         page : pagenum

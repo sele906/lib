@@ -59,6 +59,53 @@ public class ABooksController {
 		return "/admin/books/wishList";
 	}
 
+	//도서 데이터
+	@ResponseBody
+	@RequestMapping(value = "wishData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public String wishData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+
+		//키워드와 페이지 전달
+		Pagination pinfo = new Pagination();
+		pinfo.setsKey(kwdData);
+		pinfo.setPage(pageNum);
+
+		int count = AbooksDao.bookCount(pinfo);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<EgovMap> list = AbooksDao.booklist(pinfo);
+
+		//param
+		JSONObject paramData = new JSONObject();
+		paramData.put("total", count);
+		paramData.put("pageSize", pinfo.getRecordCountPerPage());
+		paramData.put("page", pinfo.getFirstIndex());
+
+		//items
+		ObjectMapper objectMapper = new ObjectMapper();
+		String items = objectMapper.writeValueAsString(list);
+
+		//item param 합치기
+		JSONArray RArray = new JSONArray();
+		RArray.put(paramData);
+
+		JSONArray jarray = new JSONArray(items);
+		JSONObject itemData = new JSONObject();
+		itemData.put("items", jarray);
+		RArray.put(itemData);
+
+		return RArray.toString();
+	}
+
 	@RequestMapping(value = "addBook.do")
 	public String addBook() throws Exception {
 
