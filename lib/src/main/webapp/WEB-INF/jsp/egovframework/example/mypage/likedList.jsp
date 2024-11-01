@@ -200,7 +200,7 @@
         
         <script>
         
-        $('#searchBtn').on('click', function(event) {
+        $('.searchBtn').on('click', function(event) {
 	        $('#searchForm').submit();
 	    });
         
