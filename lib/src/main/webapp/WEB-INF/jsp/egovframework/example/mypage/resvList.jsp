@@ -32,6 +32,9 @@
 			.hidden {
 				display: none;
 			}
+			.tmpPlace {
+			    width: 100%;
+			 }
 		</style>
     </head>
     <body class="d-flex flex-column">
@@ -72,6 +75,12 @@
                     </div>
 
                     <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+                        
+                        <c:if test="${empty list}">
+		                    <div class="tmpPlace">
+		                   		 예약도서가 없습니다.
+		                    </div>
+	                    </c:if>
                         
                         <c:forEach var="i" items="${list}">
                         

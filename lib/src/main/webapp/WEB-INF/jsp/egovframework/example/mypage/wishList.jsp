@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,6 +41,9 @@
 				max-width: 300px;
 				    word-break: break-all;
 			}
+			.tmpPlace {
+			    width: 100%;
+			 }
 		</style>
     </head>
     <body class="d-flex flex-column">
@@ -79,6 +83,12 @@
             <section class="py-5 bg-light">
                 <div class="container px-5 my-5">
                     <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+                    
+                    <c:if test="${empty list}">
+	                    <div class="tmpPlace">
+	                   		 희망도서가 없습니다.
+	                    </div>
+                    </c:if>
                    
                     <c:forEach var="i" items="${list}">
 	                        
