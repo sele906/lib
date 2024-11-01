@@ -168,8 +168,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">자료관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item">관리자</li>
-                            <li class="breadcrumb-item active">자료관리</li>
+                            <li class="breadcrumb-item">자료관리</li>
                             <li class="breadcrumb-item active">자료관리</li>
                         </ol>
                         <div class="card mb-4">

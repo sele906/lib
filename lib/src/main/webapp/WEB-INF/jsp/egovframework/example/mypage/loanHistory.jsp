@@ -28,6 +28,13 @@
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
 			}
+			.emtTable {
+				min-height: 360px;
+			    display: flex;
+			    justify-content: center;
+			    align-items: center;
+			    font-size: 1.1em;
+			}
 		</style>
     </head>
     <body class="d-flex flex-column">
@@ -50,12 +57,19 @@
     min-height: 460px;">
 							    <div class="cardBox">
 							    
+							    <c:if test="${empty list}">
+					                  <div class="emtTable">
+					                  대출이력이 없습니다.
+					                  </div> 		
+				                </c:if>
+							    
+							    <c:if test="${not empty list}">
+							    
 							    <div class="tableBox">
 							    
 							    <hr style="margin: 0;">
                                 <table class="table">
 								  <tbody>
-								  
 								  <c:forEach var="row" items="${list}">
 								  
 								  <tr>
@@ -112,6 +126,7 @@
 								</table>
 							    
 							    </div>
+							    
 							    <div class="pageBox">
 							    
 							    <!-- 페이징 -->
@@ -151,6 +166,8 @@
 							        </ul>
 							    
 							    </div>
+							    
+							    </c:if>
 							    
 							    </div>
 								

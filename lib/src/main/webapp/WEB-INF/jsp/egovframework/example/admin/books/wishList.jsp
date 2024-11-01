@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +13,7 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-    	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     
     	<style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
@@ -97,6 +98,40 @@
 		  	text-decoration: underline;
 		}
 		
+		/* 모달 이미지 크기 */
+		.modalImg {
+	        width: 50px;
+    		height: 70px;
+    		border: 1px solid #aaaaaa;
+	    }
+	    
+	    /* 모달 */
+		#m-cnt {
+			display: flex;
+		}
+		#m-left {
+			width: 40%;
+			padding: 0 15px 0 0;
+			align-content: center;
+			border-right: 1px solid #dee2e6;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+		}
+		#m-left #m-imgBox {
+			width: 70%;
+    		height: 75%;
+		}
+		#m-left #m-imgBox img {
+			width: 100%;
+  			height: 100%;
+		}
+		#m-right {
+			width: 60%;
+			padding: 0 0 0 15px ;
+		}
+		
 		</style>
         
     </head>
@@ -127,14 +162,13 @@
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %>
-            </div>
+            	<%@ include file="../main/menu.jsp" %></div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">희망도서등록</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a href="/admin/main/main.do">관리자</a></li>
+                            <li class="breadcrumb-item">자료관리</li>
                             <li class="breadcrumb-item active">희망도서등록</li>
                         </ol>
                         <div class="card mb-4">
@@ -146,7 +180,7 @@
                         
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
-								<b>희망도서등록</b>
+                                <b>희망도서등록</b>
 								|
                                 <a href="/admin/books/addBook.do" class="linkButton">자료등록</a>
                                 |
@@ -160,8 +194,8 @@
 								
                             	<!-- 검색창 -->
                             	<div class="input-group" id="searchBar">
-								  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" id="searchInput" value=""/>
-								  <button type="button" class="btn btn-outline-primary" id="searchButton" data-mdb-ripple-init>search</button>
+								  <input type="search" class="form-control rounded" placeholder="검색어를 입력하세요" aria-label="Search" aria-describedby="search-addon" id="searchInput" value=""/>
+								  <button type="button" class="btn btn-outline-primary" id="searchButton" data-mdb-ripple-init><i class="fa-solid fa-magnifying-glass"></i></button>
 								</div>
                             </div>
                             
@@ -187,6 +221,103 @@
                 </footer>
             </div>
         </div>
+        
+        <!-- 모달창 -->
+		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-lg">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		                <h5 class="modal-title" id="bookModalLabel">도서 상세정보</h5>
+		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		            </div>
+		            <form id="bookForm" action="/admin/books/updateData.do" method="post" enctype="multipart/form-data">
+		            <div class="modal-body" id="m-cnt">
+		                
+		                	<!-- 좌측 -->
+		                	<div id="m-left">
+		                	
+		                	<input type="hidden" id="m_bookId" name="bookId">
+		                    
+		                    <!-- 도서 이미지 -->
+		                    <div class="text-center mb-4" id="m-imgBox">
+		                        <img id="m_img" src='' class="img-fluid shadow-sm" alt="도서 표지">
+		                    </div>
+		                	
+		                	 <!-- 파일 업로드 -->
+		                    <div class="mb-3 row">
+		                        <div class="col-sm-12">
+		                            <input type="file" class="form-control" id="m_file" name="multifile">
+		                        </div>
+		                    </div>
+		                	
+		                	</div>
+		                	
+		                	<!-- 우측 -->
+		                	<div id="m-right" class="d-flex flex-column justify-content-center">
+		                	
+		                	<!-- 제목 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_title" class="col-sm-3 col-form-label">제목</label>
+		                        <div class="col-sm-9">
+		                            <input type="text" class="form-control" id="m_title" name="title" placeholder="제목을 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 저자 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_author" class="col-sm-3 col-form-label">저자</label>
+		                        <div class="col-sm-9">
+		                            <input type="text" class="form-control" id="m_author" name="author" placeholder="저자를 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 카테고리 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_ctg" class="col-sm-3 col-form-label">카테고리</label>
+		                        <div class="col-sm-9">
+		                            <select class="form-select" id="m_ctg" name="ctgId">
+		                                <c:forEach var="row" items="${ctgList}">
+		                                    <option value="${row.sclsCd}">${row.sclsNm}</option>
+		                                </c:forEach>
+		                            </select>
+		                        </div>
+		                    </div>
+		
+		                    <!-- 출판사 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_publisher" class="col-sm-3 col-form-label">출판사</label>
+		                        <div class="col-sm-9">
+		                            <input type="text" class="form-control" id="m_publisher" name="publisher" placeholder="출판사를 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 청구기호 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_cheonggu" class="col-sm-3 col-form-label">청구기호</label>
+		                        <div class="col-sm-9">
+		                            <input type="text" class="form-control" id="m_cheonggu" name="cheonggu" placeholder="청구기호를 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- ISBN -->
+		                    <div class="mb-3 row">
+		                        <label for="m_isbn" class="col-sm-3 col-form-label">ISBN</label>
+		                        <div class="col-sm-9">
+		                            <input type="text" class="form-control" id="m_isbn" name="isbn" placeholder="ISBN을 입력하세요">
+		                        </div>
+		                    </div>
+		                	
+		                	</div>
+		            </div>
+		            </form>
+		            <div class="modal-footer">
+		                <button type="button" id="saveBtn" class="btn btn-primary" onclick="updateInfo()">저장</button>
+		                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+		            </div>
+		        </div>
+		    </div>
+		</div>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
@@ -202,15 +333,15 @@
             apiData: {},
             paramData: {}, 
             currentPage: 1,
-            kwd: '토지',
+            kwd: '',
             grid: null,
 
             init: function() {
                 this.fetchData(this.currentPage, this.kwd);
                 this.applyGridTheme();
                 this.drawGrid();
+                this.bindDeleteBook();
                 this.bindSearchEvent();
-                this.bindAddBookEvent(); 
             },
 
             fetchData: function(pagenum, kwdData) {
@@ -218,8 +349,8 @@
                 let _this = this;
                 $.ajax({
                     async: false,
-                    type: 'get',
-                    url: '/admin/books/apiData.do',
+                    type: 'post',
+                    url: '/admin/books/bookData.do',
                     data: {
                         kwd: kwdData,
                         page : pagenum
@@ -280,18 +411,26 @@
                     scrollY: false,
                     bodyHeight: 'auto',
                     rowHeight: 'auto',
+                    selectionUnit: 'row',
                     columns: [
                         {
+                            header: 'id',
+                            name: 'bookId',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 50
+                        },
+                        {
                             header: '표지',
-                            name: 'image_url',
+                            name: 'fileName',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 70,
                             formatter: function(value) {
                                 let result = "";
                                 let src = value.value.toString();
-                                if (src.includes('.jpg')) {
-                                    result = "<img class='imgSize' src='" + src + "'/>";
+                                if (src.includes('.jpg') || src.includes('.png')) {
+                                    result = "<img class='imgSize' src='/bookfile/" + src + "'/>";
                                 } else {
                                     result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
                                 }
@@ -300,48 +439,44 @@
                         },
                         {
                             header: '자료구분',
-                            name: 'type_name',
-                            align: "center",
-                            whiteSpace: 'normal',
-                            width: 100
-                        },
-                        {
-                            header: '주제구분',
-                            name: 'kdc_name_1s',
+                            name: 'ctgNm',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 100
                         },
                         {
                             header: '제목',
-                            name: 'title_info',
+                            name: 'title',
                             align: "center",
-                            whiteSpace: 'normal',
-                            formatter: function(value) {
-                                let detailUrl = value.row.detail_link ? value.row.detail_link.toString() : "";
-                                return "<a href=https://www.nl.go.kr/" + detailUrl + " target='_blank'>" + value.value + "</a>";
-                            }
+                            whiteSpace: 'normal'
                         },
                         {
                             header: '저자',
-                            name: 'author_info',
+                            name: 'author',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 150
                         },
                         {
                             header: '출판사',
-                            name: 'pub_info',
+                            name: 'publisher',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 120
                         },
                         {
                             header: '청구기호',
-                            name: 'call_no',
+                            name: 'cheonggu',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 120
+                            width: 80
+                        },
+                        {
+                            header: 'isbn',
+                            name: 'isbn',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 90
                         }
                     ],
                     
@@ -354,6 +489,37 @@
                 
                 // 페이지네이션 초기화
                 this.updatePagination();
+                
+             	// 행 클릭 이벤트 추가
+                this.grid.on('click', function(ev) {
+                    if (ev.columnName !== '_checked' && ev.columnName !== 'checkbox') { 
+                        let rowKey = ev.rowKey;
+                        let rowData = _this.grid.getRow(rowKey);
+                        _this.openModal(rowData);
+                    }
+                });
+            },
+            
+            //책정보 수정
+            openModal: function (rowData) {
+                
+                $('#m_bookId').val(rowData.bookId || '');
+                
+                $('#m_img').attr('src', rowData.fileName ? '/bookfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
+                $('#m_file').val('');
+                $('#m_title').val(rowData.title || '');
+                $('#m_author').val(rowData.author || '');
+                $('#m_ctg').val(rowData.ctgId || '');
+                $('#m_publisher').val(rowData.publisher || '');
+                $('#m_cheonggu').val(rowData.cheonggu || '');
+                $('#m_isbn').val(rowData.isbn || '');
+
+                let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
+                    backdrop: 'static', 
+                    keyboard: false 
+                });
+                
+                bookModal.show();
             },
             
             //데이터 읽어오기
@@ -361,8 +527,8 @@
                 let _this = this; 
                 
                 return $.ajax({
-                    type: 'get',
-                    url: '/admin/books/apiData.do',
+                    type: 'post',
+                    url: '/admin/books/bookData.do',
                     data: {
                         kwd: _this.kwd,
                         page: params.page 
@@ -377,7 +543,41 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    console.error('데이터를 가져오는 데 실패했습니다.');
+                    alert('데이터를 가져오는데 실패했습니다.');
+                });
+            },
+            
+            //데이터 삭제
+            bindDeleteBook: function() {
+                $('#deleteBtn').on('click', function() {
+                    let checkedRows = bookGrid.grid.getCheckedRows();
+
+                    if (checkedRows.length === 0) {
+                        alert('선택된 책이 없습니다.');
+                        return;
+                    }
+
+                    let bookList = checkedRows.map(function(row)  {
+                        return {
+                            id: row.bookId ? row.bookId.toString() : ""
+                        };
+                    });
+
+                    $.ajax({
+                        type: 'post',
+                        url: '/admin/books/deleteBook.do',
+                        data: JSON.stringify(bookList), 
+                        contentType: 'application/json; charset=utf-8',
+                        dataType: 'text',
+                        success: function(data) {
+                            if (data === 'success') {
+                                alert('선택된 책이 삭제되었습니다.');
+                                bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
+                            } else {
+                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                            }
+                        }
+                    });
                 });
             },
             
@@ -395,44 +595,6 @@
                     if (event.key === 'Enter') {
                         $('#searchButton').click();
                     }
-                });
-            },
-            
-            //db에 등록
-            bindAddBookEvent: function() {
-                $('#addBook').on('click', function() {
-                    let checkedRows = bookGrid.grid.getCheckedRows();
-
-                    if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
-                        return;
-                    }
-
-                    let bookList = checkedRows.map(function(row)  {
-                        return {
-                            title: row.title_info ? row.title_info.toString().replace(/'/g, "&#39;") : "",
-                            author: row.author_info ? row.author_info.toString() : "",
-                            ctg: row.type_name ? row.type_name.toString() : "",
-                            publisher: row.pub_info ? row.pub_info.toString() : "",
-                            cheonggu: row.call_no ? row.call_no.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
-                        };
-                    });
-
-                    $.ajax({
-                        type: 'post',
-                        url: '/admin/books/insertBook.do',
-                        data: JSON.stringify(bookList), 
-                        contentType: 'application/json; charset=utf-8',
-                        dataType: 'text',
-                        success: function(data) {
-                            if (data === 'success') {
-                                alert('책이 등록되었습니다.');
-                            } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
-                            }
-                        }
-                    });
                 });
             },
             
@@ -460,6 +622,51 @@
                 });
             }
         };
+        
+        //저장
+        function updateInfo() {
+            
+            var formData = new FormData(document.getElementById('bookForm'));
+            
+            $.ajax({
+                type: 'POST',
+                url: '/admin/books/updateData.do',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    
+                    if (response === 'success') {
+                        alert('책 정보가 저장되었습니다.');
+                        bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
+
+                        var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
+                        bookModal.hide();
+                    } else {
+                        alert('에러가 발생했습니다.');
+                    }
+                },
+                error: function() {
+                    alert('에러가 발생했습니다.');
+                }
+            });
+        }
+        
+        //파일 입력시
+        document.getElementById('m_file').onchange = function (evt) {
+		    var tgt = evt.target || window.event.srcElement,
+		        files = tgt.files;
+		    
+		    if (FileReader && files && files.length) {
+		        var fr = new FileReader();
+		        fr.onload = function () {
+		            document.getElementById('m_img').src = fr.result;
+		        }
+		        fr.readAsDataURL(files[0]);
+		    } else {
+		        console.log('hello');
+		    }
+		}
         
         </script>
     </body>
