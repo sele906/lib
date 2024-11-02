@@ -12,4 +12,6 @@ public interface AFileService {
 
 	public void deleteFile(int id) throws IOException;
 
+	public void moveImage(int id, String imgNm, String fileOriNm);
+
 }

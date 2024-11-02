@@ -99,7 +99,7 @@
 								<input type="hidden" name="bookId" value="${i.bookId}"/>
                                 <h5 class="fw-bolder">${i.title}</h5>
                                 <div class="fst-italic text-muted">${i.author} <br> ${i.publisher}</div>
-                                <button class="btn btn-danger resvBtn resv my-2">예약취소</button>
+                                <button class="btn btn-warning resvBtn resv my-2">예약취소</button>
                             </div>
                         </div>
                         

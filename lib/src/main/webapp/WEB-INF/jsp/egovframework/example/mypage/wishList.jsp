@@ -43,6 +43,7 @@
 			}
 			.tmpPlace {
 			    width: 100%;
+			    text-align: center;
 			 }
 		</style>
     </head>
