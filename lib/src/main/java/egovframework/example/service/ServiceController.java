@@ -156,11 +156,6 @@ public class ServiceController {
 		return "success";
 	}
 
-	@RequestMapping(value = "programs.do", method = RequestMethod.GET)
-	public String programs() throws Exception {
-		return "service/programs";
-	}
-
 	@RequestMapping(value = "multiSeats.do", method = RequestMethod.GET)
 	public String bookSeats() throws Exception {
 		return "service/seat";

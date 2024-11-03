@@ -347,12 +347,7 @@ public class MypageController {
 
 		return "success";
 	}
-
-	@RequestMapping(value = "programList.do", method = RequestMethod.GET)
-	public String programList() throws Exception {
-		return "mypage/programList";
-	}
-
+	
 	@RequestMapping(value = "seatList.do", method = RequestMethod.GET)
 	public String seatList() throws Exception {
 		return "mypage/seatList";

@@ -49,7 +49,6 @@
                         <li><a class="dropdown-item" href="/mypage/loanHistory.do">대출이력</a></li>
                         <li><a class="dropdown-item" href="/mypage/resvList.do">예약도서 조회</a></li>
                         <li><a class="dropdown-item" href="/mypage/wishList.do">희망도서 신청내역</a></li>
-                        <li><a class="dropdown-item" href="/mypage/programList.do">프로그램 신청 내역</a></li>
                         <li><a class="dropdown-item" href="/mypage/seatList.do">좌석 예약 조회</a></li>
                         <li><a class="dropdown-item" href="/mypage/likedList.do">관심도서 조회</a></li>
                     </ul>
@@ -57,7 +56,7 @@
                 
                 <!-- 관리자 -->
                 <c:if test="${sessionScope.level == 'ADMIN'}">
-                	<li class="nav-item"><a class="nav-link" href="/admin/main/main.do"><b>관리자</b></a></li>
+                	<li class="nav-item"><a class="nav-link" href="/admin/books/bookList.do"><b>관리자</b></a></li>
                 </c:if>
                 
                 <!-- 로그인/회원가입 -->
