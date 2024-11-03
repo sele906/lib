@@ -214,7 +214,10 @@ public class BooksController {
 	}
 
 	@RequestMapping(value = "bestBooks.do")
-	public String bestBooks() throws Exception {
+	public String bestBooks(Model model) throws Exception {
+		List<EgovMap> list = booksDao.bestlist();
+
+		model.addAttribute("list", list);
 		return "books/bestBooks";
 	}
 }

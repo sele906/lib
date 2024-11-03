@@ -15,4 +15,9 @@ public class MainController {
 		model.addAttribute("msg", msg);
 		return "main/main";
 	}
+	
+	@RequestMapping(value = "view.do", method = RequestMethod.GET)
+	public String view() throws Exception {
+		return "main/view";
+	}
 }

@@ -72,8 +72,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- FAQ Accordion 2-->
-                            <h2 class="fw-bolder mb-3">Website Issues</h2>
+                            <!-- <!-- FAQ Accordion 2-->
+                            <!-- <h2 class="fw-bolder mb-3">Website Issues</h2>
                             <div class="accordion mb-5 mb-xl-0" id="accordionExample2">
                                 <div class="accordion-item">
                                     <h3 class="accordion-header" id="headingOne"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne2" aria-expanded="true" aria-controls="collapseOne2">Accordion Item #1</button></h3>
@@ -108,7 +108,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --> 
                         </div>
                         <div class="col-xl-4">
                             <div class="card border-0 bg-light mt-xl-5">
