@@ -36,9 +36,8 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>신청/참여</b></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
                         <li><a class="dropdown-item" href="/service/wishBooks.do">희망도서 신청</a></li>
-                        <li><a class="dropdown-item" href="/service/programs.do">프로그램 신청</a></li>
                         <li><a class="dropdown-item" href="/service/multiSeats.do">멀티미디어 좌석예약</a></li>
-                        <li><a class="dropdown-item" href="/service/qna.do">QNA</a></li>
+                        <li><a class="dropdown-item" href="/service/faq.do">FAQ</a></li>
                     </ul>
                 </li>
                 

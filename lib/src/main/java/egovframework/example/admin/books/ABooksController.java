@@ -65,7 +65,7 @@ public class ABooksController {
 		return "/admin/books/wishList";
 	}
 
-	// 도서 데이터
+	// 희망도서 데이터
 	@ResponseBody
 	@RequestMapping(value = "wishData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String wishData(@RequestParam(name = "page", defaultValue = "1") int pageNum,

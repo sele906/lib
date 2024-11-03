@@ -30,8 +30,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.service.impl.MultiDAO;
 import egovframework.example.service.impl.WishDAO;
 import egovframework.example.service.impl.WishFileService;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -44,6 +46,9 @@ public class ServiceController {
 
 	@Resource(name = "WishDAO")
 	private WishDAO wishDao;
+	
+	@Resource(name = "MultiDAO")
+	private MultiDAO multiDao;
 
 	@Resource(name = "WishFileService")
 	private WishFileService WishFileService;
@@ -157,13 +162,39 @@ public class ServiceController {
 	}
 
 	@RequestMapping(value = "multiSeats.do", method = RequestMethod.GET)
-	public String bookSeats() throws Exception {
+	public String multiSeats(@RequestParam(name = "msg", required = false) String msg, Model model) throws Exception {
+		List<EgovMap> list = multiDao.seatSelect();
+		model.addAttribute("list", list);
+		model.addAttribute("msg", msg);
 		return "service/seat";
 	}
+	
+	@RequestMapping(value = "multiSeats.do", method = RequestMethod.POST)
+	public String multiSeats(@RequestParam(name = "seatNum") String seatNum, HttpSession session) throws Exception {
 
-	@RequestMapping(value = "qna.do", method = RequestMethod.GET)
+		String userid = (String) session.getAttribute("userid");
+		String[] seatArray = seatNum.split(",");
+		
+		try {
+			for (String seat : seatArray) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("seatNum", Integer.parseInt(seat));
+				map.put("status", "Y");
+				map.put("userid", userid);
+				
+				multiDao.seatInsert(map);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/service/multiSeats.do?msg=success";
+	}
+
+	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
 	public String qna() throws Exception {
-		return "service/qna";
+		return "service/faq";
 	}
 
 }

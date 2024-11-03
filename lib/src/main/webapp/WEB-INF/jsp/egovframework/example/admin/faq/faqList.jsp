@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>관리자 - 연체관리</title>
+        <title>관리자 - Q&A관리</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -113,37 +113,8 @@
 		}
 		
 		/* 모달 이미지 크기 */
-		.modalImg {
-	        width: 50px;
-    		height: 70px;
-    		border: 1px solid #aaaaaa;
-	    }
-	    
-	    /* 모달 */
-		#m-cnt {
-			display: flex;
-		}
-		#m-left {
-			width: 40%;
-			padding: 0 15px 0 0;
-			align-content: center;
-			border-right: 1px solid #dee2e6;
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-		}
-		#m-left #m-imgBox {
-			width: 70%;
-    		height: 75%;
-		}
-		#m-left #m-imgBox img {
-			width: 100%;
-  			height: 100%;
-		}
-		#m-right {
-			width: 60%;
-			padding: 0 0 0 15px ;
+		.modalWidth {
+			width: 700px;
 		}
 		
 		</style>
@@ -180,30 +151,31 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">연체 관리</h1>
+                        <h1 class="mt-4">Q&A관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item">대출/반납/연체 관리</li>
-                            <li class="breadcrumb-item active">연체 관리</li>
+                            <!-- <li class="breadcrumb-item">대출/반납/연체 관리</li>
+                            <li class="breadcrumb-item active">대출/반납 관리</li> -->
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                이용자들의 연체기록을 관리할 수 있습니다.
+                                Q&A 목록을 관리할 수 있습니다.
                             </div>
                         </div>
                         <div class="card mb-4">
                         
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
-                                <a href="/admin/loan/loanList.do" class="linkButton">대출/반납 관리</a>
+								<b>Q&A</b>
+                                <!-- <b>대출/반납 관리</b>
 								|
-                                <b>연체 관리</b>
+                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
                             
                             <div id="infoBar">
                             	<div>
-	                            	<button class="btn btn-primary" id="addBook">등록하기</button>
+	                            	<!-- <button class="btn btn-primary" id="addBook">등록하기</button> -->
 	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
                             	</div>
 								
@@ -238,25 +210,18 @@
         </div>
         
         <!-- 모달창 -->
+		
 		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg">
+		    <div class="modal-dialog modal-lg"> <!-- Apply custom class here -->
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title" id="bookModalLabel">도서 상세정보</h5>
+		                <h5 class="modal-title" id="bookModalLabel">Q&A 상세정보</h5>
 		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		            </div>
-		            <form id="bookForm" action="/admin/books/updateData.do" method="post" enctype="multipart/form-data">
-		            <div class="modal-body" id="m-cnt">
-		                
-		                	<!-- 좌측 -->
-		                	<div id="m-left">
-		                	
-		                	<input type="hidden" id="m_wishId" name="wishId">
-		                    
-		                    <!-- 도서 이미지 -->
-		                    <div class="text-center mb-4" id="m-imgBox">
-		                        <img id="m_img" src='' class="img-fluid shadow-sm" alt="도서 표지">
-		                    </div>
+		            	<form id="bookForm" action="/admin/books/updateData.do" method="post" enctype="multipart/form-data">
+				            <div class="modal-body mx-5">
+				                	
+		                	<input type="hidden" id="m_loanId" name="loanId">
 		                	
 		                	 <!-- 파일 업로드 -->
 		                    <div class="mb-3 row">
@@ -265,67 +230,61 @@
 		                        </div>
 		                    </div>
 		                	
-		                	</div>
-		                	
-		                	<!-- 우측 -->
-		                	<div id="m-right" class="d-flex flex-column justify-content-center">
-		                	
-		                	<!-- 제목 -->
+		                	<!-- 아이디 -->
 		                    <div class="mb-3 row">
-		                        <label for="m_title" class="col-sm-3 col-form-label">제목</label>
-		                        <div class="col-sm-9">
-		                            <input type="text" class="form-control" id="m_title" name="title" placeholder="제목을 입력하세요">
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="text" class="form-control" id="m_userid" name="userid" placeholder="아이디를 입력하세요">
 		                        </div>
 		                    </div>
 		
-		                    <!-- 저자 -->
+		                    <!-- 대출일 -->
 		                    <div class="mb-3 row">
-		                        <label for="m_author" class="col-sm-3 col-form-label">저자</label>
-		                        <div class="col-sm-9">
-		                            <input type="text" class="form-control" id="m_author" name="author" placeholder="저자를 입력하세요">
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="대출일을 입력하세요">
 		                        </div>
 		                    </div>
 		
-		                    <!-- 카테고리 -->
+		                    <!-- 반납일 -->
 		                    <div class="mb-3 row">
-		                        <label for="m_ctg" class="col-sm-3 col-form-label">카테고리</label>
-		                        <div class="col-sm-9">
-		                            <select class="form-select" id="m_ctg" name="ctgId">
-		                            	<option value="" selected>카테고리를 선택하세요</option>
-		                            	<c:forEach var="row" items="${ctgList}">
-		                                    <option value="${row.sclsCd}">${row.sclsNm}</option>
-		                                </c:forEach>
-		                            </select>
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="date" class="form-control" id="m_return_date" name="returnDate" placeholder="반납일을 입력하세요">
 		                        </div>
 		                    </div>
 		
-		                    <!-- 출판사 -->
-		                    <div class="mb-3 row">
-		                        <label for="m_publisher" class="col-sm-3 col-form-label">출판사</label>
-		                        <div class="col-sm-9">
-		                            <input type="text" class="form-control" id="m_publisher" name="publisher" placeholder="출판사를 입력하세요">
-		                        </div>
-		                    </div>
+		                    <!-- 대출상태 -->
+		                    <div class="mb-3 row align-items-center">
+							    <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="loanState" id="loan_state_borrowed" value="Y">
+							            <label class="form-check-label" for="loan_state_borrowed">대출 중</label>
+							        </div>
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="loanState" id="loan_state_returned" value="N">
+							            <label class="form-check-label" for="loan_state_returned">반납 완료</label>
+							        </div>
+							    </div>
+							</div>
 		
-		                    <!-- 청구기호 -->
-		                    <div class="mb-3 row">
-		                        <label for="m_cheonggu" class="col-sm-3 col-form-label">청구기호</label>
-		                        <div class="col-sm-9">
-		                            <input type="text" class="form-control" id="m_cheonggu" name="cheonggu" placeholder="청구기호를 입력하세요">
-		                        </div>
-		                    </div>
-		
-		                    <!-- ISBN -->
-		                    <div class="mb-3 row">
-		                        <label for="m_isbn" class="col-sm-3 col-form-label">ISBN</label>
-		                        <div class="col-sm-9">
-		                            <input type="text" class="form-control" id="m_isbn" name="isbn" placeholder="ISBN을 입력하세요">
-		                        </div>
-		                    </div>
-		                	
-		                	</div>
-		            </div>
-		            </form>
+		                    <!-- 연체상태 -->
+		                    <div class="mb-3 row align-items-center">
+							    <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y">
+							            <label class="form-check-label" for="overdue_state_true">연체 중</label>
+							        </div>
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N">
+							            <label class="form-check-label" for="overdue_state_false">정상 상태</label>
+							        </div>
+							    </div>
+							</div>
+				            </div>
+				        </form>
 		            <div class="modal-footer">
 		                <button type="button" id="saveBtn" class="btn btn-primary" onclick="updateInfo()">저장</button>
 		                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
@@ -357,7 +316,7 @@
                 this.applyGridTheme();
                 this.drawGrid();
                 this.bindDeleteBook();
-                this.bindAddBookEvent();  
+                /* this.bindAddBookEvent();   */
                 this.bindSearchEvent();
             },
 
@@ -367,7 +326,7 @@
                 $.ajax({
                     async: false,
                     type: 'post',
-                    url: '/admin/books/wishData.do',
+                    url: '/admin/loan/loanData.do',
                     data: {
                         kwd: kwdData,
                         page : pagenum
@@ -432,7 +391,7 @@
                     columns: [
                         {
                             header: 'id',
-                            name: 'wishId',
+                            name: 'loanId',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 50
@@ -447,19 +406,12 @@
                                 let result = "";
                                 let src = value.value.toString();
                                 if (src.includes('.jpg') || src.includes('.png')) {
-                                    result = "<img class='imgSize' src='/wishfile/" + src + "'/>";
+                                    result = "<img class='imgSize' src='/bookfile/" + src + "'/>";
                                 } else {
                                     result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
                                 }
                                 return result;
                             }
-                        },
-                        {
-                            header: '자료구분',
-                            name: 'ctgNm',
-                            align: "center",
-                            whiteSpace: 'normal',
-                            width: 100
                         },
                         {
                             header: '제목',
@@ -472,7 +424,7 @@
                             name: 'author',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 150
+                            width: 180
                         },
                         {
                             header: '출판사',
@@ -489,11 +441,48 @@
                             width: 80
                         },
                         {
-                            header: 'isbn',
-                            name: 'isbn',
+                            header: '아이디',
+                            name: 'userid',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 90
+                            width: 60
+                        },
+                        {
+                            header: '대출기간',
+                            name: 'dueDate',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 200,
+                            formatter: function(value) {
+                            	let formatDate = function(timestamp) {
+                                    if (!timestamp) return "";
+                                    let date = new Date(parseInt(timestamp));
+                                    return date.toISOString().split('T')[0];
+                                };
+
+                                let loanDate = formatDate(value.row.loanDate);
+                                let returnDate = formatDate(value.row.returnDate);
+                                let dueDate = value.value;
+                                
+                                var result = "대출일: " + loanDate + "<br>" + 
+                                			"반납일: " + returnDate + "<br>" + 
+                                			"대출기간: <b>" + dueDate + "</b>일";
+                                return result;
+                            }
+                        },
+                        {
+                            header: '대출상태',
+                            name: 'loanState',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 60
+                        },
+                        {
+                            header: '연체상태',
+                            name: 'overdueState',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 60
                         }
                     ],
                     
@@ -519,17 +508,27 @@
             
             //책정보 수정
             openModal: function (rowData) {
+            	console.log(rowData.loanDate);
+            	
+            	let formatDate = function(timestamp) {
+                    if (!timestamp) return "";
+                    let date = new Date(parseInt(timestamp));
+                    return date.toISOString().split('T')[0];
+                };
                 
-                $('#m_wishId').val(rowData.wishId || '');
+                $('#m_loanId').val(rowData.loanId || '');
                 
-                $('#m_img').attr('src', rowData.fileName ? '/wishfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
-                $('#m_file').val('');
-                $('#m_title').val(rowData.title || '');
-                $('#m_author').val(rowData.author || '');
-                $('#m_ctg').val(rowData.ctgId || '');
-                $('#m_publisher').val(rowData.publisher || '');
-                $('#m_cheonggu').val(rowData.cheonggu || '');
-                $('#m_isbn').val(rowData.isbn || '');
+                $('#m_img').attr('src', rowData.fileName ? '/bookfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
+                $('#m_userid').val(rowData.userid || '');
+                $('#m_loan_date').val(formatDate(rowData.loanDate) || ''); 
+                $('#m_return_date').val(formatDate(rowData.returnDate) || ''); 
+                
+                if (rowData.loanState) {
+                    $('input[name="loanState"][value="' + rowData.loanState + '"]').prop('checked', true);
+                }
+                if (rowData.overdueState) {
+                    $('input[name="overdueState"][value="' + rowData.overdueState + '"]').prop('checked', true);
+                }
 
                 let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
                     backdrop: 'static', 
@@ -545,7 +544,7 @@
                 
                 return $.ajax({
                     type: 'post',
-                    url: '/admin/books/wishData.do',
+                    url: '/admin/loan/loanData.do',
                     data: {
                         kwd: _this.kwd,
                         page: params.page 
@@ -576,13 +575,13 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.wishId ? row.wishId.toString() : ""
+                            id: row.loanId ? row.loanId.toString() : ""
                         };
                     });
 
                     $.ajax({
                         type: 'post',
-                        url: '/admin/books/wishDeleteBook.do',
+                        url: '/admin/loan/loanDelete.do',
                         data: JSON.stringify(bookList), 
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'text',
@@ -616,7 +615,7 @@
             },
             
           	//db에 등록
-            bindAddBookEvent: function() {
+            /* bindAddBookEvent: function() {
                 $('#addBook').on('click', function() {
                 	let checkedRows = bookGrid.grid.getCheckedRows();
 
@@ -629,20 +628,20 @@
                     for (let row of checkedRows) {
                     	
                         // 유효성 검사 
-                        if (row.title.toString() === '') {
-                            alert('제목을 입력하세요');
+                        if (row.userid.toString() === '') {
+                            alert('사용자를 입력하세요');
                             return; 
-                        } else if (row.author.toString() === '') {
-                            alert('저자를 입력하세요');
+                        } else if (row.loanDate.toString() === '') {
+                            alert('대출일을 선택하세요');
                             return; 
-                        } else if (row.ctgNm.toString() === '') {
-                            alert('카테고리를 선택하세요');
+                        } else if (row.returnDate.toString() === '') {
+                            alert('반납일을 선택하세요');
                             return; 
-                        } else if (row.publisher.toString() === '') {
-                            alert('출판사를 입력하세요');
+                        } else if (row.loanState.toString() === '') {
+                            alert('대출상태를 선택하세요');
                             return;
-                        } else if (row.cheonggu.toString() === '') {
-                            alert('청구기호를 입력하세요');
+                        } else if (row.overdueState.toString() === '') {
+                            alert('연체상태를 선택하세요');
                             return;
                         }
 
@@ -674,7 +673,7 @@
                         });
                     }
                 });
-            },
+            }, */
             
             updateGrid: function() {
                 if (this.grid && this.apiData) {
@@ -705,29 +704,25 @@
         function updateInfo() {
         	
         	//유효성 검사
-            if ($('#m_wishId').val() == '') {
-            	alert('인덱스 값을 입력하세요');
-            	$('#m_wishId').focus();
+            if ($('#m_userid').val() == '') {
+            	alert('아이디를 입력하세요');
+            	$('#m_userid').focus();
             	return;
-            } else if ($('#m_title').val() == '') {
-            	alert('제목을 입력하세요');
-            	$('#m_title').focus();
+            } else if ($('#m_loan_date').val() == '') {
+            	alert('대출일을 입력하세요');
+            	$('#m_loan_date').focus();
             	return;
-            } else if ($('#m_author').val() == '') {
-            	alert('저자를 입력하세요');
-            	$('#m_author').focus();
+            } else if ($('#m_return_date').val() === '') {
+            	alert('반납일을 선택하세요');
+            	$('#m_return_date').focus();
             	return;
-            } else if ($('#m_ctg').val() === '' || $('#m_ctg').val() === null) {
-            	alert('카테고리를 선택하세요');
-            	$('#m_ctg').focus();
+            } else if ($('#m_loan_state').val() == '') {
+            	alert('대출상태를 선택하세요');
+            	$('#m_loan_state').focus();
             	return;
-            } else if ($('#m_publisher').val() == '') {
-            	alert('출판사를 입력하세요');
-            	$('#m_publisher').focus();
-            	return;
-            } else if ($('#m_cheonggu').val() == '') {
-            	alert('청구기호를 입력하세요');
-            	$('#m_cheonggu').focus();
+            } else if ($('#m_overdue_state').val() == '') {
+            	alert('연체상태를 선택하세요');
+            	$('#m_overdue_state').focus();
             	return;
             } 
 
@@ -735,7 +730,7 @@
             
             $.ajax({
                 type: 'POST',
-                url: '/admin/books/wishUpdateData.do',
+                url: '/admin/loan/loanUpdateData.do',
                 data: formData,
                 processData: false,
                 contentType: false,
@@ -756,22 +751,6 @@
                 }
             });
         }
-        
-        //파일 입력시
-        document.getElementById('m_file').onchange = function (evt) {
-		    var tgt = evt.target || window.event.srcElement,
-		        files = tgt.files;
-		    
-		    if (FileReader && files && files.length) {
-		        var fr = new FileReader();
-		        fr.onload = function () {
-		            document.getElementById('m_img').src = fr.result;
-		        }
-		        fr.readAsDataURL(files[0]);
-		    } else {
-		        console.log('hello');
-		    }
-		}
         
         </script>
     </body>

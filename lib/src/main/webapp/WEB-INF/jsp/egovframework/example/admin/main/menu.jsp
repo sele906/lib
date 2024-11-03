@@ -51,7 +51,7 @@
             </a>
             <a class="nav-link" href="/admin/qna/list.do">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                	QNA 조회
+                	FAQ 조회
             </a>
             
             <div class="sb-sidenav-menu-heading">통계관리</div>
