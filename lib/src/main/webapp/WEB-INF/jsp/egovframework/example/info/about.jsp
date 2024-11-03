@@ -38,7 +38,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> 
             </header>
             <!-- About section one-->
             <section class="py-5 bg-light" id="scroll-target">
