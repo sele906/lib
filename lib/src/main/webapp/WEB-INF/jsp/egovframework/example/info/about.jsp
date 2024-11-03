@@ -36,7 +36,7 @@
                                 <p class="lead fw-normal text-muted mb-4">Start Bootstrap was built on the idea that quality, functional website templates and themes should be available to everyone. Use our open source, free products, or support us by purchasing one of our premium products or services.</p> 
                                 <a class="btn btn-primary btn-lg" href="/view.do">둘러보기</a>
                             </div>
-                        </div>
+                        </div> 
                     </div>
                 </div> 
             </header> 
