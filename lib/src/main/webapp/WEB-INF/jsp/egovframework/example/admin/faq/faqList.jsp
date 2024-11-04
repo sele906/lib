@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>관리자 - 회원조회</title>
+        <title>관리자 - Q&A관리</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -151,21 +151,21 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">회원조회</h1>
+                        <h1 class="mt-4">Q&A관리</h1>
                         <ol class="breadcrumb mb-4">
                             <!-- <li class="breadcrumb-item">대출/반납/연체 관리</li>
                             <li class="breadcrumb-item active">대출/반납 관리</li> -->
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
-                                회원목록을 관리할 수 있습니다.
+                                Q&A 목록을 관리할 수 있습니다.
                             </div>
                         </div>
                         <div class="card mb-4">
                         
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
-								<b>회원조회</b>
+								<b>Q&A</b>
                                 <!-- <b>대출/반납 관리</b>
 								|
                                 <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
@@ -215,69 +215,74 @@
 		    <div class="modal-dialog modal-lg"> <!-- Apply custom class here -->
 		        <div class="modal-content">
 		            <div class="modal-header">
-		                <h5 class="modal-title" id="bookModalLabel">회원 상세정보</h5>
+		                <h5 class="modal-title" id="bookModalLabel">Q&A 상세정보</h5>
 		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		            </div>
 		            	<form id="bookForm" action="/admin/books/updateData.do" method="post" enctype="multipart/form-data">
 				            <div class="modal-body mx-5">
 				                	
-		                	<input type="hidden" id="m_userid" name="userid">
+		                	<input type="hidden" id="m_loanId" name="loanId">
 		                	
-		                	<div class="mb-3 row align-items-center">
-							    <label for="m_level" class="col-sm-2 col-form-label">사용자유형</label>
+		                	 <!-- 파일 업로드 -->
+		                    <div class="mb-3 row">
+		                        <div class="col-sm-12">
+		                            <input type="file" class="form-control" id="m_file" name="multifile">
+		                        </div>
+		                    </div>
+		                	
+		                	<!-- 아이디 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="text" class="form-control" id="m_userid" name="userid" placeholder="아이디를 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 대출일 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="대출일을 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 반납일 -->
+		                    <div class="mb-3 row">
+		                        <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
+		                        <div class="col-sm-10">
+		                            <input type="date" class="form-control" id="m_return_date" name="returnDate" placeholder="반납일을 입력하세요">
+		                        </div>
+		                    </div>
+		
+		                    <!-- 대출상태 -->
+		                    <div class="mb-3 row align-items-center">
+							    <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
 		                        <div class="col-sm-10">
 							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="level" id="user_level" value="Y">
-							            <label class="form-check-label" for="user_level">사용자</label>
+							            <input class="form-check-input" type="radio" name="loanState" id="loan_state_borrowed" value="Y">
+							            <label class="form-check-label" for="loan_state_borrowed">대출 중</label>
 							        </div>
 							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="level" id="admin_level" value="N">
-							            <label class="form-check-label" for="admin_level">관리자</label>
+							            <input class="form-check-input" type="radio" name="loanState" id="loan_state_returned" value="N">
+							            <label class="form-check-label" for="loan_state_returned">반납 완료</label>
 							        </div>
 							    </div>
 							</div>
-		                	
-		                    <div class="mb-3 row">
-		                        <label for="m_name" class="col-sm-2 col-form-label">이름</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_name" name="name" placeholder="이름을 입력하세요">
-		                        </div>
-		                    </div>
 		
-		                    <div class="mb-3 row">
-		                        <label for="m_birth" class="col-sm-2 col-form-label">생년월일</label>
+		                    <!-- 연체상태 -->
+		                    <div class="mb-3 row align-items-center">
+							    <label for="m_userid" class="col-sm-2 col-form-label">아이디</label>
 		                        <div class="col-sm-10">
-		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="생년월일을 입력하세요">
-		                        </div>
-		                    </div>
-		
-		                    <div class="mb-3 row">
-		                        <label for="m_phone" class="col-sm-2 col-form-label">전화번호</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_phone" name="phone" placeholder="전화번호를 입력하세요">
-		                        </div>
-		                    </div>
-		
-		                    <div class="mb-3 row">
-		                        <label for="m_mail" class="col-sm-2 col-form-label">이메일</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_mail" name="mail" placeholder="이메일을 입력하세요">
-		                        </div>
-		                    </div>
-		
-		                    <div class="mb-3 row">
-		                        <label for="m_addr1" class="col-sm-2 col-form-label">주소</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_addr1" name="addr1" placeholder="주소를 입력하세요">
-		                        </div>
-		                    </div>
-		                    
-		                    <div class="mb-3 row">
-		                        <label for="m_addr2" class="col-sm-2 col-form-label">상세주소</label>
-		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_addr2" name="addr2" placeholder="상세주소를 입력하세요">
-		                        </div>
-		                    </div>
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y">
+							            <label class="form-check-label" for="overdue_state_true">연체 중</label>
+							        </div>
+							        <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N">
+							            <label class="form-check-label" for="overdue_state_false">정상 상태</label>
+							        </div>
+							    </div>
+							</div>
 				            </div>
 				        </form>
 		            <div class="modal-footer">
@@ -321,7 +326,7 @@
                 $.ajax({
                     async: false,
                     type: 'post',
-                    url: '/admin/member/memData.do',
+                    url: '/admin/loan/loanData.do',
                     data: {
                         kwd: kwdData,
                         page : pagenum
@@ -331,8 +336,6 @@
                         
         				var paramData = data[0];
         				var items = data[1].items;
-        				
-        				console.log(items);
                         
                         _this.apiData = items;
                         _this.paramData = paramData;
@@ -387,52 +390,99 @@
                     selectionUnit: 'row',
                     columns: [
                         {
-                            header: '아이디',
-                            name: 'userid',
+                            header: 'id',
+                            name: 'loanId',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 150
+                            width: 50
                         },
                         {
-                            header: '이름',
-                            name: 'name',
+                            header: '표지',
+                            name: 'fileName',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 70,
+                            formatter: function(value) {
+                                let result = "";
+                                let src = value.value.toString();
+                                if (src.includes('.jpg') || src.includes('.png')) {
+                                    result = "<img class='imgSize' src='/bookfile/" + src + "'/>";
+                                } else {
+                                    result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
+                                }
+                                return result;
+                            }
+                        },
+                        {
+                            header: '제목',
+                            name: 'title',
                             align: "center",
                             whiteSpace: 'normal'
                         },
                         {
-                            header: '사용자유형',
-                            name: 'level',
+                            header: '저자',
+                            name: 'author',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 180
                         },
                         {
-                            header: '전화번호',
-                            name: 'phone',
+                            header: '출판사',
+                            name: 'publisher',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 120
                         },
                         {
-                            header: '이메일',
-                            name: 'email',
+                            header: '청구기호',
+                            name: 'cheonggu',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 200
+                            width: 80
                         },
                         {
-                            header: '생년월일',
-                            name: 'birth',
+                            header: '아이디',
+                            name: 'userid',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 150
+                            width: 60
                         },
                         {
-                            header: '주소',
-                            name: 'addr1',
+                            header: '대출기간',
+                            name: 'dueDate',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 200
+                            width: 200,
+                            formatter: function(value) {
+                            	let formatDate = function(timestamp) {
+                                    if (!timestamp) return "";
+                                    let date = new Date(parseInt(timestamp));
+                                    return date.toISOString().split('T')[0];
+                                };
+
+                                let loanDate = formatDate(value.row.loanDate);
+                                let returnDate = formatDate(value.row.returnDate);
+                                let dueDate = value.value;
+                                
+                                var result = "대출일: " + loanDate + "<br>" + 
+                                			"반납일: " + returnDate + "<br>" + 
+                                			"대출기간: <b>" + dueDate + "</b>일";
+                                return result;
+                            }
+                        },
+                        {
+                            header: '대출상태',
+                            name: 'loanState',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 60
+                        },
+                        {
+                            header: '연체상태',
+                            name: 'overdueState',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 60
                         }
                     ],
                     
@@ -494,7 +544,7 @@
                 
                 return $.ajax({
                     type: 'post',
-                    url: '/admin/member/memData.do',
+                    url: '/admin/loan/loanData.do',
                     data: {
                         kwd: _this.kwd,
                         page: params.page 

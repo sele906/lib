@@ -625,6 +625,33 @@
         
         //저장
         function updateInfo() {
+        	
+        	//유효성 검사
+            if ($('#m_wishId').val() == '') {
+            	alert('인덱스 값을 입력하세요');
+            	$('#m_wishId').focus();
+            	return;
+            } else if ($('#m_title').val() == '') {
+            	alert('제목을 입력하세요');
+            	$('#m_title').focus();
+            	return;
+            } else if ($('#m_author').val() == '') {
+            	alert('저자를 입력하세요');
+            	$('#m_author').focus();
+            	return;
+            } else if ($('#m_ctg').val() === '' || $('#m_ctg').val() === null) {
+            	alert('카테고리를 선택하세요');
+            	$('#m_ctg').focus();
+            	return;
+            } else if ($('#m_publisher').val() == '') {
+            	alert('출판사를 입력하세요');
+            	$('#m_publisher').focus();
+            	return;
+            } else if ($('#m_cheonggu').val() == '') {
+            	alert('청구기호를 입력하세요');
+            	$('#m_cheonggu').focus();
+            	return;
+            } 
             
             var formData = new FormData(document.getElementById('bookForm'));
             

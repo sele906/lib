@@ -25,6 +25,7 @@ import egovframework.example.books.service.impl.LikeDAO;
 import egovframework.example.books.service.impl.LoanDAO;
 import egovframework.example.books.service.impl.ResvDAO;
 import egovframework.example.member.service.impl.MemberDAO;
+import egovframework.example.service.impl.MultiDAO;
 import egovframework.example.service.impl.WishDAO;
 import egovframework.example.service.impl.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
@@ -48,6 +49,9 @@ public class MypageController {
 
 	@Resource(name = "MemberDAO")
 	private MemberDAO MemDao;
+	
+	@Resource(name = "MultiDAO")
+	private MultiDAO multiDao;
 
 	@Resource(name = "WishFileService")
 	private WishFileService WishFileService;
@@ -347,15 +351,37 @@ public class MypageController {
 
 		return "success";
 	}
-
-	@RequestMapping(value = "programList.do", method = RequestMethod.GET)
-	public String programList() throws Exception {
-		return "mypage/programList";
-	}
-
+	
 	@RequestMapping(value = "seatList.do", method = RequestMethod.GET)
-	public String seatList() throws Exception {
+	public String seatList(@RequestParam(name = "msg", required = false) String msg, HttpSession session, Model model) throws Exception {
+		String userid = (String) session.getAttribute("userid");
+		List<EgovMap> list = multiDao.seatUserSelect(userid);
+		model.addAttribute("list", list);
+		model.addAttribute("msg", msg);
 		return "mypage/seatList";
+	}
+	
+	@RequestMapping(value = "seatList.do", method = RequestMethod.POST)
+	public String seatList(@RequestParam(name = "seatNum") String seatNum, HttpSession session) throws Exception {
+
+		String userid = (String) session.getAttribute("userid");
+		String[] seatArray = seatNum.split(",");
+		
+		try {
+			for (String seat : seatArray) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("seatNum", Integer.parseInt(seat));
+				map.put("status", "Y");
+				map.put("userid", userid);
+				
+				multiDao.seatInsert(map);
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "redirect:/mypage/seatList.do?msg=success";
 	}
 
 	@RequestMapping(value = "likedList.do", method = RequestMethod.GET)

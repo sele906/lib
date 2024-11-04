@@ -247,13 +247,13 @@
 		                <h5 class="modal-title" id="bookModalLabel">도서 상세정보</h5>
 		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		            </div>
-		            <form id="bookForm" action="/admin/books/updateData.do" method="post" enctype="multipart/form-data">
+		            <form id="bookForm" action="/admin/books/wishUpdateData.do" method="post" enctype="multipart/form-data">
 		            <div class="modal-body" id="m-cnt">
 		                
 		                	<!-- 좌측 -->
 		                	<div id="m-left">
 		                	
-		                	<input type="hidden" id="m_bookId" name="bookId">
+		                	<input type="hidden" id="m_wishId" name="wishId">
 		                    
 		                    <!-- 도서 이미지 -->
 		                    <div class="text-center mb-4" id="m-imgBox">
@@ -293,7 +293,8 @@
 		                        <label for="m_ctg" class="col-sm-3 col-form-label">카테고리</label>
 		                        <div class="col-sm-9">
 		                            <select class="form-select" id="m_ctg" name="ctgId">
-		                                <c:forEach var="row" items="${ctgList}">
+		                            	<option value="" selected>카테고리를 선택하세요</option>
+		                            	<c:forEach var="row" items="${ctgList}">
 		                                    <option value="${row.sclsCd}">${row.sclsNm}</option>
 		                                </c:forEach>
 		                            </select>
@@ -358,6 +359,7 @@
                 this.applyGridTheme();
                 this.drawGrid();
                 this.bindDeleteBook();
+                this.bindAddBookEvent();  
                 this.bindSearchEvent();
             },
 
@@ -432,7 +434,7 @@
                     columns: [
                         {
                             header: 'id',
-                            name: 'bookId',
+                            name: 'wishId',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 50
@@ -447,7 +449,7 @@
                                 let result = "";
                                 let src = value.value.toString();
                                 if (src.includes('.jpg') || src.includes('.png')) {
-                                    result = "<img class='imgSize' src='/bookfile/" + src + "'/>";
+                                    result = "<img class='imgSize' src='/wishfile/" + src + "'/>";
                                 } else {
                                     result = "<div class='imgFakeBox'><div class='imgBlank'><i class='fa-regular fa-image'></i></div></div>";
                                 }
@@ -520,9 +522,9 @@
             //책정보 수정
             openModal: function (rowData) {
                 
-                $('#m_bookId').val(rowData.bookId || '');
+                $('#m_wishId').val(rowData.wishId || '');
                 
-                $('#m_img').attr('src', rowData.fileName ? '/bookfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
+                $('#m_img').attr('src', rowData.fileName ? '/wishfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
                 $('#m_file').val('');
                 $('#m_title').val(rowData.title || '');
                 $('#m_author').val(rowData.author || '');
@@ -545,7 +547,7 @@
                 
                 return $.ajax({
                     type: 'post',
-                    url: '/admin/books/bookData.do',
+                    url: '/admin/books/wishData.do',
                     data: {
                         kwd: _this.kwd,
                         page: params.page 
@@ -576,13 +578,13 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.bookId ? row.bookId.toString() : ""
+                            id: row.wishId ? row.wishId.toString() : ""
                         };
                     });
 
                     $.ajax({
                         type: 'post',
-                        url: '/admin/books/deleteBook.do',
+                        url: '/admin/books/wishDeleteBook.do',
                         data: JSON.stringify(bookList), 
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'text',
@@ -615,6 +617,67 @@
                 });
             },
             
+          	//db에 등록
+            bindAddBookEvent: function() {
+                $('#addBook').on('click', function() {
+                	let checkedRows = bookGrid.grid.getCheckedRows();
+
+                    if (checkedRows.length === 0) {
+                        alert('선택된 책이 없습니다.');
+                        return;
+                    }
+
+                    let bookList = [];
+                    for (let row of checkedRows) {
+                    	
+                        // 유효성 검사 
+                        if (row.title.toString() === '') {
+                            alert('제목을 입력하세요');
+                            return; 
+                        } else if (row.author.toString() === '') {
+                            alert('저자를 입력하세요');
+                            return; 
+                        } else if (row.ctgNm.toString() === '') {
+                            alert('카테고리를 선택하세요');
+                            return; 
+                        } else if (row.publisher.toString() === '') {
+                            alert('출판사를 입력하세요');
+                            return;
+                        } else if (row.cheonggu.toString() === '') {
+                            alert('청구기호를 입력하세요');
+                            return;
+                        }
+
+                        bookList.push({
+                            img: row.fileName ? row.fileName.toString() : "",
+                            title: row.title ? row.title.toString().replace(/'/g, "&#39;") : "",
+                            author: row.author ? row.author.toString() : "",
+                            ctg: row.ctgNm ? row.ctgNm.toString() : "",
+                            publisher: row.publisher ? row.publisher.toString() : "",
+                            cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
+                            isbn: row.isbn ? row.isbn.toString() : ""
+                        });
+                    }
+
+                    if (bookList.length > 0) {
+                        $.ajax({
+                            type: 'post',
+                            url: '/admin/books/insertWishBook.do',
+                            data: JSON.stringify(bookList),
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'text',
+                            success: function(data) {
+                                if (data === 'success') {
+                                    alert('책이 등록되었습니다.');
+                                } else {
+                                    alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                }
+                            }
+                        });
+                    }
+                });
+            },
+            
             updateGrid: function() {
                 if (this.grid && this.apiData) {
                     this.grid.resetData(this.apiData);
@@ -642,12 +705,39 @@
         
         //저장
         function updateInfo() {
-            
+        	
+        	//유효성 검사
+            if ($('#m_wishId').val() == '') {
+            	alert('인덱스 값을 입력하세요');
+            	$('#m_wishId').focus();
+            	return;
+            } else if ($('#m_title').val() == '') {
+            	alert('제목을 입력하세요');
+            	$('#m_title').focus();
+            	return;
+            } else if ($('#m_author').val() == '') {
+            	alert('저자를 입력하세요');
+            	$('#m_author').focus();
+            	return;
+            } else if ($('#m_ctg').val() === '' || $('#m_ctg').val() === null) {
+            	alert('카테고리를 선택하세요');
+            	$('#m_ctg').focus();
+            	return;
+            } else if ($('#m_publisher').val() == '') {
+            	alert('출판사를 입력하세요');
+            	$('#m_publisher').focus();
+            	return;
+            } else if ($('#m_cheonggu').val() == '') {
+            	alert('청구기호를 입력하세요');
+            	$('#m_cheonggu').focus();
+            	return;
+            } 
+
             var formData = new FormData(document.getElementById('bookForm'));
             
             $.ajax({
                 type: 'POST',
-                url: '/admin/books/updateData.do',
+                url: '/admin/books/wishUpdateData.do',
                 data: formData,
                 processData: false,
                 contentType: false,

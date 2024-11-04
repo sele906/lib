@@ -10,7 +10,6 @@ public class AMainController {
 
 	@RequestMapping(value = "main.do", method = RequestMethod.GET)
 	public String main() throws Exception {
-		return "admin/main/main";
+		return "admin/books/bookList";
 	}
-
 }

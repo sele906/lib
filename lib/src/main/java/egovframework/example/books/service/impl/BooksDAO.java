@@ -47,5 +47,16 @@ public class BooksDAO {
 		}
 		return count;
 	}
+	
+	//인기리스트
+	public List<EgovMap> bestlist() throws Exception {
+		List<EgovMap> list = null;
+		try {
+			list = sqlSession.selectList("books.best_list");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 }

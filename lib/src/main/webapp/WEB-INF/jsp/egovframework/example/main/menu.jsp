@@ -36,9 +36,8 @@
                     <a class="nav-link dropdown-toggle" id="navbarDropdownJoin" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><b>신청/참여</b></a>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownJoin">
                         <li><a class="dropdown-item" href="/service/wishBooks.do">희망도서 신청</a></li>
-                        <li><a class="dropdown-item" href="/service/programs.do">프로그램 신청</a></li>
                         <li><a class="dropdown-item" href="/service/multiSeats.do">멀티미디어 좌석예약</a></li>
-                        <li><a class="dropdown-item" href="/service/qna.do">QNA</a></li>
+                        <li><a class="dropdown-item" href="/service/faq.do">FAQ</a></li>
                     </ul>
                 </li>
                 
@@ -49,7 +48,6 @@
                         <li><a class="dropdown-item" href="/mypage/loanHistory.do">대출이력</a></li>
                         <li><a class="dropdown-item" href="/mypage/resvList.do">예약도서 조회</a></li>
                         <li><a class="dropdown-item" href="/mypage/wishList.do">희망도서 신청내역</a></li>
-                        <li><a class="dropdown-item" href="/mypage/programList.do">프로그램 신청 내역</a></li>
                         <li><a class="dropdown-item" href="/mypage/seatList.do">좌석 예약 조회</a></li>
                         <li><a class="dropdown-item" href="/mypage/likedList.do">관심도서 조회</a></li>
                     </ul>
@@ -57,7 +55,7 @@
                 
                 <!-- 관리자 -->
                 <c:if test="${sessionScope.level == 'ADMIN'}">
-                	<li class="nav-item"><a class="nav-link" href="/admin/main/main.do"><b>관리자</b></a></li>
+                	<li class="nav-item"><a class="nav-link" href="/admin/books/bookList.do"><b>관리자</b></a></li>
                 </c:if>
                 
                 <!-- 로그인/회원가입 -->
