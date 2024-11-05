@@ -75,25 +75,35 @@ public class LoanDAO {
 		}
 	}
 
-	public void returnState(int loanId) {
+	/*public void returnState(int loanId) {
 		try {
 			sqlSession.update("loan.loan_return", loanId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}*/
+
+	public String loanChkOverdue(Map<String, Object> map) {
+		String overdue = null;
+		try {
+			overdue = sqlSession.selectOne("loan.loan_chk_overdue", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return overdue;
 	}
 
-	public void loanDuedateUpdate(Map<String, Object> map) {
+	public void loanUpdate(Map<String, Object> map) {
 		try {
-			sqlSession.update("loan.loan_duedate_update", map);
+			sqlSession.update("loan.loan_update", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void returndateUpdate(Map<String, Object> map) {
+	public void loanOverdueUpdate(Map<String, Object> map) {
 		try {
-			sqlSession.update("loan.loan_returndate_update", map);
+			sqlSession.update("loan.loan_overdue_update", map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

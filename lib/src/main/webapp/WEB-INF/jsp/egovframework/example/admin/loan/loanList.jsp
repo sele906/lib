@@ -28,6 +28,17 @@
 		
 		<style>
 		
+		#overdueBtn {
+			font-size: 0.8em;
+		    margin: 0 0 0 15px;
+		    background-color: #228bf0;
+		    border: none;
+		    color: white;
+		}
+		#overdueBtn:active {
+			background-color: #166cc0;
+		}
+		
 		/* 개인설정 */
 		#infoBar {
 			display: flex;
@@ -145,6 +156,9 @@
 			width: 60%;
 			padding: 0 0 0 15px ;
 		}
+		.hidden {
+			display: none;
+		}
 		
 		</style>
         
@@ -183,8 +197,8 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4">대출/반납/연체 관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <!-- <li class="breadcrumb-item">대출/반납/연체 관리</li>
-                            <li class="breadcrumb-item active">대출/반납 관리</li> -->
+                            <li class="breadcrumb-item">자료</li>
+                            <li class="breadcrumb-item">대출/반납/연체 관리</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
@@ -227,12 +241,12 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
+                            <div class="text-muted">Copyright &copy; LIBLO 2024</div>
+                            <!-- <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
                                 <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -315,14 +329,17 @@
 		                    <div class="mb-3 row align-items-center">
 							    <label for="m_overdue_state" class="col-sm-3 col-form-label">연체상태</label>
 							    <div class="col-sm-9 d-flex align-items-center">
-							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y">
-							            <label class="form-check-label" for="overdue_state_true">연체 해제</label>
-							        </div>
-							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N">
+							    	<span id="m_overdue_state"></span>
+							    	<button type="button" class="btn btn-sm hidden" id="overdueBtn" onclick="undoOverdue()">연체 해제</button>
+							        <!-- <div class="form-check form-check-inline">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N" disabled="disabled">
 							            <label class="form-check-label" for="overdue_state_false">정상 상태</label>
 							        </div>
+							        <div class="form-check form-check-inline d-flex align-items-center">
+							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y" disabled="disabled">
+							            <label class="form-check-label mx-2" for="overdue_state_true">연체 상태</label>
+							            <button type="button" class="btn btn-sm" id="overdueBtn">연체 해제</button>
+							        </div> -->
 							    </div>
 							</div>
 		                	
@@ -380,8 +397,6 @@
                         
         				var paramData = data[0];
         				var items = data[1].items;
-        				
-        				console.log(items);
                         
                         _this.apiData = items;
                         _this.paramData = paramData;
@@ -436,7 +451,7 @@
                     selectionUnit: 'row',
                     columns: [
                         {
-                            header: 'id',
+                            header: 'No.',
                             name: 'loanId',
                             align: "center",
                             whiteSpace: 'normal',
@@ -501,13 +516,25 @@
                             width: 200,
                             formatter: function(value) {
 
-                                let loanDate = value.row.loanDate;
-                                let returnDate = value.row.returnDate;
+                                let loanDate = new Date(value.row.loanDate);
+                                let returnDate = new Date(value.row.returnDate);
                                 let dueDate = value.value;
                                 
-                                var result = "대출일: " + loanDate + "<br>" + 
-                                			"반납일: " + returnDate + "<br>" + 
-                                			"대출기간: <b>" + dueDate + "</b>일";
+                                let dueText = "";
+
+                                // 날짜 차이를 일 단위로 계산
+                                const diffInTime = returnDate - loanDate; 
+                                const diffInDays = diffInTime / (1000 * 60 * 60 * 24);
+
+                                if (diffInDays <= dueDate) {
+                                    dueText = "대출기간: <b>" + dueDate + "</b>일";
+                                } else {
+                                    dueText = "<div style='color: red;'>연체기간: <b>" + Math.abs(diffInDays - dueDate) + "</b>일</div>";
+                                }
+                                
+                                var result = "대출일: " + value.row.loanDate + "<br>" + 
+                                			"반납일: " + value.row.returnDate + "<br>" + 
+                                			dueText;
                                 return result;
                             }
                         },
@@ -560,8 +587,14 @@
                 if (rowData.loanState) {
                     $('input[name="loanState"][value="' + rowData.loanState + '"]').prop('checked', true);
                 }
-                if (rowData.overdueState) {
-                    $('input[name="overdueState"][value="' + rowData.overdueState + '"]').prop('checked', true);
+                
+                const overdueBtn = document.getElementById('overdueBtn');
+                if (rowData.overdueState === 'Y') {
+                    $('#m_overdue_state').text('연체중');
+                    overdueBtn.classList.remove('hidden');
+                } else {
+                    $('#m_overdue_state').text('정상 상태');
+                    overdueBtn.classList.add('hidden');
                 }
 
                 let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
@@ -754,11 +787,7 @@
             	alert('대출상태를 선택하세요');
             	$('#m_loan_state').focus();
             	return;
-            } else if ($('#m_overdue_state').val() == '') {
-            	alert('연체상태를 선택하세요');
-            	$('#m_overdue_state').focus();
-            	return;
-            } 
+            }
 
             var formData = new FormData(document.getElementById('bookForm'));
             
@@ -772,6 +801,34 @@
                     
                     if (response === 'success') {
                         alert('대출기록이 저장되었습니다.');
+                        bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
+
+                        var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
+                        bookModal.hide();
+                    } else {
+                        alert('에러가 발생했습니다.');
+                    }
+                },
+                error: function() {
+                    alert('에러가 발생했습니다.');
+                }
+            });
+        }
+        
+        function undoOverdue() {
+            
+			var formData = new FormData(document.getElementById('bookForm'));
+            
+            $.ajax({
+                type: 'POST',
+                url: '/admin/loan/overdueUndoData.do',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    
+                    if (response === 'success') {
+                        alert('연체상태가 해제되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));

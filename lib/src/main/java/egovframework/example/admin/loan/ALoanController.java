@@ -93,7 +93,7 @@ public class ALoanController {
 
 	@ResponseBody
 	@RequestMapping(value = "loanUpdateData.do", method = RequestMethod.POST)
-	public String loanUpdateData(@RequestParam(name = "loanId") int loanId, @RequestParam(name = "userid") String userid, @RequestParam(name = "loanDate") String loanDate, @RequestParam(name = "returnDate") String returnDate, @RequestParam(name = "loanState") String loanState, @RequestParam(name = "overdueState") String overdueState) throws Exception {
+	public String loanUpdateData(@RequestParam(name = "loanId") int loanId, @RequestParam(name = "userid") String userid, @RequestParam(name = "loanDate") String loanDate, @RequestParam(name = "returnDate") String returnDate, @RequestParam(name = "loanState") String loanState) throws Exception {
 
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -104,9 +104,9 @@ public class ALoanController {
 		map.put("returnDate", dateFormat.parse(returnDate));
 		map.put("loanState", loanState);
 
-		if (overdueState.equals("Y")) {
-			map.put("returnDate", loanDate);
-		}
+		//		if (overdueState.equals("Y")) {
+		//			map.put("returnDate", loanDate);
+		//		}
 
 		try {
 			AloanDao.updateLoan(map);
@@ -128,6 +128,20 @@ public class ALoanController {
 				int id = Integer.parseInt((String) map.get("id"));
 				AloanDao.deleteLoan(id);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "overdueUndoData.do", method = RequestMethod.POST)
+	public String overdueUndoData(@RequestParam(name = "loanId") int loanId) throws Exception {
+
+		System.out.println(loanId);
+		try {
+			AloanDao.overdueRedoUpdate(loanId);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

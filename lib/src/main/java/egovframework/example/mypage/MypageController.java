@@ -124,7 +124,7 @@ public class MypageController {
 			map.put("returnDate", java.sql.Date.valueOf(returnDate));
 
 			try {
-				loanDao.loanDuedateUpdate(map);
+				loanDao.loanUpdate(map);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -144,7 +144,6 @@ public class MypageController {
 		String oriUserid = (String) session.getAttribute("userid");
 
 		try {
-			loanDao.returnState(loanId);
 
 			LocalDate today = LocalDate.now();
 
@@ -152,13 +151,20 @@ public class MypageController {
 			map.put("returnDate", java.sql.Date.valueOf(today));
 			map.put("loanId", loanId);
 
-			loanDao.loanDuedateUpdate(map);
-			loanDao.returndateUpdate(map);
+			//반납일-대출일 > 대출기간 인지 확인
+			String overdue = loanDao.loanChkOverdue(map);
+
+			if (overdue.equals("Y")) {
+				//대출상태와 대출기간 업데이트
+				loanDao.loanOverdueUpdate(map);
+			} else if (overdue.equals("N")) {
+				//대출상태와 대출기간 업데이트
+				loanDao.loanUpdate(map);
+			}
 
 			//만약 예약 테이블에 책이 있다면
 			EgovMap emap = null;
 			emap = loanDao.loanChkResv(loanId);
-			System.out.println(emap);
 
 			if (emap != null) {
 

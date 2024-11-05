@@ -38,6 +38,10 @@ public class ALoanDAO {
 		sqlSession.update("Aloan.loan_update", map);
 	}
 
+	public void overdueRedoUpdate(int loanId) {
+		sqlSession.update("Aloan.overdue_redo_update", loanId);
+	}
+
 	public void deleteLoan(int id) {
 		sqlSession.delete("Aloan.loan_delete", id);
 	}

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -41,7 +42,7 @@
             <div class="sb-sidenav-menu-heading">회원관리</div>
             <a class="nav-link" href="/admin/member/list.do">
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                	회원조회
+                	회원관리
             </a>
             
             <div class="sb-sidenav-menu-heading">도서관 관리</div>
@@ -61,9 +62,11 @@
             </a>
         </div>
     </div>
-    <div class="sb-sidenav-footer">
+    <c:if test="${sessionScope.userid != null}">
+    	<div class="sb-sidenav-footer">
         <div class="small">Logged in as:</div>
-        Start Bootstrap
+        ${sessionScope.userid}
     </div>
+    </c:if>
 </nav>
 </html>

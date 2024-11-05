@@ -45,6 +45,10 @@
 			.tmpPlace {
 			    width: 100%;
 			 }
+			 .page-link.select {
+				background-color: var(--bs-pagination-active-bg);
+	    		color: var(--bs-pagination-active-color);
+			}
 		</style>
     </head>
     <body class="d-flex flex-column">

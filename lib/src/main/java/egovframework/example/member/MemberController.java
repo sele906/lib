@@ -50,13 +50,11 @@ public class MemberController {
 		String authority = authentication.getAuthorities().toString();
 
 		if (!(username.equals("anonymousUser") && authority.equals("[ROLE_ANONYMOUS]"))) {
-			session.setAttribute("userid", username);
+			session.setAttribute("loginTime", System.currentTimeMillis());
 			session.setAttribute("level", authority.substring(6, authority.indexOf("]")));
-			System.out.println(session.getAttribute("userid"));
-			System.out.println(session.getAttribute("level"));
+			session.setAttribute("userid", username);
 		}
 
-		System.out.println(passwordEncoder.encode("1"));
 		model.addAttribute("msg", msg);
 
 		return "redirect:/main.do";
