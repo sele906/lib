@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>관리자 - 회원조회</title>
+        <title>관리자 - 회원관리</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -151,10 +151,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">회원조회</h1>
+                        <h1 class="mt-4">회원관리</h1>
                         <ol class="breadcrumb mb-4">
-                            <!-- <li class="breadcrumb-item">대출/반납/연체 관리</li>
-                            <li class="breadcrumb-item active">대출/반납 관리</li> -->
+                            <li class="breadcrumb-item">회원관리</li>
+                            <li class="breadcrumb-item">회원관리</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
@@ -165,7 +165,7 @@
                         
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
-								<b>회원조회</b>
+								<b>회원관리</b>
                                 <!-- <b>대출/반납 관리</b>
 								|
                                 <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
@@ -197,12 +197,12 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
+                            <div class="text-muted">Copyright &copy; LIBLO 2024</div>
+                            <!-- <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
                                 <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -400,18 +400,37 @@
                             whiteSpace: 'normal'
                         },
                         {
-                            header: '사용자유형',
+                            header: '사용자 유형',
                             name: 'level',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 180
+                            width: 180,
+                            formatter: function(value) {
+                                
+                                let result = "";
+                                
+                                let level = value.value.toString();
+                                if (level == 'ROLE_ADMIN') {
+                                    result = "관리자";
+                                } else if (level == 'ROLE_USER') {
+                                    result = "사용자";
+                                }
+                                return result;
+                            }
                         },
                         {
                             header: '전화번호',
                             name: 'phone',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 120
+                            width: 120,
+                            formatter: function(value) {
+                                let result = "";
+                                let phone = value.value.toString();
+                                formattedPhone = phone.substring(0, 3) + '-' + phone.substring(3, 7) + '-' + phone.substring(7);
+                                result = formattedPhone;
+                                return result;
+                            }
                         },
                         {
                             header: '이메일',

@@ -29,6 +29,10 @@
 				align-items: center;
 				justify-content: center;
 			}
+			.page-link.select {
+				background-color: var(--bs-pagination-active-bg);
+	    		color: var(--bs-pagination-active-color);
+			}
 		</style>
     </head>
     <body class="d-flex flex-column h-100">
@@ -50,16 +54,32 @@
                             <h2 class="fw-bolder mb-3">이용수칙</h2>
                             <div class="accordion mb-5" id="accordionExample">
                             
-	                            <c:forEach var="row" items="${list}">
-	           
-		           					<div class="accordion-item">
-	                                    <h3 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="false" aria-controls="collapseOne">${row.title}</button></h3>
-	                                    <div class="accordion-collapse collapse" id="collapse${row.faqId}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-	                                        <div class="accordion-body">
-	                                            ${row.cnt}
-	                                        </div>
-	                                    </div>
-	                                </div>
+	                            <c:forEach var="row" items="${list}" varStatus="status">
+	                            
+	                            	<c:choose>
+		                            	<c:when test="${status.first}">
+			                            	<div class="accordion-item">
+			                                    <h3 class="accordion-header" id="headingOne"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="true" aria-controls="collapseOne">${row.title}</button></h3>
+			                                    <div class="accordion-collapse collapse show" id="collapse${row.faqId}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			                                        <div class="accordion-body">
+			                                            ${row.cnt}
+			                                        </div>
+			                                    </div>
+			                                </div>
+		                            	</c:when>
+		                            	
+		                            	<c:otherwise>
+			                            	<div class="accordion-item">
+			                                    <h3 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="false" aria-controls="collapseOne">${row.title}</button></h3>
+			                                    <div class="accordion-collapse collapse" id="collapse${row.faqId}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			                                        <div class="accordion-body">
+			                                            ${row.cnt}
+			                                        </div>
+			                                    </div>
+			                                </div>
+		                            	</c:otherwise>
+	                            	</c:choose>
+	                            	
 	           
 	           					</c:forEach>
 	           					

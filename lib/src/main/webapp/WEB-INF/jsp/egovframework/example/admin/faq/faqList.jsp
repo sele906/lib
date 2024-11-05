@@ -9,7 +9,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>관리자 - FAQ관리</title>
+        <title>관리자 - FAQ 조회</title>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
@@ -154,10 +154,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4">FAQ관리</h1>
+                        <h1 class="mt-4">FAQ 조회</h1>
                         <ol class="breadcrumb mb-4">
-                            <!-- <li class="breadcrumb-item">대출/반납/연체 관리</li>
-                            <li class="breadcrumb-item active">대출/반납 관리</li> -->
+                            <li class="breadcrumb-item">도서관관리</li>
+                            <li class="breadcrumb-item">FAQ 조회</li>
                         </ol>
                         <div class="card mb-4">
                             <div class="card-body">
@@ -200,12 +200,12 @@
                 <footer class="py-4 bg-light mt-auto">
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
-                            <div class="text-muted">Copyright &copy; Your Website 2023</div>
-                            <div>
+                            <div class="text-muted">Copyright &copy; LIBLO 2024</div>
+                            <!-- <div>
                                 <a href="#">Privacy Policy</a>
                                 &middot;
                                 <a href="#">Terms &amp; Conditions</a>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -360,18 +360,18 @@
                     selectionUnit: 'row',
                     columns: [
                         {
-                            header: 'id',
+                            header: 'No.',
                             name: 'faqId',
                             align: "center",
                             whiteSpace: 'normal',
                             width: 50
                         },
                         {
-                            header: 'userid',
+                            header: '아이디',
                             name: 'userid',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 50
+                            width: 100
                         },
                         {
                             header: '제목',
@@ -384,14 +384,21 @@
                             name: 'cnt',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 180
+                            width: 200,
+                            formatter: function(value) {
+                                let result = "";
+                                let content = value.value.toString();
+                                formattedCnt = content.substring(0, 20) + "...";
+                                result = formattedCnt;
+                                return result;
+                            }
                         },
                         {
                             header: '작성일자',
                             name: 'writeDate',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 120
+                            width: 180
                         }
                     ],
                     
