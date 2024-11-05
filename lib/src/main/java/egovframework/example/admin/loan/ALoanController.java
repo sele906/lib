@@ -1,5 +1,7 @@
 package egovframework.example.admin.loan;
 
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,14 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
-import egovframework.example.admin.books.WishVO;
-import egovframework.example.admin.books.service.impl.ABooksDAO;
 import egovframework.example.admin.loan.service.impl.ALoanDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -28,7 +27,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 @RequestMapping("/admin/loan/*")
 public class ALoanController {
-	
+
 	@Resource(name = "ALoanDAO")
 	private ALoanDAO AloanDao;
 
@@ -36,12 +35,11 @@ public class ALoanController {
 	public String loanList() throws Exception {
 		return "/admin/loan/loanList";
 	}
-	
+
 	// 도서 데이터
 	@ResponseBody
 	@RequestMapping(value = "loanData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String loanData(@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+	public String loanData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
 
 		try {
 			// 키워드와 페이지 전달
@@ -72,6 +70,7 @@ public class ALoanController {
 
 			// items
 			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 			String items = objectMapper.writeValueAsString(list);
 
 			// item param 합치기
@@ -91,31 +90,29 @@ public class ALoanController {
 		return "error";
 
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(value = "loanUpdateData.do", method = RequestMethod.POST)
-	public String loanUpdateData(
-			@RequestParam(name = "loanId") int loanId,
-			@RequestParam(name = "userid") String userid,
-			@RequestParam(name = "loanDate") String loanDate,
-			@RequestParam(name = "returnDate") String returnDate,
-			@RequestParam(name = "loanState") String loanState,
-			@RequestParam(name = "overdueState") String overdueState
-			) throws Exception {
-		
-		System.out.println(loanId);
-		System.out.println(userid);
-		System.out.println(loanDate);
-		System.out.println(returnDate);
-		System.out.println(loanState);
-		System.out.println(overdueState);
-		
-//		try {
-//			AwishDao.updateWishBook(vo);
-//			AWishFileService.updateWishImage(vo.getWishId(), vo.getCtgId(), multifile);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
+	public String loanUpdateData(@RequestParam(name = "loanId") int loanId, @RequestParam(name = "userid") String userid, @RequestParam(name = "loanDate") String loanDate, @RequestParam(name = "returnDate") String returnDate, @RequestParam(name = "loanState") String loanState, @RequestParam(name = "overdueState") String overdueState) throws Exception {
+
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		Map<String, Object> map = new HashMap();
+		map.put("loanId", loanId);
+		map.put("userid", userid);
+		map.put("loanDate", dateFormat.parse(loanDate));
+		map.put("returnDate", dateFormat.parse(returnDate));
+		map.put("loanState", loanState);
+
+		if (overdueState.equals("Y")) {
+			map.put("returnDate", loanDate);
+		}
+
+		try {
+			AloanDao.updateLoan(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		return "success";
 	}
@@ -123,33 +120,19 @@ public class ALoanController {
 	@ResponseBody
 	@RequestMapping(value = "loanDelete.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String loanDelete(@RequestBody String param) throws Exception {
-		
-		System.out.println(param);
-		
-		return param;
 
-//		String result = "";
-//
-//		ObjectMapper objectMapper = new ObjectMapper();
-//		List<Map<String, Object>> dataList = objectMapper.readValue(param,
-//				new TypeReference<List<Map<String, Object>>>() {
-//				});
-//
-//		for (Map<String, Object> data : dataList) {
-//
-//			int id = Integer.parseInt(data.get("id").toString());
-//
-//			// 데이터 삭제
-//			AwishDao.deleteWishBook(id);
-//
-//		}
-//		result = "success";
-//
-//		if (result.equals("success")) {
-//			return "success";
-//		} else {
-//			return "error";
-//		}
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Map<String, Object>> idList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		try {
+			for (Map<String, Object> map : idList) {
+				int id = Integer.parseInt((String) map.get("id"));
+				AloanDao.deleteLoan(id);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
 	}
 
 }

@@ -28,6 +28,9 @@
 			.hidden {
 				display: none;
 			}
+			.seat.choose {
+				cursor: pointer;
+			}
 		</style>
     </head>
     <body class="d-flex flex-column h-100">
@@ -233,11 +236,28 @@
             
             $('.seat.choose').on('click', function(event) {
             	alert('좌석을 취소하시겠습니까?');
-            	/* if ($("#seat_position").val() == '') {
-            		alert('좌석을 선택해주세요');
-            	} else {
-            		$('#seatForm').submit();
-            	} */
+            	
+            	var $seatElement = $(this);
+            	var num = $seatElement.text();
+            	
+            	$.ajax({
+					type: 'get',
+					url: '/mypage/seatDelete.do',
+					data: {
+					    seatNum: num
+					}, 
+					success: function (response) {
+					    console.log(response);
+					    if (response === 'success') {
+					        
+					        alert('예약 취소 되었습니다.');
+					        $seatElement.removeClass('choose');
+	                        
+	                    } else {
+	                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+	                    }
+				    }
+				});
             
     	    });
             

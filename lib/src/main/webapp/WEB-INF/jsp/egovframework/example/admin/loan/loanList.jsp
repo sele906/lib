@@ -173,6 +173,7 @@
                 </li>
             </ul>
         </nav>
+        
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
             	<!-- Navigation-->
@@ -316,7 +317,7 @@
 							    <div class="col-sm-9 d-flex align-items-center">
 							        <div class="form-check form-check-inline">
 							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y">
-							            <label class="form-check-label" for="overdue_state_true">연체 중</label>
+							            <label class="form-check-label" for="overdue_state_true">연체 해제</label>
 							        </div>
 							        <div class="form-check form-check-inline">
 							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N">
@@ -379,6 +380,8 @@
                         
         				var paramData = data[0];
         				var items = data[1].items;
+        				
+        				console.log(items);
                         
                         _this.apiData = items;
                         _this.paramData = paramData;
@@ -481,7 +484,7 @@
                             name: 'cheonggu',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 80
+                            width: 120
                         },
                         {
                             header: '아이디',
@@ -497,14 +500,9 @@
                             whiteSpace: 'normal',
                             width: 200,
                             formatter: function(value) {
-                            	let formatDate = function(timestamp) {
-                                    if (!timestamp) return "";
-                                    let date = new Date(parseInt(timestamp));
-                                    return date.toISOString().split('T')[0];
-                                };
 
-                                let loanDate = formatDate(value.row.loanDate);
-                                let returnDate = formatDate(value.row.returnDate);
+                                let loanDate = value.row.loanDate;
+                                let returnDate = value.row.returnDate;
                                 let dueDate = value.value;
                                 
                                 var result = "대출일: " + loanDate + "<br>" + 
@@ -551,20 +549,13 @@
             
             //책정보 수정
             openModal: function (rowData) {
-            	console.log(rowData.loanDate);
-            	
-            	let formatDate = function(timestamp) {
-                    if (!timestamp) return "";
-                    let date = new Date(parseInt(timestamp));
-                    return date.toISOString().split('T')[0];
-                };
-                
-                $('#m_loanId').val(rowData.loanId || '');
+
+				$('#m_loanId').val(rowData.loanId || '');
                 
                 $('#m_img').attr('src', rowData.fileName ? '/bookfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
                 $('#m_userid').val(rowData.userid || '');
-                $('#m_loan_date').val(formatDate(rowData.loanDate) || ''); 
-                $('#m_return_date').val(formatDate(rowData.returnDate) || ''); 
+                $('#m_loan_date').val(rowData.loanDate || ''); 
+                $('#m_return_date').val(rowData.returnDate || ''); 
                 
                 if (rowData.loanState) {
                     $('input[name="loanState"][value="' + rowData.loanState + '"]').prop('checked', true);
@@ -630,7 +621,7 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 책이 삭제되었습니다.');
+                                alert('선택된 대출기록이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
                                 alert('오류가 발생했습니다. 관리자에게 문의하세요.');
@@ -780,7 +771,7 @@
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('책 정보가 저장되었습니다.');
+                        alert('대출기록이 저장되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));

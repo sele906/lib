@@ -227,11 +227,11 @@
 							    <label for="m_level" class="col-sm-2 col-form-label">사용자유형</label>
 		                        <div class="col-sm-10">
 							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="level" id="user_level" value="Y">
+							            <input class="form-check-input" type="radio" name="level" id="user_level" value="ROLE_USER">
 							            <label class="form-check-label" for="user_level">사용자</label>
 							        </div>
 							        <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="level" id="admin_level" value="N">
+							            <input class="form-check-input" type="radio" name="level" id="admin_level" value="ROLE_ADMIN">
 							            <label class="form-check-label" for="admin_level">관리자</label>
 							        </div>
 							    </div>
@@ -247,7 +247,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_birth" class="col-sm-2 col-form-label">생년월일</label>
 		                        <div class="col-sm-10">
-		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="생년월일을 입력하세요">
+		                            <input type="date" class="form-control" id="m_birth" name="birthdate" placeholder="생년월일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -261,7 +261,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_mail" class="col-sm-2 col-form-label">이메일</label>
 		                        <div class="col-sm-10">
-		                            <input type="text" class="form-control" id="m_mail" name="mail" placeholder="이메일을 입력하세요">
+		                            <input type="text" class="form-control" id="m_mail" name="email" placeholder="이메일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -458,27 +458,22 @@
             
             //책정보 수정
             openModal: function (rowData) {
-            	console.log(rowData.loanDate);
+            	console.log(rowData);
             	
-            	let formatDate = function(timestamp) {
-                    if (!timestamp) return "";
-                    let date = new Date(parseInt(timestamp));
-                    return date.toISOString().split('T')[0];
-                };
+            	if (rowData.level) {
+                    $('input[name="level"][value="' + rowData.level + '"]').prop('checked', true);
+                }
                 
-                $('#m_loanId').val(rowData.loanId || '');
-                
-                $('#m_img').attr('src', rowData.fileName ? '/bookfile/' + rowData.fileName : '/images/egovframework/lib/cmmn/blank.png');
                 $('#m_userid').val(rowData.userid || '');
-                $('#m_loan_date').val(formatDate(rowData.loanDate) || ''); 
-                $('#m_return_date').val(formatDate(rowData.returnDate) || ''); 
+                $('#m_name').val(rowData.name || '');
                 
-                if (rowData.loanState) {
-                    $('input[name="loanState"][value="' + rowData.loanState + '"]').prop('checked', true);
-                }
-                if (rowData.overdueState) {
-                    $('input[name="overdueState"][value="' + rowData.overdueState + '"]').prop('checked', true);
-                }
+                $('#m_mail').val(rowData.email || '');
+                $('#m_phone').val(rowData.phone || '');
+                
+                $('#m_birth').val(rowData.birth || '');
+                $('#m_addr1').val(rowData.addr1 || '');
+                $('#m_addr2').val(rowData.addr2 || '');
+                
 
                 let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
                     backdrop: 'static', 
@@ -519,25 +514,25 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        alert('선택된 회원이 없습니다.');
                         return;
                     }
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.loanId ? row.loanId.toString() : ""
+                            id: row.userid ? row.userid.toString() : ""
                         };
                     });
 
                     $.ajax({
                         type: 'post',
-                        url: '/admin/loan/loanDelete.do',
+                        url: '/admin/member/memDelete.do',
                         data: JSON.stringify(bookList), 
                         contentType: 'application/json; charset=utf-8',
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 책이 삭제되었습니다.');
+                                alert('선택된 회원이 탈퇴되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
                                 alert('오류가 발생했습니다. 관리자에게 문의하세요.');
@@ -654,7 +649,7 @@
         function updateInfo() {
         	
         	//유효성 검사
-            if ($('#m_userid').val() == '') {
+            /* if ($('#m_userid').val() == '') {
             	alert('아이디를 입력하세요');
             	$('#m_userid').focus();
             	return;
@@ -674,20 +669,24 @@
             	alert('연체상태를 선택하세요');
             	$('#m_overdue_state').focus();
             	return;
-            } 
+            }  */
 
             var formData = new FormData(document.getElementById('bookForm'));
             
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
+            
             $.ajax({
                 type: 'POST',
-                url: '/admin/loan/loanUpdateData.do',
+                url: '/admin/member/memUpdateData.do',
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('책 정보가 저장되었습니다.');
+                        alert('회원 정보가 저장되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));

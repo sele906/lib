@@ -30,6 +30,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.service.impl.FaqDAO;
 import egovframework.example.service.impl.MultiDAO;
 import egovframework.example.service.impl.WishDAO;
 import egovframework.example.service.impl.WishFileService;
@@ -46,9 +47,12 @@ public class ServiceController {
 
 	@Resource(name = "WishDAO")
 	private WishDAO wishDao;
-	
+
 	@Resource(name = "MultiDAO")
 	private MultiDAO multiDao;
+
+	@Resource(name = "FaqDAO")
+	private FaqDAO faqDao;
 
 	@Resource(name = "WishFileService")
 	private WishFileService WishFileService;
@@ -168,32 +172,55 @@ public class ServiceController {
 		model.addAttribute("msg", msg);
 		return "service/seat";
 	}
-	
+
 	@RequestMapping(value = "multiSeats.do", method = RequestMethod.POST)
 	public String multiSeats(@RequestParam(name = "seatNum") String seatNum, HttpSession session) throws Exception {
 
 		String userid = (String) session.getAttribute("userid");
 		String[] seatArray = seatNum.split(",");
-		
+
 		try {
 			for (String seat : seatArray) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("seatNum", Integer.parseInt(seat));
 				map.put("status", "Y");
 				map.put("userid", userid);
-				
+
 				multiDao.seatInsert(map);
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "redirect:/service/multiSeats.do?msg=success";
 	}
 
 	@RequestMapping(value = "faq.do", method = RequestMethod.GET)
-	public String qna() throws Exception {
+	public String faq(@RequestParam(name = "page", defaultValue = "1") int page, Model model) throws Exception {
+
+		Pagination pinfo = new Pagination();
+		pinfo.setPage(page);
+
+		int count = faqDao.faqCount(pinfo);
+
+		//페이징처리
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(pinfo.getPage());
+		paginationInfo.setRecordCountPerPage(pinfo.getPageUnit());
+		paginationInfo.setPageSize(pinfo.getPageSize());
+
+		paginationInfo.setTotalRecordCount(count);
+		pinfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
+		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+
+		List<EgovMap> list = faqDao.faqlist(pinfo);
+
+		model.addAttribute("list", list);
+		model.addAttribute("count", count);
+		model.addAttribute("pinfo", pinfo);
+		model.addAttribute("pageInfo", paginationInfo);
 		return "service/faq";
 	}
 

@@ -209,7 +209,10 @@ public class BooksController {
 	}
 
 	@RequestMapping(value = "newBooks.do")
-	public String newBooks() throws Exception {
+	public String newBooks(Model model) throws Exception {
+		List<EgovMap> list = booksDao.newlist();
+
+		model.addAttribute("list", list);
 		return "books/newBooks";
 	}
 

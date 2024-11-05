@@ -1,42 +1,45 @@
 package egovframework.example.admin.member;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.member.service.impl.AMemDAO;
-import egovframework.example.books.service.impl.ResvDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 @RequestMapping("/admin/member/*")
 public class AMemberController {
-	
+
 	@Resource(name = "AMemDAO")
 	private AMemDAO AMemDao;
-	
+
 	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public String list() throws Exception {
 		return "/admin/member/memberList";
 	}
-	
+
 	// 회원 데이터
 	@ResponseBody
 	@RequestMapping(value = "memData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String memData(@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+	public String memData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+		System.out.println(kwdData);
 
 		try {
 			// 키워드와 페이지 전달
@@ -67,6 +70,7 @@ public class AMemberController {
 
 			// items
 			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 			String items = objectMapper.writeValueAsString(list);
 
 			// item param 합치기
@@ -85,6 +89,41 @@ public class AMemberController {
 
 		return "error";
 
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "memUpdateData.do", method = RequestMethod.POST)
+	public String memUpdateData(MemberVO vo) throws Exception {
+
+		vo.setBirth(java.sql.Date.valueOf(vo.getBirthdate()));
+		System.out.println(vo);
+
+		try {
+			AMemDao.updateMem(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "memDelete.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
+	public String memDelete(@RequestBody String param) throws Exception {
+
+		ObjectMapper objectMapper = new ObjectMapper();
+		List<Map<String, Object>> idList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+
+		try {
+			for (Map<String, Object> map : idList) {
+				String userid = (String) map.get("id");
+				AMemDao.deleteMem(userid);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
 	}
 
 }

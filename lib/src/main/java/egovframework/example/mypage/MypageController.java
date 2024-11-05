@@ -49,7 +49,7 @@ public class MypageController {
 
 	@Resource(name = "MemberDAO")
 	private MemberDAO MemDao;
-	
+
 	@Resource(name = "MultiDAO")
 	private MultiDAO multiDao;
 
@@ -351,7 +351,7 @@ public class MypageController {
 
 		return "success";
 	}
-	
+
 	@RequestMapping(value = "seatList.do", method = RequestMethod.GET)
 	public String seatList(@RequestParam(name = "msg", required = false) String msg, HttpSession session, Model model) throws Exception {
 		String userid = (String) session.getAttribute("userid");
@@ -360,28 +360,47 @@ public class MypageController {
 		model.addAttribute("msg", msg);
 		return "mypage/seatList";
 	}
-	
+
 	@RequestMapping(value = "seatList.do", method = RequestMethod.POST)
 	public String seatList(@RequestParam(name = "seatNum") String seatNum, HttpSession session) throws Exception {
 
 		String userid = (String) session.getAttribute("userid");
 		String[] seatArray = seatNum.split(",");
-		
+
 		try {
 			for (String seat : seatArray) {
 				Map<String, Object> map = new HashMap<String, Object>();
 				map.put("seatNum", Integer.parseInt(seat));
 				map.put("status", "Y");
 				map.put("userid", userid);
-				
+
 				multiDao.seatInsert(map);
-				
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		return "redirect:/mypage/seatList.do?msg=success";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "seatDelete.do", method = RequestMethod.GET)
+	public String seatDelete(@RequestParam(name = "seatNum") String num, HttpSession session) throws Exception {
+
+		String userid = (String) session.getAttribute("userid");
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("seatNum", num);
+		map.put("userid", userid);
+
+		try {
+			multiDao.seatDelete(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
 	}
 
 	@RequestMapping(value = "likedList.do", method = RequestMethod.GET)
