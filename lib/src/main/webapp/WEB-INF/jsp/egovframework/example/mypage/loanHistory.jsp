@@ -24,6 +24,16 @@
 		</style>
 		
 		<style type="text/css">
+			.pagination {
+				cursor: pointer;
+				font-weight: bold;
+			}
+			.page-item {
+			
+			}
+			.page-link {
+				color: #848484;
+			}
 			.page-link.select {
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
@@ -35,6 +45,7 @@
 			    align-items: center;
 			    font-size: 1.1em;
 			}
+			
 		</style>
     </head>
     <body class="d-flex flex-column">

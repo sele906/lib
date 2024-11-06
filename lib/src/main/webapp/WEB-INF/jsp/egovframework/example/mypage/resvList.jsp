@@ -35,7 +35,17 @@
 			.tmpPlace {
 			    width: 100%;
 			 }
-			 .page-link.select {
+			 .pagination {
+				cursor: pointer;
+				font-weight: bold;
+			}
+			.page-item {
+			
+			}
+			.page-link {
+				color: #848484;
+			}
+			.page-link.select {
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
 			}
