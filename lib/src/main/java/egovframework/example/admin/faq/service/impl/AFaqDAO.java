@@ -50,11 +50,32 @@ public class AFaqDAO {
 	}
 
 	public void updateFaq(Map<String, Object> map) {
-		System.out.println(map);
 		sqlSession.update("Afaq.faq_update", map);
 	}
 
 	public void deleteFaq(int faqId) {
 		sqlSession.delete("Afaq.faq_delete", faqId);
+	}
+
+	public void insertFile(Map<String, Object> map) {
+		sqlSession.insert("Afaq.faq_file_insert", map);
+	}
+
+	public void deleteFile(int id) {
+		sqlSession.delete("Afaq.faq_file_delete", id);
+	}
+
+	public List<EgovMap> selectFile(int faqId) {
+		List<EgovMap> list = sqlSession.selectList("Afaq.faq_select_file", faqId);
+		return list;
+	}
+
+	public int selectFileId(String fileName) {
+		int faqFileId = sqlSession.selectOne("Afaq.select_file_id", fileName);
+		return faqFileId;
+	}
+
+	public void deleteFileOne(int faqFileId) {
+		sqlSession.delete("Afaq.faq_delete_one", faqFileId);
 	}
 }

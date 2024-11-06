@@ -33,6 +33,28 @@
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
 			}
+			.fileArea {
+				display: flex;
+			    flex-direction: row;
+			    width: 100%;
+			    justify-content: flex-start;
+			    align-items: center;
+			    margin: 10px 0;
+			}
+			.imgSize {
+				height: 120px;
+			    border: 1px solid #dadada;
+			    padding: 10px;
+			    margin: 0 5px;
+			    display: flex;
+			    justify-content: center;
+			    align-items: center;
+			}
+			.imgSize img {
+				width: 100%;
+			    height: 100%;
+			    margin: 0 5px;
+			}
 		</style>
     </head>
     <body class="d-flex flex-column h-100">
@@ -59,10 +81,11 @@
 	                            	<c:choose>
 		                            	<c:when test="${status.first}">
 			                            	<div class="accordion-item">
-			                                    <h3 class="accordion-header" id="headingOne"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="true" aria-controls="collapseOne">${row.title}</button></h3>
-			                                    <div class="accordion-collapse collapse show" id="collapse${row.faqId}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			                                    <h3 class="accordion-header" id="heading${row.faqId}"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="true" aria-controls="collapse${row.faqId}">${row.title}</button></h3>
+			                                    <div class="accordion-collapse collapse show" id="collapse${row.faqId}" aria-labelledby="heading${row.faqId}" data-bs-parent="#accordionExample">
 			                                        <div class="accordion-body">
 			                                            ${row.cnt}
+			                                            <div class="fileArea"  data-faq-id="${row.faqId}"></div>
 			                                        </div>
 			                                    </div>
 			                                </div>
@@ -70,10 +93,11 @@
 		                            	
 		                            	<c:otherwise>
 			                            	<div class="accordion-item">
-			                                    <h3 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="false" aria-controls="collapseOne">${row.title}</button></h3>
-			                                    <div class="accordion-collapse collapse" id="collapse${row.faqId}" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+			                                    <h3 class="accordion-header" id="heading${row.faqId}"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${row.faqId}" aria-expanded="false" aria-controls="collapse${row.faqId}">${row.title}</button></h3>
+			                                    <div class="accordion-collapse collapse" id="collapse${row.faqId}" aria-labelledby="heading${row.faqId}" data-bs-parent="#accordionExample">
 			                                        <div class="accordion-body">
 			                                            ${row.cnt}
+			                                            <div class="fileArea"  data-faq-id="${row.faqId}"></div>
 			                                        </div>
 			                                    </div>
 			                                </div>
@@ -170,5 +194,45 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
+        
+        <script>
+		    $(document).ready(function() {
+		        
+		        function loadFileData(faqId, fileArea) {
+		            $.ajax({
+		                type: 'get',
+		                url: '/service/faqFile.do',
+		                data: { faqId: faqId },
+		                dataType: 'json',
+		                success: function(data) {
+		                    var result = "";
+		                    data.forEach(function(row) {
+		                        if (row.faqFileOriName.includes(".png") || row.faqFileOriName.includes(".jpg")) {
+		                            var path = "/faqfile/" + row.faqFileOriName;
+			                        result += "<div class='imgSize' ><img src='" + path + "' alt='" + row.faqFileOriName + "' /></div>";
+		                        }
+		                    });
+		                    fileArea.html(result);
+		                },
+		                error: function() {
+		                    console.error('Failed to load file data for faqId:', faqId);
+		                }
+		            });
+		        }
+
+		        $('.accordion-collapse.show').each(function() {
+		            var fileArea = $(this).find('.fileArea');
+		            var faqId = fileArea.data('faq-id');
+		            loadFileData(faqId, fileArea);
+		        });
+
+		        $('.accordion-collapse').on('show.bs.collapse', function () {
+		            var fileArea = $(this).find('.fileArea');
+		            var faqId = fileArea.data('faq-id');
+		            loadFileData(faqId, fileArea);
+		        });
+		    });
+		</script>
+        
     </body>
 </html>

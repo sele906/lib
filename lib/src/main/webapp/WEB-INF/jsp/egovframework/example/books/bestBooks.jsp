@@ -111,19 +111,19 @@
             <!-- Page Content-->
             <section class="py-5">
                 <div class="container px-5">
-                    <h1 class="fw-bolder fs-5 mb-4">Company Blog</h1>
+                    <h1 class="fw-bolder fs-5 mb-4">베스트자료</h1>
                     <div class="card border-0 shadow rounded-3 overflow-hidden">
                         <div class="card-body p-0">
                             <div class="row gx-0">
                                 <div class="col-lg-6 col-xl-5 py-lg-5">
                                     <div class="p-4 p-md-5">
-                                        <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
-                                        <div class="h2 fw-bolder">Article heading goes here</div>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique delectus ab doloremque, qui doloribus ea officiis...</p>
-                                        <a class="stretched-link text-decoration-none" href="#!">
+                                        <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
+                                        <div class="h2 fw-bolder">책제목</div>
+                                        <p>저자 | 출판사</p>
+                                        <!-- <a class="stretched-link text-decoration-none" href="#!">
                                             Read more
                                             <i class="bi bi-arrow-right"></i>
-                                        </a>
+                                        </a> -->
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xl-7"><div class="bg-featured-blog" style="background-image: url('https://dummyimage.com/700x350/343a40/6c757d')"></div></div>
@@ -136,17 +136,17 @@
              <!-- Blog preview section-->
             <section class="py-5">
                 <div class="container px-5">
-                    <h2 class="fw-bolder fs-5 mb-4">Featured Stories</h2>
+                    <h2 class="fw-bolder fs-5 mb-4">인기자료</h2>
                     <div class="row gx-5">
                         <div class="col-lg-4 mb-5">
                             <div class="card h-100 shadow border-0">
                                 <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
                                 <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">Blog post title</div></a>
-                                    <p class="card-text mb-0">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
+                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">책제목</div></a>
+                                    <p class="card-text mb-0">저자 | 출판사</p>
                                 </div>
-                                <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
+                                <!-- <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                     <div class="d-flex align-items-end justify-content-between">
                                         <div class="d-flex align-items-center">
                                             <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
@@ -156,7 +156,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                         <div class="col-lg-4 mb-5">
@@ -214,7 +214,7 @@
             <section class="py-5 bg-light">
                 <div class="container px-5">
                     <div class="row gx-5 mx-3">
-                    <h2>인기자료</h2>
+                    <h2><b>인기자료</b></h2>
                     <hr>
                     	<div class="mx-5 my-3">
 						<table class="table">
