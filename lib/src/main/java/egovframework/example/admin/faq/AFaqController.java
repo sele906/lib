@@ -6,21 +6,25 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.admin.faq.service.AFaqFileService;
 import egovframework.example.admin.faq.service.impl.AFaqDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -31,6 +35,9 @@ public class AFaqController {
 
 	@Resource(name = "AFaqDAO")
 	private AFaqDAO AfaqDao;
+
+	@Resource(name = "AFaqFileService")
+	private AFaqFileService fileService;
 
 	@RequestMapping(value = "list.do", method = RequestMethod.GET)
 	public String list() throws Exception {
@@ -95,7 +102,7 @@ public class AFaqController {
 	// DB에 삽입
 	@ResponseBody
 	@RequestMapping(value = "insertFaq.do", method = RequestMethod.POST)
-	public String insertFaq(@RequestParam(name = "faqId") String faqId, @RequestParam(name = "title") String title, @RequestParam(name = "cnt") String cnt, HttpSession session) throws Exception {
+	public String insertFaq(@RequestParam(name = "faqId") String faqId, @RequestParam(name = "title") String title, @RequestParam(name = "cnt") String cnt, @RequestParam(name = "multifile") List<MultipartFile> multifile, HttpSession session) throws Exception {
 
 		String userid = (String) session.getAttribute("userid");
 
@@ -106,7 +113,10 @@ public class AFaqController {
 		map.put("cnt", cnt);
 
 		try {
-			AfaqDao.insertFaq(map);
+			int id = AfaqDao.insertFaq(map);
+
+			fileService.insertFile(id, multifile);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -116,7 +126,7 @@ public class AFaqController {
 
 	@ResponseBody
 	@RequestMapping(value = "updateFaq.do", method = RequestMethod.POST)
-	public String updateFaq(@RequestParam(name = "faqId") int faqId, @RequestParam(name = "title") String title, @RequestParam(name = "cnt") String cnt, HttpSession session) throws Exception {
+	public String updateFaq(@RequestParam(name = "faqId") int faqId, @RequestParam(name = "title") String title, @RequestParam(name = "cnt") String cnt, @RequestParam(name = "multifile") List<MultipartFile> multifile, HttpSession session) throws Exception {
 
 		String userid = (String) session.getAttribute("userid");
 
@@ -128,6 +138,8 @@ public class AFaqController {
 
 		try {
 			AfaqDao.updateFaq(map);
+
+			fileService.insertFile(faqId, multifile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -145,6 +157,11 @@ public class AFaqController {
 		try {
 			for (Map<String, Object> map : idList) {
 				int faqId = Integer.parseInt((String) map.get("id"));
+
+				//파일 삭제, 파일 db 삭제
+				fileService.deleteFaqFile(faqId);
+
+				//게시물 삭제
 				AfaqDao.deleteFaq(faqId);
 			}
 		} catch (Exception e) {
@@ -152,5 +169,30 @@ public class AFaqController {
 		}
 
 		return "success";
+	}
+
+	//파일 다운로드
+	@ResponseBody
+	@RequestMapping(value = "/fileDeleteOne.do", method = RequestMethod.POST)
+	public String fileDeleteOne(@RequestParam(name = "fileName") String fileName, HttpServletResponse response, Model model) throws Exception {
+
+		//파일 하나 삭제
+		try {
+			fileService.fileDeleteOne(fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "success";
+
+	}
+
+	//파일 다운로드
+	@RequestMapping(value = "/fileDownload.do", method = RequestMethod.POST)
+	public void fileDownload(@RequestParam(name = "fileName") String fileName, HttpServletResponse response, Model model) throws Exception {
+
+		//파일 다운로드
+		fileService.downloadFile(response, fileName);
+
 	}
 }

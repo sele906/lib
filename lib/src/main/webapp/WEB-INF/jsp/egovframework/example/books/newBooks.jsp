@@ -111,15 +111,15 @@
              <!-- Blog preview section-->
             <section class="py-5">
                 <div class="container px-5">
-                    <h2 class="fw-bolder fs-5 mb-4">Featured Stories</h2>
+                    <h2 class="fw-bolder fs-5 mb-4">신착자료</h2>
                     <div class="row gx-5">
                         <div class="col-lg-4 mb-5">
                             <div class="card h-100 shadow border-0">
                                 <img class="card-img-top" src="https://dummyimage.com/600x350/ced4da/6c757d" alt="..." />
                                 <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">News</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">Blog post title</div></a>
-                                    <p class="card-text mb-0">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
+                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">책제목</div></a>
+                                    <p class="card-text mb-0">저자 | 출판사</p>
                                 </div>
                                 <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
                                     <div class="d-flex align-items-end justify-content-between">
@@ -189,7 +189,7 @@
             <section class="py-5 bg-light">
                 <div class="container px-5">
                     <div class="row gx-5 mx-3">
-                    <h2>신착자료</h2>
+                    <h2><b>신착자료</b></h2>
                     <hr>
                     	<div class="mx-5 my-3">
 						<table class="table">

@@ -32,4 +32,10 @@ public class FaqDAO {
 		}
 		return count;
 	}
+
+	//리스트
+	public List<EgovMap> faqFileList(int faqId) throws Exception {
+		List<EgovMap> list = sqlSession.selectList("faq.faq_file_list", faqId);
+		return list;
+	}
 }

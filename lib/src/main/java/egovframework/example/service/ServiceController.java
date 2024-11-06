@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -222,6 +223,23 @@ public class ServiceController {
 		model.addAttribute("pinfo", pinfo);
 		model.addAttribute("pageInfo", paginationInfo);
 		return "service/faq";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "faqFile.do", method = RequestMethod.GET)
+	public String faqFile(@RequestParam(name = "faqId") int faqId) throws Exception {
+
+		List<EgovMap> list = null;
+		try {
+			list = faqDao.faqFileList(faqId);
+			ObjectMapper objectMapper = new ObjectMapper();
+			objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
+			String result = objectMapper.writeValueAsString(list);
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "error";
 	}
 
 }

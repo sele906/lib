@@ -120,6 +120,29 @@
 			height: 150px;
 		}
 		
+		.bt.down {
+			background-color: white;
+		    border: 1px solid #6c6c6c;
+		    font-size: 0.9em;
+		    padding: 3px 10px;
+		    color: #666666;
+		}
+		.m_file_info {
+			margin: 5px 0;
+		}
+		.m_file_info span {
+			color: #0d6efd;
+	    	margin: 0 10px 0 0;
+		}
+		.hidden {
+			display: none;
+		}
+		.trash {
+		    margin: 0 8px;
+		    font-size: 1.1em;
+		    color: gray;	
+		}
+		
 		</style>
         
     </head>
@@ -178,8 +201,8 @@
                             
                             <div id="infoBar">
                             	<div>
-	                            	<button class="btn btn-primary" id="addContent">등록하기</button>
-	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
+                            		<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
+	                            	<button class="btn btn-primary" id="addContent">등록하기</button>	
                             	</div>
 								
                             	<!-- 검색창 -->
@@ -221,9 +244,9 @@
 		                <h5 class="modal-title" id="bookModalLabel">FAQ 상세정보</h5>
 		                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 		            </div>
-		            	<form id="faqForm" method="post" enctype="multipart/form-data">
 				            <div class="modal-body mx-5">
-				                	
+				            
+				            <form id="faqForm" method="post" enctype="multipart/form-data">    	
 				            <input type="hidden" id="m_faq_id" name="faqId">
 		                	
 		                	
@@ -239,7 +262,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_cnt" class="col-sm-2 col-form-label">내용</label>
 		                        <div class="col-sm-10">
-		                            <textarea type="text" class="form-control content" id="m_cnt" name="cnt" placeholder="내용을 입력하세요"></textarea>
+		                            <textarea type="text" class="form-control content" id="m_cnt" name="cnt" placeholder="내용을 입력하세요" id="summernote"></textarea>
 		                        </div>
 		                    </div>
 		                    
@@ -248,13 +271,23 @@
 		                    <div class="mb-3 row">
 			                    <label for="m_file" class="col-sm-2 col-form-label">파일 첨부</label>
 			                        <div class="col-sm-10">
-			                           <input type="file" type="text" class="form-control" id="m_file" name="multifile" placeholder="파일을 선택하세요">
+			                           <input type="file" type="text" class="form-control" id="m_file" name="multifile" placeholder="파일을 선택하세요" multiple="multiple">
+		                    	</div>
 		                    </div>
-		
+		                    </form>
+		                    
+		                    <div class="mb-3 row fileBox">
+			                    <label for="m_file_area" class="col-sm-2 col-form-label">다운로드</label>
+		                        <div class="col-sm-10">
+		                        	<div id="m_file_area">
+									</div>
+	                    		</div>
+		                    </div>
 		                    
 				            </div>
-				        </form>
+				        
 		            <div class="modal-footer">
+		            	
 		                <button type="button" id="saveButton" class="btn btn-primary" onclick="saveBtn(param)">저장</button>
 		                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		            </div>
@@ -399,6 +432,43 @@
                             align: "center",
                             whiteSpace: 'normal',
                             width: 180
+                        },
+                        {
+                            header: '파일이름',
+                            name: 'fileNames',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 100,
+                            formatter: function(value) {
+                                let result = "";
+                                
+                                let fileNames = [];
+                                fileNames = JSON.parse(value.value.value);
+                                
+                                fileNames.forEach(function(f) {
+                                    result += f + "<br>";
+                                });
+                                
+                                return result;
+                            }
+                        },
+                        {
+                            header: '파일원본',
+                            name: 'fileOriNames',
+                            align: "center",
+                            whiteSpace: 'normal',
+                            width: 60,
+                            formatter: function(value) {
+                                let fileOriNames = [];
+                                fileOriNames = JSON.parse(value.value.value);
+                                
+                                let result = "";
+                                if (fileOriNames.length > 0) {
+                                    result = "<i class='fa-solid fa-download fa-lg fileIcon'></i></div>";
+                                }
+
+                                return result;
+                            }
                         }
                     ],
                     
@@ -425,11 +495,45 @@
             //정보 수정
             openModal: function (rowData) {
                 
+              	//초기화
+                $('#m_faq_id').val('');
+                $('#m_userid').val('');
+                $('#m_title').val('');
+                $('#m_cnt').val(''); 
+                $('#m_file').val(''); 
+                $('#m_file_area').html('');
+                
                 $('#m_faq_id').val(rowData.faqId || '');
                 $('#m_userid').val(rowData.userid || '');
                 $('#m_title').val(rowData.title || '');
                 $('#m_cnt').val(rowData.cnt || ''); 
-
+                
+                let fileOriNames = [];
+                fileOriNames = JSON.parse(rowData.fileOriNames.value);
+                
+                let fileNames = [];
+                fileNames = JSON.parse(rowData.fileNames.value);
+                
+                let divText = "";
+                
+                if (fileNames.length > 0) {
+                    $('.fileBox').removeClass('hidden');
+                    for (i=0; i<fileNames.length; i++) {
+                        divText += '<form method="post">' +
+                            '<div class="m_file_info">' +
+                        '<span class="m_file_name">' + fileNames[i] + '</span>' +
+                        '<input class="m_file_ori_name" value="' + fileOriNames[i] + '" name="fileName" type="hidden">' + 
+                        '<button type="button" class="bt down downloadBtn">다운로드</button>' +
+                        '<i class="fa-solid fa-trash-can trash"></i>' +
+                        '</div>' +
+                        '</form>';
+                    }
+                    
+                    $('#m_file_area').html(divText);
+                } else {
+                    $('.fileBox').addClass('hidden'); 
+                }
+                
                 let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
                     backdrop: 'static', 
                     keyboard: false 
@@ -471,7 +575,7 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        alert('선택된 목록이 없습니다.');
                         return;
                     }
 
@@ -489,7 +593,7 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 책이 삭제되었습니다.');
+                                alert('선택된 게시물이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
                                 alert('오류가 발생했습니다. 관리자에게 문의하세요.');
@@ -519,6 +623,14 @@
           	//db에 등록
             bindAddCntEvent: function() {
                 $('#addContent').on('click', function() {
+                    
+                  	//초기화
+                    $('#m_faq_id').val('');
+	                $('#m_userid').val('');
+	                $('#m_title').val('');
+	                $('#m_cnt').val(''); 
+	                $('#m_file').val(''); 
+	                $('#m_file_area').html('');
                     
                     let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
                         backdrop: 'static', 
@@ -559,7 +671,6 @@
         function saveBtn(action) {
             
             if (action == 'add') {
-                console.log('add');
                 
                 var userid = "${sessionScope.userid}";
                 
@@ -576,9 +687,6 @@
                 
                 
                 var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
                 
                $.ajax({
                    type: 'POST',
@@ -606,7 +714,6 @@
             }
             
             if (action == 'update') {
-                console.log('update');
                 
 				var userid = "${sessionScope.userid}";
                 
@@ -622,9 +729,6 @@
                 } 
                 
                 var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
                 
                 $.ajax({
                     type: 'post',
@@ -650,6 +754,40 @@
                 });
             }
         }
+        
+        $(document).on('click', '.trash', function(event) {
+            event.preventDefault(); 
+		    let info = $(this).closest('.m_file_info');
+		    let fileName = info.find('.m_file_ori_name').val();
+		    
+		    $.ajax({
+                type: 'post',
+                url: '/admin/faq/fileDeleteOne.do',
+                data: {
+                    fileName : fileName
+                },
+                success: function(response) {
+                    
+                    if (response === 'success') {
+                        alert('해당 파일이 삭제되었습니다.');
+                        info.addClass('hidden'); 
+                        bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
+                    } else {
+                        alert('에러가 발생했습니다.');
+                    }
+                },
+                error: function() {
+                    alert('에러가 발생했습니다.');
+                }
+            });
+        });
+        
+        $(document).on('click', '.downloadBtn', function(event) {
+		    event.preventDefault(); 
+		    let form = $(this).closest('form');
+		    form.attr('action', '/admin/faq/fileDownload.do'); 
+		    form.submit();
+        });
         
         </script>
     </body>

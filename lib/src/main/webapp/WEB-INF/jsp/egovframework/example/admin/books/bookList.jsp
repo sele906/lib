@@ -692,9 +692,13 @@
 		        }
 		        fr.readAsDataURL(files[0]);
 		    } else {
-		        console.log('hello');
+		        console.log('error');
 		    }
 		}
+        
+        $('.fileIcon').on('click', function(event){
+            console.log('hello');
+        });
         
         </script>
     </body>
