@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>LIBLIO - 희망도서 신청</title>
+        <title>LiBLIO - 희망도서 신청</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -31,6 +31,16 @@
 			}
 			.hidden {
 				display: none;
+			}
+			.pagination {
+				cursor: pointer;
+				font-weight: bold;
+			}
+			.page-item {
+			
+			}
+			.page-link {
+				color: #848484;
 			}
 			.page-link.select {
 				background-color: var(--bs-pagination-active-bg);
@@ -219,14 +229,14 @@
         <footer class="bg-dark py-4 mt-auto">
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
-                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
-                    <div class="col-auto">
+                    <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLO 2024</div></div>
+                    <!-- <div class="col-auto">
                         <a class="link-light small" href="#!">Privacy</a>
                         <span class="text-white mx-1">&middot;</span>
                         <a class="link-light small" href="#!">Terms</a>
                         <span class="text-white mx-1">&middot;</span>
                         <a class="link-light small" href="#!">Contact</a>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </footer>

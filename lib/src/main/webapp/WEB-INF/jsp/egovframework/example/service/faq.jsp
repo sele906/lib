@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>LIBLIO - FAQ</title>
+        <title>LiBLIO - FAQ</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -28,6 +28,16 @@
 				display: flex;
 				align-items: center;
 				justify-content: center;
+			}
+			.pagination {
+				cursor: pointer;
+				font-weight: bold;
+			}
+			.page-item {
+			
+			}
+			.page-link {
+				color: #848484;
 			}
 			.page-link.select {
 				background-color: var(--bs-pagination-active-bg);

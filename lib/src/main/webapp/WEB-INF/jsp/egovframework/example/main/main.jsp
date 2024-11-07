@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>LIBLIO - 메인화면</title>
+        <title>LiBLIO - 메인화면</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -25,10 +25,18 @@
        	<style type="text/css">
        	
        	#bgImg {
-       		background: url("/images/egovframework/lib/main/library_main.jpg") no-repeat fixed center;
-       		opacity: 0.7;
-       	}
-       	
+		    background-position: center center;
+		    background-repeat: no-repeat;
+		    background-attachment: fixed;
+		    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+		                url('/images/egovframework/lib/main/library_main.jpg');
+		}
+		.linkStyle {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		       	
        	</style>
         
     </head>
@@ -40,12 +48,12 @@
             <!-- Header-->
             <header class="bg-white">
             	<div id="bgImg">
-                <div class="container px-5" style="height: 400px; display: flex;">
+                <div class="container px-5" style="height: 400px; display: flex; justify-content: center;">
                     <div class="row gx-5 align-items-center justify-content-center">
-                        <div class="col-lg-8 col-xl-7 col-xxl-6">
+                        <div class="col-lg-8 col-xl-7 col-xxl-6" style="display: flex; justify-content: center;">
                             <div class="my-5 text-center text-xl-start">
                                 <h1 class="display-5 fw-bolder text-white mb-2">LiBLO</h1>
-                                <p class="lead fw-normal text-white-50 mb-4">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s most popular front-end open source toolkit!</p>
+                                <p class="lead fw-normal text-white-50 mb-4" style="font-size: 1em; width: 540px;">손쉽게 도서를 관리하고, 대출과 반납을 효율적으로 처리하는 도서 관리 시스템 LiBLO와 함께하세요.</p>
                                 <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
                                     <!-- <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
                                     <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a> -->
@@ -65,7 +73,7 @@
                         <div class="col-lg-8 col-xl-6">
                             <div class="text-center">
                                 <h2 class="fw-bolder">인기도서</h2>
-                                <p class="lead fw-normal text-muted mb-5">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Eaque fugit ratione dicta mollitia. Officiis ad.</p>
+                                <p class="lead fw-normal text-muted mb-5">가장 인기 있는 도서들을 한눈에 확인하고, 바로 대출해 보세요!</p>
                             </div>
                         </div>
                     </div>
@@ -152,24 +160,24 @@
                         <div class="col-lg-8">
                             <div class="row gx-5 row-cols-1 row-cols-md-2">
                                 <div class="col mb-5 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-collection"></i></div>
-                                    <h2 class="h5"><b>대출조회/연기</b></h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-book"></i></div>
+                                    <h2 class="h5"><b><a class="linkStyle" href="/mypage/loanList.do">대출조회/연기</a></b></h2>
+                                    <p class="mb-0">대출 중인 도서를 쉽게 확인하고,<br>반납 기한을 연장할 수 있습니다.</p>
                                 </div>
                                 <div class="col mb-5 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-building"></i></div>
-                                    <h2 class="h5"><b>대출이력</b></h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-clock-history"></i></div>
+                                    <h2 class="h5"><b><a class="linkStyle" href="/mypage/loanHistory.do">대출이력</a></b></h2>
+                                    <p class="mb-0">대출한 도서들의 내역을 한눈에 볼 수 있습니다.</p>
                                 </div>
                                 <div class="col mb-5 mb-md-0 h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5"><b>예약도서 조회</b></h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-bookmark"></i></div>
+                                    <h2 class="h5"><b><a class="linkStyle" href="/mypage/resvList.do">예약도서 조회</a></b></h2>
+                                    <p class="mb-0">예약한 도서의 상태를 확인하고,<br>대출 가능 여부를 알아보세요.</p>
                                 </div>
                                 <div class="col h-100">
-                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-toggles2"></i></div>
-                                    <h2 class="h5"><b>좌석 예약 조회</b></h2>
-                                    <p class="mb-0">Paragraph of text beneath the heading to explain the heading. Here is just a bit more text.</p>
+                                    <div class="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i class="bi bi-display"></i></div>
+                                    <h2 class="h5"><b><a class="linkStyle" href="/mypage/seatList.do">좌석 예약 조회</a></b></h2>
+                                    <p class="mb-0">도서관 좌석 예약 현황을 확인하고,<br>편리하게 이용하세요.</p>
                                 </div>
                             </div>
                         </div>
