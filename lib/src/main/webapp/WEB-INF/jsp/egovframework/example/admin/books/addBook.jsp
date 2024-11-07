@@ -425,7 +425,7 @@
                             ctg: row.type_name ? row.type_name.toString() : "",
                             publisher: row.pub_info ? row.pub_info.toString() : "",
                             cheonggu: row.call_no ? row.call_no.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
+                            isbn: row.isbn ? row.isbn.toString().substring(0,13) : ""
                         };
                     });
 

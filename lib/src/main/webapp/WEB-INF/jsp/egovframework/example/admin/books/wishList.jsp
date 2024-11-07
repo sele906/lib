@@ -663,7 +663,7 @@
                             ctg: row.ctgNm ? row.ctgNm.toString() : "",
                             publisher: row.publisher ? row.publisher.toString() : "",
                             cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
+                            isbn: row.isbn ? row.isbn.toString().substring(0,13) : ""
                         });
                     }
 

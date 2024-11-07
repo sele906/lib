@@ -101,6 +101,39 @@
 			.loanFalse {
 				color: var(--bs-danger);
 			}
+			
+			/* 샘플 */
+			.imgStyle {
+			    width: 100%;
+	    		height: 100%;
+			}
+			.imgSBox {
+				width: 100%;
+				height: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-bottom: 1px solid #e2e2e2;
+			}
+			/* 기능 */
+			.selectSBox {
+				display: flex;
+			    flex-direction: row;
+			    align-items: center;
+			    justify-content: start;
+			    margin: 10px 0 0 0;
+			}
+			
+			/* 대출가능 */
+			.loanSBtn {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-primary);
+				font-weight: bold;
+			}
+			.loanSBtn:hover, .loanSBtn:active {
+				color: var(--bs-body-bg);
+				background-color: var(--bs-link-hover-color);
+			}
 		</style>
     </head>
     <body class="d-flex flex-column">
@@ -109,7 +142,7 @@
             <%@ include file="../main/menu.jsp" %>
             
             <!-- Page Content-->
-            <section class="py-5">
+            <!-- <section class="py-5">
                 <div class="container px-5">
                     <h1 class="fw-bolder fs-5 mb-4">베스트자료</h1>
                     <div class="card border-0 shadow rounded-3 overflow-hidden">
@@ -120,10 +153,10 @@
                                         <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
                                         <div class="h2 fw-bolder">책제목</div>
                                         <p>저자 | 출판사</p>
-                                        <!-- <a class="stretched-link text-decoration-none" href="#!">
+                                        <a class="stretched-link text-decoration-none" href="#!">
                                             Read more
                                             <i class="bi bi-arrow-right"></i>
-                                        </a> -->
+                                        </a>
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-xl-7"><div class="bg-featured-blog" style="background-image: url('https://dummyimage.com/700x350/343a40/6c757d')"></div></div>
@@ -131,76 +164,38 @@
                         </div>
                     </div>
                 </div>
-            </section>
+            </section> -->
              
              <!-- Blog preview section-->
             <section class="py-5">
                 <div class="container px-5">
                     <h2 class="fw-bolder fs-5 mb-4">인기자료</h2>
+                    
                     <div class="row gx-5">
-                        <div class="col-lg-4 mb-5">
+                    
+                    <c:forEach var="row" items="${sampleList}">
+                    	<div class="col-lg-4 mb-5 rowBox">
                             <div class="card h-70 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x800/ced4da/6c757d" alt="..." />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">책제목</div></a>
-                                    <p class="card-text mb-0">저자 | 출판사</p>
-                                </div>
-                                <!-- <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
-                                            <div class="small">
-                                                <div class="fw-bold">Kelly Rowan</div>
-                                                <div class="text-muted">March 12, 2023 &middot; 6 min read</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
+                            <div class="card-img-top imgSBox">
+	                            <div>
+	                            	<img class="card-img-top imgStyle" src="/bookfile/${row.fileName}" alt="..."/>
+	                            </div>
+                            </div>
+                            <div class="card-body p-4">
+                                <div class="badge bg-primary bg-gradient rounded-pill mb-2">${row.ctgNm}</div>
+                                <h5 class="card-title mb-3"><b>${row.title}</b></h5>
+                                <p class="card-text mb-0">${row.author} | ${row.publisher}</p>
+                                <div class="selectSBox">
+								      	
+							      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
+							      	
+						      		<button type="button" class="btn loanSBtn">대출하기</button>
+							     </div>
+                            </div>
                             </div>
                         </div>
-                        <div class="col-lg-4 mb-5">
-                            <div class="card h-70 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x800/ced4da/6c757d" alt="..." />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">책제목</div></a>
-                                    <p class="card-text mb-0">저자 | 출판사</p>
-                                </div>
-                                <!-- <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
-                                            <div class="small">
-                                                <div class="fw-bold">Josiah Barclay</div>
-                                                <div class="text-muted">March 23, 2023 &middot; 4 min read</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
-                        <div class="col-lg-4 mb-5">
-                            <div class="card h-70 shadow border-0">
-                                <img class="card-img-top" src="https://dummyimage.com/600x800/ced4da/6c757d" alt="..." />
-                                <div class="card-body p-4">
-                                    <div class="badge bg-primary bg-gradient rounded-pill mb-2">종류</div>
-                                    <a class="text-decoration-none link-dark stretched-link" href="#!"><div class="h5 card-title mb-3">책제목</div></a>
-                                    <p class="card-text mb-0">저자 | 출판사</p>
-                                </div>
-                                <!-- <div class="card-footer p-4 pt-0 bg-transparent border-top-0">
-                                    <div class="d-flex align-items-end justify-content-between">
-                                        <div class="d-flex align-items-center">
-                                            <img class="rounded-circle me-3" src="https://dummyimage.com/40x40/ced4da/6c757d" alt="..." />
-                                            <div class="small">
-                                                <div class="fw-bold">Evelyn Martinez</div>
-                                                <div class="text-muted">April 2, 2023 &middot; 10 min read</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div> -->
-                            </div>
-                        </div>
+                    </c:forEach>
+                        
                     </div>
                     <!-- <div class="text-end mb-5 mb-xl-0">
                         <a class="text-decoration-none" href="#!">

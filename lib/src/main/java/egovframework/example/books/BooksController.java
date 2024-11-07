@@ -211,7 +211,9 @@ public class BooksController {
 	@RequestMapping(value = "newBooks.do")
 	public String newBooks(Model model) throws Exception {
 		List<EgovMap> list = booksDao.newlist();
+		List<EgovMap> sampleList = booksDao.sampleNewlist();
 
+		model.addAttribute("sampleList", sampleList);
 		model.addAttribute("list", list);
 		return "books/newBooks";
 	}
@@ -219,7 +221,9 @@ public class BooksController {
 	@RequestMapping(value = "bestBooks.do")
 	public String bestBooks(Model model) throws Exception {
 		List<EgovMap> list = booksDao.bestlist();
+		List<EgovMap> sampleList = booksDao.sampleBestlist();
 
+		model.addAttribute("sampleList", sampleList);
 		model.addAttribute("list", list);
 		return "books/bestBooks";
 	}

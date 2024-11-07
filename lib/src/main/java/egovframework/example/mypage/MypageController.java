@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ import egovframework.example.Pagination;
 import egovframework.example.books.service.impl.LikeDAO;
 import egovframework.example.books.service.impl.LoanDAO;
 import egovframework.example.books.service.impl.ResvDAO;
+import egovframework.example.member.service.MemberVO;
 import egovframework.example.member.service.impl.MemberDAO;
 import egovframework.example.service.impl.MultiDAO;
 import egovframework.example.service.impl.WishDAO;
@@ -55,6 +57,9 @@ public class MypageController {
 
 	@Resource(name = "WishFileService")
 	private WishFileService WishFileService;
+
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 
 	@RequestMapping(value = "loanList.do", method = RequestMethod.GET)
 	public String loanList(@RequestParam(name = "page", defaultValue = "1") int page, Model model, HttpSession session) throws Exception {
@@ -450,6 +455,69 @@ public class MypageController {
 		model.addAttribute("list", list);
 
 		return "mypage/likedList";
+	}
+
+	@RequestMapping(value = "memIndex.do", method = RequestMethod.GET)
+	public String memIndex(@RequestParam(name = "msg", required = false) String msg, Model model) throws Exception {
+		model.addAttribute("msg", msg);
+		return "mypage/memIndex";
+	}
+
+	@RequestMapping(value = "memInfo.do", method = RequestMethod.POST)
+	public String memInfo(MemberVO vo, HttpSession session, Model model) throws Exception {
+
+		String userid = (String) session.getAttribute("userid");
+		String passwd = MemDao.chkPasswd(userid);
+		boolean chk = passwordEncoder.matches(vo.getPasswd(), passwd);
+
+		if (chk) {
+			try {
+				MemberVO mvo = MemDao.getMemInfo(userid);
+				model.addAttribute("info", mvo);
+				return "mypage/memInfo";
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		return "redirect:/mypage/memIndex.do?msg=error";
+
+	}
+
+	@RequestMapping(value = "updateMem.do", method = RequestMethod.POST)
+	public String updateMem(MemberVO vo, HttpSession session, Model model) throws Exception {
+
+		vo.setBirth(java.sql.Date.valueOf(vo.getBirthdate()));
+		String encodePW = passwordEncoder.encode(String.valueOf(vo.getPasswd()));
+		vo.setPasswd(encodePW);
+
+		try {
+			MemDao.updateMem(vo);
+			model.addAttribute("msg", "updateMemSuccess");
+			return "redirect:/main.do";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/mypage/memIndex.do?msg=Memerror";
+
+	}
+
+	@RequestMapping(value = "deleteMem.do", method = RequestMethod.GET)
+	public String deleteMem(HttpSession session, Model model) throws Exception {
+
+		String userid = (String) session.getAttribute("userid");
+
+		try {
+			MemDao.deleteMem(userid);
+			session.invalidate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return "redirect:/main.do?msg=deleteMem";
+
 	}
 
 }
