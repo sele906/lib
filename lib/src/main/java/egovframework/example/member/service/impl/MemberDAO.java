@@ -61,4 +61,20 @@ public class MemberDAO {
 		return (EgovMap) sqlSession.selectOne("member.get_info", userid);
 	}
 
+	public String chkPasswd(String userid) {
+		return (String) sqlSession.selectOne("member.chk_passwd", userid);
+	}
+
+	public MemberVO getMemInfo(String userid) {
+		return (MemberVO) sqlSession.selectOne("member.get_mem_info", userid);
+	}
+
+	public void updateMem(MemberVO vo) {
+		sqlSession.update("member.update_mem", vo);
+	}
+
+	public void deleteMem(String userid) {
+		sqlSession.delete("member.delete_mem", userid);
+	}
+
 }

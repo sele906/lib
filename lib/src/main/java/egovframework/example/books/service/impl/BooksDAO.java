@@ -69,4 +69,24 @@ public class BooksDAO {
 		return list;
 	}
 
+	public List<EgovMap> sampleBestlist() {
+		List<EgovMap> list = null;
+		try {
+			list = sqlSession.selectList("books.sample_best");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	public List<EgovMap> sampleNewlist() {
+		List<EgovMap> list = null;
+		try {
+			list = sqlSession.selectList("books.sample_new");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
 }

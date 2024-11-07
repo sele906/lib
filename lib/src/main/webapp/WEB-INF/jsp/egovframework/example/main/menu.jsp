@@ -51,6 +51,7 @@
                         <li><a class="dropdown-item" href="/mypage/wishList.do">희망도서 신청내역</a></li>
                         <li><a class="dropdown-item" href="/mypage/seatList.do">좌석 예약 조회</a></li>
                         <li><a class="dropdown-item" href="/mypage/likedList.do">관심도서 조회</a></li>
+                        <li><a class="dropdown-item" href="/mypage/memIndex.do">회원정보 수정</a></li>
                     </ul>
                 </li>
                 
