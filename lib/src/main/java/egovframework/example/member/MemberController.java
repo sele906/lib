@@ -137,8 +137,8 @@ public class MemberController {
 				int randomNumber = 10000000 + random.nextInt(90000000);
 				String val = String.valueOf(randomNumber);
 
-				messageHelper.setSubject("[LIBLIO] 이메일 인증을 진행해주세요");
-				messageHelper.setText("LIBLIO 도서관리 시스템 회원가입을 위해 인증코드를 화면에 입력해주세요. 인증코드: " + val);
+				messageHelper.setSubject("[LiBLIO] 이메일 인증을 진행해주세요");
+				messageHelper.setText("LiBLIO 도서관리 시스템 회원가입을 위해 인증코드를 화면에 입력해주세요. 인증코드: " + val);
 				mailSender.send(mimeMessage);
 				return val;
 
@@ -157,7 +157,7 @@ public class MemberController {
 				vo.setPasswd(passwd);
 				memberDAO.setPwd(vo);
 
-				messageHelper.setSubject("[LIBLIO] 비밀번호 초기화");
+				messageHelper.setSubject("[LiBLIO] 비밀번호 초기화");
 				messageHelper.setText("비밀번호 재설정을 위한 임시 코드를 발송했습니다. 임시코드: " + randomString);
 				mailSender.send(mimeMessage);
 

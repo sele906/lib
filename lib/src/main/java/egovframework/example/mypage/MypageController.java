@@ -181,7 +181,7 @@ public class MypageController {
 
 					String msg = "<div>" + "해당 도서가 대출 가능합니다.<br><br>" + "<b>\"" + title + "\"</b><br>" + author + " [저]<br><br>" + "지금 바로 도서관에서 만나보세요!<br>" + "</div>";
 
-					messageHelper.setSubject("[LIBLIO] " + userid + "님, 예약된 도서가 대출가능 상태입니다.");
+					messageHelper.setSubject("[LiBLIO] " + userid + "님, 예약된 도서가 대출가능 상태입니다.");
 					messageHelper.setText(msg, true);
 					mailSender.send(mimeMessage);
 
