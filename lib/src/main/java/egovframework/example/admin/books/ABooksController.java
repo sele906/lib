@@ -34,7 +34,6 @@ import egovframework.example.admin.books.service.AWishFileService;
 import egovframework.example.admin.books.service.BookVO;
 import egovframework.example.admin.books.service.impl.ABooksDAO;
 import egovframework.example.admin.books.service.impl.AWishDAO;
-import egovframework.example.service.impl.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -44,7 +43,7 @@ public class ABooksController {
 
 	@Resource(name = "AFileService")
 	private AFileService AFileService;
-	
+
 	@Resource(name = "AWishFileService")
 	private AWishFileService AWishFileService;
 
@@ -68,8 +67,7 @@ public class ABooksController {
 	// 희망도서 데이터
 	@ResponseBody
 	@RequestMapping(value = "wishData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String wishData(@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+	public String wishData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
 
 		try {
 			// 키워드와 페이지 전달
@@ -124,7 +122,7 @@ public class ABooksController {
 	@ResponseBody
 	@RequestMapping(value = "wishUpdateData.do", method = RequestMethod.POST)
 	public String wishUpdateData(WishVO vo, @RequestParam(name = "multifile") MultipartFile multifile) throws Exception {
-		
+
 		try {
 			AwishDao.updateWishBook(vo);
 			AWishFileService.updateWishImage(vo.getWishId(), vo.getCtgId(), multifile);
@@ -135,7 +133,6 @@ public class ABooksController {
 		return "success";
 	}
 
-	
 	@ResponseBody
 	@RequestMapping(value = "wishDeleteBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String wishDeleteBook(@RequestBody String param) throws Exception {
@@ -143,9 +140,7 @@ public class ABooksController {
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> dataList = objectMapper.readValue(param,
-				new TypeReference<List<Map<String, Object>>>() {
-				});
+		List<Map<String, Object>> dataList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
 
 		for (Map<String, Object> data : dataList) {
 
@@ -166,19 +161,17 @@ public class ABooksController {
 			return "error";
 		}
 	}
-	
+
 	// DB에 삽입
 	@ResponseBody
 	@RequestMapping(value = "insertWishBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertWishBook(@RequestBody String param) throws Exception {
-		
+
 		System.out.println(param);
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> bookList = objectMapper.readValue(param,
-				new TypeReference<List<Map<String, Object>>>() {
-				});
+		List<Map<String, Object>> bookList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
 
 		for (Map<String, Object> bookMap : bookList) {
 
@@ -227,13 +220,11 @@ public class ABooksController {
 	// api 데이터 불러오기
 	@ResponseBody
 	@RequestMapping(value = "apiData.do", method = RequestMethod.GET, produces = "application/xml; charset=utf-8")
-	public String apiData(@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "kwd", defaultValue = "토지") String kwdData) throws Exception {
+	public String apiData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "토지") String kwdData) throws Exception {
 
 		String key = URLEncoder.encode(nlApiKey, "UTF-8");
 		String kwd = URLEncoder.encode(kwdData, "UTF-8");
-		String apiURL = "https://www.nl.go.kr/NL/search/openApi/search.do?key=" + key + "&kwd=" + kwd + "&pageNum="
-				+ pageNum;
+		String apiURL = "https://www.nl.go.kr/NL/search/openApi/search.do?key=" + key + "&kwd=" + kwd + "&pageNum=" + pageNum;
 
 		URL url = new URL(apiURL);
 		HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -288,9 +279,7 @@ public class ABooksController {
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> bookList = objectMapper.readValue(param,
-				new TypeReference<List<Map<String, Object>>>() {
-				});
+		List<Map<String, Object>> bookList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
 
 		for (Map<String, Object> bookMap : bookList) {
 
@@ -342,8 +331,7 @@ public class ABooksController {
 	// 도서 데이터
 	@ResponseBody
 	@RequestMapping(value = "bookData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
-	public String bookData(@RequestParam(name = "page", defaultValue = "1") int pageNum,
-			@RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
+	public String bookData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
 
 		// 키워드와 페이지 전달
 		Pagination pinfo = new Pagination();
@@ -407,21 +395,23 @@ public class ABooksController {
 
 		String result = "";
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> dataList = objectMapper.readValue(param,
-				new TypeReference<List<Map<String, Object>>>() {
-				});
+		try {
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<Map<String, Object>> dataList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
 
-		for (Map<String, Object> data : dataList) {
+			for (Map<String, Object> data : dataList) {
 
-			int id = Integer.parseInt(data.get("id").toString());
+				int id = Integer.parseInt(data.get("id").toString());
 
-			// 파일 삭제
-			AFileService.deleteFile(id);
+				// 파일 삭제
+				AFileService.deleteFile(id);
 
-			// 데이터 삭제
-			AbooksDao.deleteBook(id);
+				// 데이터 삭제
+				AbooksDao.deleteBook(id);
 
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 		result = "success";

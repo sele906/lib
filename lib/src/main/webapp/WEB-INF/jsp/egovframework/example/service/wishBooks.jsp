@@ -90,43 +90,54 @@
                 <div class="container px-5 my-5">
                     <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
                     
+                    <div id="gridBox">
+                    
                     <c:forEach var="i" items="${list}">
-	                        
-	                        <div class="col mb-5 mb-5 mb-xl-5 item">
-	                            <div class="text-center">
-                                
-						      		<c:choose>
-						            <c:when test="${fn:contains(i.image_url, '.jpg') || fn:contains(i.image_url, '.png')}">
-						                <img class="img-fluid mb-4 px-4"  src="${i.image_url}">
-						            </c:when>
-						            <c:otherwise>
-						                <img  class="img-fluid mb-4 px-4"  src="/images/egovframework/lib/cmmn/blank.png">
-						            </c:otherwise>
-						        </c:choose>
-								
-								<div class="infoBox">
-									<h5 class="fw-bolder"><a href="https://www.nl.go.kr/${i.detail_link}" target='_blank'>${i.title_info}</a></h5>
-	                                <div class="fst-italic text-muted">${i.author_info} <br> ${i.pub_info}</div>
-								</div>
-                                
-                                <form method="post" class=dataForm>
-                                
-                                <input type="hidden" name="url" value="${i.image_url}"/>
-                                <input type="hidden" name="title" value="${i.title_info}"/>
-                                <input type="hidden" name="author" value="${i.author_info}"/>
-                                <input type="hidden" name="publisher" value="${i.pub_info}"/>
-                                <input type="hidden" name="ctgId" value="${i.type_code}"/>
-                                <input type="hidden" name="cheonggu" value="${i.call_no}"/>
-                                <input type="hidden" name="isbn" value="${i.isbn}"/>
-                                
-                                </form>
-                                
-                                
-                                <button class="btn btn-success wishBtn wish my-2">신청하기</button>
-                            </div>
-                        </div>
+                    
+                    <div class="card h-100 gridItem">
+                    	<div class="imgBox">
+                    		<div>
+                    		<c:choose>
+					            <c:when test="${fn:contains(i.image_url, '.jpg') || fn:contains(i.image_url, '.png')}">
+					                <img class="card-img-top imgStyle" src="${i.image_url}">
+					            </c:when>
+					            <c:otherwise>
+					                <img  class="card-img-top imgStyle" src="/images/egovframework/lib/cmmn/blank.png">
+					            </c:otherwise>
+					        </c:choose>
+                    		
+                    			
+                    		</div>
+                    	</div>
+                    	
+                    	<div class="card-body infoBox">
+	                        <h5 class="card-title">
+	                            <a href="https://www.nl.go.kr/${i.detail_link}" target="_blank">${i.title_info}</a>
+	                        </h5>
+	                        <p class="card-text bookInfo">
+	                            <div class="author">${i.author_info}</div>
+	                            <div class="pub">${i.pub_info}</div>
+	                        </p>
+	                    </div>
+                    	
+	                    <div class="card-footer btnBox">
+	                        <form method="post" class="dataForm d-none">
+	                            <input type="hidden" name="url" value="${i.image_url}">
+	                            <input type="hidden" name="title" value="${i.title_info}">
+	                            <input type="hidden" name="author" value="${i.author_info}">
+	                            <input type="hidden" name="publisher" value="${i.pub_info}">
+	                            <input type="hidden" name="ctgId" value="${i.type_code}">
+	                            <input type="hidden" name="cheonggu" value="${i.call_no}">
+	                            <input type="hidden" name="isbn" value="${i.isbn}">
+	                        </form>
+	                        <button class="btn btn-success wishBtn wish w-100">신청하기</button>
+	                    </div>
+                    
+                    </div>
+                    
+                    </c:forEach>
                         
-                        </c:forEach>
+                        </div>
                         
                     </div>
                 </div>
