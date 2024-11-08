@@ -31,6 +31,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.mypage.Pagination8;
 import egovframework.example.service.impl.FaqDAO;
 import egovframework.example.service.impl.MultiDAO;
 import egovframework.example.service.impl.WishDAO;
@@ -63,9 +64,9 @@ public class ServiceController {
 
 		String key = URLEncoder.encode(nlApiKey, "UTF-8");
 		String kwd = URLEncoder.encode(kwdData, "UTF-8");
-		String apiURL = "https://www.nl.go.kr/NL/search/openApi/search.do?key=" + key + "&kwd=" + kwd + "&pageNum=" + page;
+		String apiURL = "https://www.nl.go.kr/NL/search/openApi/search.do?key=" + key + "&kwd=" + kwd + "&pageNum=" + page + "&pageSize=8";
 
-		Pagination pinfo = new Pagination();
+		Pagination8 pinfo = new Pagination8();
 		pinfo.setPage(page);
 		pinfo.setsKey(kwdData);
 

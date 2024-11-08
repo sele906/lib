@@ -363,8 +363,6 @@
 	            alert('회원정보를 수정하시겠습니까?');
 	            $('#updateForm').submit();
 	        }
-	        
-	        
 		}
 		
 		function quitMem() {

@@ -250,7 +250,7 @@ public class MypageController {
 		//키워드와 페이지 전달
 		String userid = (String) session.getAttribute("userid");
 
-		Pagination pinfo = new Pagination();
+		Pagination8 pinfo = new Pagination8();
 		pinfo.setsKey(sKey);
 		pinfo.setPage(pageNum);
 
@@ -309,7 +309,7 @@ public class MypageController {
 		//키워드와 페이지 전달
 		String userid = (String) session.getAttribute("userid");
 
-		Pagination pinfo = new Pagination();
+		Pagination8 pinfo = new Pagination8();
 		pinfo.setsKey(sKey);
 		pinfo.setPage(pageNum);
 
@@ -420,7 +420,7 @@ public class MypageController {
 		//키워드와 페이지 전달
 		String userid = (String) session.getAttribute("userid");
 
-		Pagination pinfo = new Pagination();
+		Pagination8 pinfo = new Pagination8();
 		pinfo.setsKey(sKey);
 		pinfo.setPage(pageNum);
 

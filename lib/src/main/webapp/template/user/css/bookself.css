@@ -38,3 +38,76 @@
 	flex-direction: column;
 	align-items: center;
 }
+
+#gridBox {
+	width: 100%;
+	display: grid;
+	grid-gap: 20px;
+	border-bottom: 1px solid #d4d4d4;
+	grid-template-columns: repeat(4, 1fr); /* 열개수 */
+	/* grid-template-rows: repeat(4, 1fr); */ /* 행개수 */
+}
+
+.gridItem {
+	min-width: 200px;
+	height: 300px;
+}
+
+.imgBox {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.imgBox.imgStyle {
+	border-radius: 0;
+}
+
+.infoBox {
+	padding: 15px 15px 10px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.btnBox {
+	padding: 0 15px 15px 15px;
+	border: 0;
+    background-color: var(--bs-card-bg);
+}
+
+/* 반응형 */
+@media ( max-width : 1172px) {
+	#gridBox {
+		/* width: 600px; */
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+@media ( max-width : 786px) {
+	#gridBox {
+		/* width: 400px; */
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media ( max-width : 375px) {
+	#gridBox {
+		/* width: 200px; */
+		display: grid;
+		grid-template-columns: repeat(1, 1fr);
+	}
+}
+
+
+
+
+
+
+
+
+
+
