@@ -43,7 +43,8 @@
 				width: 100px;
 			}
 			.tmpPlace {
-			    width: 100%;
+			   width: 100%;
+    			text-align: center;
 			 }
 			 .pagination {
 				cursor: pointer;
@@ -97,69 +98,54 @@
                     <div class="text-center">
                     </div>
                     
+                    <c:if test="${empty list}">
+	                    <div class="tmpPlace">
+	                   		 관심도서가 없습니다.
+	                    </div>
+                    </c:if>
+                    
                     <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+	                    
+	                   <div id="gridBox">
+                    
+                    	<c:forEach var="i" items="${list}">
+                    
+                    	<div class="card h-100 gridItem item">
+                    	<div class="imgBox">
+                    		<div>
+                    		<c:choose>
+					            <c:when test="${not empty i.fileName}">
+					                <img class="card-img-top imgStyle"  src="/bookfile/${i.fileName}">
+					            </c:when>
+					            <c:otherwise>
+					                <img  class="card-img-top imgStyle"  src="/images/egovframework/lib/cmmn/blank.png">
+					            </c:otherwise>
+					        </c:choose>
+                    			
+                    		</div>
+                    	</div>
+                    	
+                    	<div class="card-body infoBox">
+	                        <h5 class="card-title">
+	                            <b>${i.title}</b>
+	                        </h5>
+	                        <p class="card-text bookInfo">
+	                            <span class="author"><b>저자</b> ${i.author}</span><br>
+	                            <span class="pub"><b>출판사</b> ${i.publisher}</span>
+	                        </p>
+	                    </div>
+                    	
+	                    <div class="card-footer btnBox">
+	                    	<input type="hidden" name="bookId" value="${i.bookId}"/>
+	                    	<input type="hidden" name="loanId" value="${i.loan}"/>
+	                         <button class="btn btn-danger likeBtn liked w-100">관심해제</button>
+	                    </div>
+                    
+                    </div>
+                    
+                    </c:forEach>
                         
-                        <c:if test="${empty list}">
-		                    <div class="tmpPlace">
-		                   		 관심도서가 없습니다.
-		                    </div>
-	                    </c:if>
-                        
-                        <c:forEach var="i" items="${list}">
-                        
-                        <div class="col mb-5 mb-5 mb-xl-5 item">
-                            <div class="text-center">
-						      	<c:choose>
-						            <c:when test="${not empty i.fileName}">
-						                <img class="img-fluid mb-4 px-4"  src="/bookfile/${i.fileName}">
-						            </c:when>
-						            <c:otherwise>
-						                <img  class="img-fluid mb-4 px-4"  src="/images/egovframework/lib/cmmn/blank.png">
-						            </c:otherwise>
-						        </c:choose>
-										
-								<input type="hidden" name="bookId" value="${i.bookId}"/>
-                                <h5 class="fw-bolder">${i.title}</h5>
-                                <div class="fst-italic text-muted">${i.author} <br> ${i.publisher}</div>
-                                
-                                <button class="btn btn-danger likeBtn liked my-2">관심해제</button>
-                                
-                                <%-- <div class="selectBox">
-                                <input type="hidden" name="bookId" value="${i.bookId}"/>
-                                <input type="hidden" name="loanId" value="${i.loan}"/>
-                                
-                                <button class="btn btn-danger likeBtn liked my-2">관심해제</button>
-                                
-                                ${i.loanState}
-                                ${i.loan}
-                                ${i.resv}
-                                
-                                <c:choose>
-							    <c:when test="${i.loanState == 'Y'}">
-							        <c:choose>
-							            <c:when test="${i.loan != 0}">
-							                <button class="btn btn-primary selectBtn returnBtn">반납하기</button>
-							            </c:when>
-							            <c:when test="${i.resv != 0}">
-							                <button class="btn btn-warning selectBtn resvRedoBtn">예약취소</button>
-							            </c:when>
-							            <c:otherwise>
-							                <button class="btn btn-warning selectBtn resvBtn">예약하기</button>
-							            </c:otherwise>
-							        </c:choose>
-							    </c:when>
-							
-							    <c:when test="${i.loanState == 'N'}">
-							        <button class="btn btn-primary selectBtn loanBtn">대출하기</button>
-							    </c:when>
-							</c:choose>
-							
-							</div> --%>
-                                
-                            </div>
-                        </div>
-                        
-                        </c:forEach>
+                    </div>
                     </div>
                     
                     </div>
@@ -201,8 +187,7 @@
 				        </c:choose>
 				        
 				        </ul> 
-                    
-                </div>
+                	</div>
             </section>
         </main>
         <!-- Footer-->

@@ -98,6 +98,9 @@
                     	<div class="imgBox">
                     		<div>
                     		<c:choose>
+                    			<c:when test="${fn:contains(i.image_url, 'null')}">
+					                <img  class="card-img-top imgStyle" src="/images/egovframework/lib/cmmn/blank.png">
+					            </c:when>
 					            <c:when test="${fn:contains(i.image_url, '.jpg') || fn:contains(i.image_url, '.png')}">
 					                <img class="card-img-top imgStyle" src="${i.image_url}">
 					            </c:when>
@@ -112,11 +115,11 @@
                     	
                     	<div class="card-body infoBox">
 	                        <h5 class="card-title">
-	                            <a href="https://www.nl.go.kr/${i.detail_link}" target="_blank">${i.title_info}</a>
+	                            <a class="titleStyle" href="https://www.nl.go.kr/${i.detail_link}" target="_blank"><b>${i.title_info}</b></a>
 	                        </h5>
 	                        <p class="card-text bookInfo">
-	                            <div class="author">${i.author_info}</div>
-	                            <div class="pub">${i.pub_info}</div>
+	                            <span class="author"><b>저자</b> ${i.author_info}</span><br>
+	                            <span class="pub"><b>출판사</b> ${i.pub_info}</span>
 	                        </p>
 	                    </div>
                     	

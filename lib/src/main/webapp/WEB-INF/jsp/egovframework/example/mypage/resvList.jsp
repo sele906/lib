@@ -34,6 +34,7 @@
 			}
 			.tmpPlace {
 			    width: 100%;
+			    text-align: center;
 			 }
 			 .pagination {
 				cursor: pointer;
@@ -87,37 +88,54 @@
                 <div class="container px-5 my-5 pageBox">
                     <div class="text-center">
                     </div>
+                    
+                    <c:if test="${empty list}">
+	                    <div class="tmpPlace">
+	                   		 예약도서가 없습니다.
+	                    </div>
+                    </c:if>
 
                     <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
                         
-                        <c:if test="${empty list}">
-		                    <div class="tmpPlace">
-		                   		 예약도서가 없습니다.
-		                    </div>
-	                    </c:if>
-                        
-                        <c:forEach var="i" items="${list}">
-                        
-                        <div class="col mb-5 mb-5 mb-xl-5 item">
-                            <div class="text-center">
-                                
-						      		<c:choose>
+                        <div id="gridBox">
+                    
+	                    	<c:forEach var="i" items="${list}">
+	                    
+	                    	<div class="card h-100 gridItem item">
+	                    	<div class="imgBox">
+	                    		<div>
+	                    		<c:choose>
 						            <c:when test="${not empty i.fileName}">
-						                <img class="img-fluid mb-4 px-4"  src="/bookfile/${i.fileName}">
+						                <img class="card-img-top imgStyle"  src="/bookfile/${i.fileName}">
 						            </c:when>
 						            <c:otherwise>
-						                <img  class="img-fluid mb-4 px-4"  src="/images/egovframework/lib/cmmn/blank.png">
+						                <img  class="card-img-top imgStyle"  src="/images/egovframework/lib/cmmn/blank.png">
 						            </c:otherwise>
 						        </c:choose>
-										
-								<input type="hidden" name="bookId" value="${i.bookId}"/>
-                                <h5 class="fw-bolder">${i.title}</h5>
-                                <div class="fst-italic text-muted">${i.author} <br> ${i.publisher}</div>
-                                <button class="btn btn-warning resvBtn resv my-2">예약취소</button>
-                            </div>
-                        </div>
-                        
-                        </c:forEach>
+	                    			
+	                    		</div>
+	                    	</div>
+	                    	
+	                    	<div class="card-body infoBox">
+		                        <h5 class="card-title">
+		                            <b>${i.title}</b>
+		                        </h5>
+		                        <p class="card-text bookInfo">
+		                            <span class="author"><b>저자</b> ${i.author}</span><br>
+		                            <span class="pub"><b>출판사</b> ${i.publisher}</span>
+		                        </p>
+		                    </div>
+	                    	
+		                    <div class="card-footer btnBox">
+		                    	<input type="hidden" name="bookId" value="${i.bookId}"/>
+		                         <button class="btn btn-warning resvBtn resv w-100">예약취소</button>
+		                    </div>
+	                    
+	                    </div>
+	                    
+	                    </c:forEach>
+	                        
+	                    </div>
                     </div>
                     
                     </div>
