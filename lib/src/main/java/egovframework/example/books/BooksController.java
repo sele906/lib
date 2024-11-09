@@ -95,7 +95,32 @@ public class BooksController {
 	@RequestMapping(value = "loan.do", method = RequestMethod.GET)
 	public String loan(@RequestParam(name = "bookId") int bookId, @RequestParam(name = "userid") String userid) throws Exception {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> response = new HashMap<>();
+		
+		//연체 상태인지 확인
+		EgovMap emap = loanDao.overdueCount(userid);
+		if (emap != null) {
+			if (emap.get("overdueState").equals("Y")) {
+				response.put("status", "overdue");
+	            response.put("dueCount", emap.get("dueCount").toString());
+	            // Convert the response map to JSON and return
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            return objectMapper.writeValueAsString(response);
+			}
+		}
+	
+		//몇 권 빌렸는지 확인
+		EgovMap loanBook = loanDao.loanBookCount(userid);
+		if (loanBook != null) {
+			int loanBookCount = Integer.parseInt(loanBook.get("count").toString());
+			System.out.println(loanBookCount);
+			if (loanBookCount > 14) {
+				response.put("status", "toomuchbook");
+	            // Convert the response map to JSON and return
+	            ObjectMapper objectMapper = new ObjectMapper();
+	            return objectMapper.writeValueAsString(response);
+			}
+		}
 
 		LoanVO vo = new LoanVO();
 		vo.setUserid(userid);
@@ -108,7 +133,8 @@ public class BooksController {
 		vo.setReturnDate(Date.valueOf(returnDateLocal));
 
 		int idx = loanDao.loanInsert(vo);
-		map.put("idx", idx);
+		response.put("status", "success");
+	    response.put("idx", idx);
 
 		//예약도서라면
 		EgovMap param = new EgovMap();
@@ -119,13 +145,13 @@ public class BooksController {
 		try {
 			ResvDao.resvDelete(param);
 			resvCnt = ResvDao.resvChkResvCnt(bookId);
-			map.put("resvCnt", resvCnt);
+			response.put("resvCnt", resvCnt);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		String result = objectMapper.writeValueAsString(map);
+		String result = objectMapper.writeValueAsString(response);
 
 		return result;
 	}
