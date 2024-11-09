@@ -13,6 +13,7 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -31,6 +32,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.admin.faq.service.AFaqFileService;
 import egovframework.example.mypage.Pagination8;
 import egovframework.example.service.impl.FaqDAO;
 import egovframework.example.service.impl.MultiDAO;
@@ -55,6 +57,9 @@ public class ServiceController {
 
 	@Resource(name = "FaqDAO")
 	private FaqDAO faqDao;
+	
+	@Resource(name = "AFaqFileService")
+	private AFaqFileService fileService;
 
 	@Resource(name = "WishFileService")
 	private WishFileService WishFileService;
@@ -241,6 +246,20 @@ public class ServiceController {
 			e.printStackTrace();
 		}
 		return "error";
+	}
+	
+	//파일 다운로드
+	@ResponseBody
+	@RequestMapping(value = "/fileDownload.do", method = RequestMethod.POST)
+	public void fileDownload(@RequestParam(name = "fileName") String fileName, HttpServletResponse response, Model model) throws Exception {
+
+		//파일 다운로드
+		try {
+			fileService.downloadFile(response, fileName);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

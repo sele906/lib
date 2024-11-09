@@ -45,17 +45,26 @@
 			}
 			.fileArea {
 				display: flex;
-			    flex-direction: row;
+			    flex-direction: column;
 			    width: 100%;
-			    justify-content: flex-start;
-			    align-items: center;
 			    margin: 10px 0;
+			}
+			.imgArea {
+				display: flex;
+			    width: 100%;
+			    justify-content: start;
+			}
+			.notImgArea {
+				display: flex;
+			    width: 100%;
+			    justify-content: start;
+			    flex-direction: column;
+			    margin: 10px 0 0 0;
 			}
 			.imgSize {
 				height: 120px;
 			    border: 1px solid #dadada;
 			    padding: 10px;
-			    margin: 0 5px;
 			    display: flex;
 			    justify-content: center;
 			    align-items: center;
@@ -63,8 +72,34 @@
 			.imgSize img {
 				width: 100%;
 			    height: 100%;
-			    margin: 0 5px;
 			}
+			.downFileBox{
+			    width: 100%;
+			    border: 1px solid #dadada;
+			    padding: 10px;
+			    display: flex;
+			    align-items: center;
+			}
+			.downFileBox:hover {
+				cursor: pointer;
+				
+			}
+			.downLinkStyle {
+			    color: #2775e7;
+			    text-decoration: none;
+			}
+			.downLinkStyle:hover {
+				color: #1e5cb7;
+			}
+			.downIconStyle {
+			    margin: 0 10px;
+			    font-size: 1em;
+			    color: #2775e7;
+			}
+			.downIconStyle:hover {
+				color: #1e5cb7;
+			}
+			
 		</style>
     </head>
     <body class="d-flex flex-column h-100">
@@ -215,14 +250,22 @@
 		                data: { faqId: faqId },
 		                dataType: 'json',
 		                success: function(data) {
-		                    var result = "";
+		                	
+		                    var imgFile = "";
+		                    var downFile = "";
+		                    
 		                    data.forEach(function(row) {
 		                        if (row.faqFileOriName.includes(".png") || row.faqFileOriName.includes(".jpg")) {
-		                            var path = "/faqfile/" + row.faqFileOriName;
-			                        result += "<div class='imgSize' ><img src='" + path + "' alt='" + row.faqFileOriName + "' /></div>";
+		                        	var path = "/faqfile/" + row.faqFileOriName;
+		                        	imgFile += "<div class='imgSize' ><img src='" + path + "' alt='" + row.faqFileOriName + "' /></div>";
+		                        } else {
+		                        	var path = row.faqFileOriName;
+		                        	downFile += "<div class='downFileBox'><form class='downloadFileForm' method='post'><input type='hidden' name='fileName' value='" + path + "'><a class='downLinkStyle'>" + row.faqFileName + "</a><i class='fa-solid fa-download fa-lg fileIcon downIconStyle'></i></form></div>";
+		                        	
 		                        }
 		                    });
-		                    fileArea.html(result);
+		                    fileArea.html("<div class='imgArea'>" + imgFile + "</div>");
+		                    fileArea.append("<div class='notImgArea'>" + downFile + "</div>");
 		                },
 		                error: function() {
 		                    console.error('Failed to load file data for faqId:', faqId);
@@ -241,7 +284,18 @@
 		            var faqId = fileArea.data('faq-id');
 		            loadFileData(faqId, fileArea);
 		        });
+		        
+		        $(document).on('click', '.downFileBox', function(event) {
+		            event.preventDefault(); 
+
+		            let form = $(this).find('form');  
+
+		            form.attr('action', '/service/fileDownload.do'); 
+	                form.submit();
+		        });
 		    });
+		    
+		    
 		</script>
         
     </body>

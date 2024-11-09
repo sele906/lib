@@ -464,7 +464,7 @@
                                 
                                 let result = "";
                                 if (fileOriNames.length > 0) {
-                                    result = "<i class='fa-solid fa-download fa-lg fileIcon'></i></div>";
+                                    result = "<div><i class='fa-solid fa-download fa-lg fileIcon'></i></div>";
                                 }
 
                                 return result;
