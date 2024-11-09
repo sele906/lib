@@ -85,19 +85,26 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 
 	@Override
 	public void downloadFile(HttpServletResponse response, String fileName) throws Exception {
+		
+		try {
+			File file = new File(path + "\\" + fileName);
+			
+			byte fileByte[] = FileUtils.readFileToByteArray(file);
 
-		File file = new File(path + "\\" + fileName);
-		byte fileByte[] = FileUtils.readFileToByteArray(file);
+			response.setContentType("application/octet-stream");
+			response.setContentLengthLong(fileByte.length);
 
-		response.setContentType("application/octet-stream");
-		response.setContentLengthLong(fileByte.length);
+			response.setHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\";");
+			response.setHeader("Content-TransferEncoding", "binary");
 
-		response.setHeader("Content-Disposition", "attachment;filename=\"" + URLEncoder.encode(fileName, "UTF-8") + "\";");
-		response.setHeader("Content-TransferEncoding", "binary");
+			response.getOutputStream().write(fileByte);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		response.getOutputStream().write(fileByte);
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
+		
 	}
 
 	//특정 게시물의 파일들 삭제
