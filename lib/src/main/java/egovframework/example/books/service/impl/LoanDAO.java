@@ -83,8 +83,8 @@ public class LoanDAO {
 		}
 	}*/
 
-	public String loanChkOverdue(Map<String, Object> map) {
-		String overdue = null;
+	public EgovMap loanChkOverdue(Map<String, Object> map) {
+		EgovMap overdue = null;
 		try {
 			overdue = sqlSession.selectOne("loan.loan_chk_overdue", map);
 		} catch (Exception e) {
@@ -136,6 +136,26 @@ public class LoanDAO {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("loan.loan_chk_resv", loanId);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return emap;
+	}
+	
+	public EgovMap overdueCount(String userid) {
+		EgovMap emap = null;
+		try {
+			emap = sqlSession.selectOne("loan.overdue_count", userid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return emap;
+	}
+	
+	public EgovMap loanBookCount(String userid) {
+		EgovMap emap = null;
+		try {
+			emap = sqlSession.selectOne("loan.loan_book_count", userid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

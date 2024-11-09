@@ -145,11 +145,12 @@ public class MypageController {
 	@ResponseBody
 	@RequestMapping(value = "returnState.do", method = RequestMethod.GET)
 	public String returnState(@RequestParam(name = "loanId") int loanId, HttpSession session) throws Exception {
-
+		
 		String oriUserid = (String) session.getAttribute("userid");
+		String result = "";
 
 		try {
-
+			
 			LocalDate today = LocalDate.now();
 
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -157,14 +158,18 @@ public class MypageController {
 			map.put("loanId", loanId);
 
 			//반납일-대출일 > 대출기간 인지 확인
-			String overdue = loanDao.loanChkOverdue(map);
+			EgovMap dueEmap = loanDao.loanChkOverdue(map); //연체여부 말고도 연체일자 가져오기
 
-			if (overdue.equals("Y")) {
+			if (dueEmap.get("overdueState").equals("Y")) {
 				//대출상태와 대출기간 업데이트
 				loanDao.loanOverdueUpdate(map);
-			} else if (overdue.equals("N")) {
+				//ㅇㅇ일동안 대여 불가능하다는 메세지 넣기
+				result = dueEmap.get("dueCount").toString();
+				
+			} else if (dueEmap.get("overdueState").equals("N")) {
 				//대출상태와 대출기간 업데이트
 				loanDao.loanUpdate(map);
+				result = "success";
 			}
 
 			//만약 예약 테이블에 책이 있다면
@@ -194,8 +199,6 @@ public class MypageController {
 					e.printStackTrace();
 					return "error";
 				}
-
-				return "success";
 			}
 
 		} catch (
@@ -204,7 +207,7 @@ public class MypageController {
 			e.printStackTrace();
 		}
 
-		return "success";
+		return result;
 	}
 
 	@RequestMapping(value = "loanHistory.do", method = RequestMethod.GET)

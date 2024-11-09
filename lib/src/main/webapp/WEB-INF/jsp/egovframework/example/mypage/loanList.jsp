@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>LiBLIO - 대출이력</title>
+        <title>LiBLIO - 대출 조회/연기</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -267,12 +267,16 @@
 					    loanId: loanId
 					}, 
 					success: function (response) {
+						var regex = /^[0-9]*$/;
 					    console.log(response);
 					    if (response === 'success') {
 					        
 					        alert('반납 되었습니다.');
-					        
 					        $(event.target).closest('tr').hide();
+					        
+	                    } else if (regex.test(response)) {
+	                    	alert('대출기간을 지나 반납하셨습니다. ' + response + '일동안 대여하실 수 없습니다.');
+	                    	$(event.target).closest('tr').hide();
 	                    }
 				    }
 				});

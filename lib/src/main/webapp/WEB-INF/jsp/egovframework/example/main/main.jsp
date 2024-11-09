@@ -199,10 +199,18 @@
 					}, 
 					dataType : 'json',
 					success: function (response) {
-					    alert('대출되었습니다.');
-					    console.log(response);
-					    
-					    location.href = '/main.do';
+						console.log(response);
+						
+						if (response.status === 'overdue') {
+				            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
+				            location.href = '/main.do';
+				        } else if (response.status === 'toomuchbook') {
+				            alert('총 14권을 초과하여 대여할 수 없습니다.');
+				            location.href = '/main.do';
+				        } else if (response.status === 'success') {
+						    alert('대출되었습니다.');
+						    location.href = '/main.do';
+	                    }
 				    }
 				});
 	        } else {

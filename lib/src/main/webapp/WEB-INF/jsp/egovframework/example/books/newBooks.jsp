@@ -391,24 +391,32 @@
 							}, 
 							dataType : 'json',
 							success: function (response) {
-							    alert('대출되었습니다.');
-							    console.log(response);
-							    
-							    row.find('input[name="resvCount"]').val(response.resvCnt); 
-						        row.find('.resvCountShow').text(response.resvCnt);
-							    
-						    	loanId.val(response.idx);
-						    	
-						        //대출 버튼 예약하기로 바꾸기
-						        row.find('.loanBtn')
-		                           .removeClass('loanBtn')
-		                           .addClass('resvBtn')
-		                           .text('예약하기');  
-		                        
-		                        row.find('.loanState')
-		                           .removeClass('loanTrue')
-		                           .addClass('loanFalse')
-		                           .text('대출중');
+								if (response.status === 'overdue') {
+						            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
+						            location.href = '/main.do';
+						        } else if (response.status === 'toomuchbook') {
+						            alert('총 14권을 초과하여 대여할 수 없습니다.');
+						            location.href = '/main.do';
+						        } else if (response.status === 'success') {
+								    alert('대출되었습니다.');
+								    console.log(response);
+								    
+								    row.find('input[name="resvCount"]').val(response.resvCnt); 
+							        row.find('.resvCountShow').text(response.resvCnt);
+								    
+							    	loanId.val(response.idx);
+							    	
+							        //대출 버튼 예약하기로 바꾸기
+							        row.find('.loanBtn')
+			                           .removeClass('loanBtn')
+			                           .addClass('resvBtn')
+			                           .text('예약하기');  
+			                        
+			                        row.find('.loanState')
+			                           .removeClass('loanTrue')
+			                           .addClass('loanFalse')
+			                           .text('대출중');
+			                    }
 						    }
 						});
 			        } else {
@@ -496,6 +504,43 @@
 		        }
 		        
 		    });
+	        
+	        $('.loanSBtn').on('click', function(event){
+	            console.log('hello');
+	            
+	            var row = $(this).closest('.rowBox');
+	            var bookId = row.find('input[name="bookId"]').val();
+	            var userid = "${sessionScope.userid}";
+	            
+	            if (userid != "") {
+		            $.ajax({
+						type: 'get',
+						url: '/books/loan.do',
+						data: {
+						    bookId: bookId,
+						    userid: userid
+						}, 
+						dataType : 'json',
+						success: function (response) {
+							if (response.status === 'overdue') {
+					            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
+					            location.href = '/main.do';
+					        } else if (response.status === 'toomuchbook') {
+					            alert('총 14권을 초과하여 대여할 수 없습니다.');
+					            location.href = '/main.do';
+					        } else if (response.status === 'success') {
+							    alert('대출되었습니다.');
+							    console.log(response);
+							    
+							    location.href = '/books/newBooks.do';
+		                    }
+					    }
+					});
+		        } else {
+		            alert('로그인 후 이용해주세요.');
+		            location.href = '/member/login.do';
+		        }
+	        });
         
         });
         </script>
