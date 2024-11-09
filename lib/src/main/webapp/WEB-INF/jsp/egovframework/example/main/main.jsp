@@ -48,6 +48,10 @@
 			align-items: center;
 			border-bottom: 1px solid #e2e2e2;
 		}
+		.imgBoxSize {
+		    width: 147px;
+    		height: 226px;
+		}
 		
 			/* 기능 */
 			.selectBox {
@@ -84,7 +88,7 @@
                     <div class="row gx-5 align-items-center justify-content-center">
                         <div class="col-lg-8 col-xl-7 col-xxl-6" style="display: flex; justify-content: center;">
                             <div class="my-5 text-center text-xl-start">
-                                <h1 class="display-5 fw-bolder text-white mb-2">LiBLO</h1>
+                                <h1 class="display-5 fw-bolder text-white mb-2">LiBLIO</h1>
                                 <p class="lead fw-normal text-white-50 mb-4" style="font-size: 1em; width: 540px;">손쉽게 도서를 관리하고, 대출과 반납을 효율적으로 처리하는 도서 관리 시스템 LiBLO와 함께하세요.</p>
                                 <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
                                     <!-- <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
@@ -117,13 +121,13 @@
                     	<div class="col-lg-4 mb-5 rowBox">
                             <div class="card h-70 shadow border-0">
                             <div class="card-img-top imgBox">
-	                            <div>
+	                            <div class="imgBoxSize">
 	                            	<img class="card-img-top imgStyle" src="/bookfile/${row.fileName}" alt="..."/>
 	                            </div>
                             </div>
                             <div class="card-body p-4">
                                 <div class="badge bg-primary bg-gradient rounded-pill mb-2">${row.ctgNm}</div>
-                                <h5 class="card-title mb-3"><b>${row.title}</b></h5>
+                                <h5 class="card-title"><b>${row.title}</b></h5>
                                 <p class="card-text mb-0">${row.author} | ${row.publisher}</p>
                                 <div class="selectBox">
 								      	

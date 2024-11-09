@@ -93,40 +93,53 @@
             <!-- Team members section-->
             <section class="py-5 bg-light">
                 <div class="container px-5 my-5">
-                    <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
-                    
-                    <c:if test="${empty list}">
+                
+                	<c:if test="${empty list}">
 	                    <div class="tmpPlace">
 	                   		 희망도서가 없습니다.
 	                    </div>
                     </c:if>
-                   
-                    <c:forEach var="i" items="${list}">
-	                        
-	                        <div class="col mb-5 mb-5 mb-xl-5 item">
-	                            <div class="text-center">
-                                
-						      		<c:choose>
-						            <c:when test="${fn:contains(i.fileName, '.jpg') || fn:contains(i.fileName, '.png')}">
-						                <img class="img-fluid mb-4 px-4"  src="/wishfile/${i.fileName}">
-						            </c:when>
-						            <c:otherwise>
-						                <img  class="img-fluid mb-4 px-4"  src="/images/egovframework/lib/cmmn/blank.png">
-						            </c:otherwise>
-						        </c:choose>
-								
-								<div class="infoBox">
-									<h5 class="fw-bolder">${i.title}</h5>
-	                                <div class="fst-italic text-muted">${i.author} <br> ${i.publisher}</div>
-								</div>
-								
-								<input type="hidden" name="wishId" value="${i.wishId}"/>
-                                
-                                <button class="btn btn-success wishBtn wish my-2">신청취소</button>
-                            </div>
-                        </div>
+                    
+                    <div class="row gx-5 row-cols-1 row-cols-sm-2 row-cols-xl-4 justify-content-center">
+                    
+                    <div id="gridBox">
+                    
+                    	<c:forEach var="i" items="${list}">
+                    
+                    	<div class="card h-100 gridItem item">
+                    	<div class="imgBox">
+                    		<div>
+                    		<c:choose>
+					            <c:when test="${fn:contains(i.fileName, '.jpg') || fn:contains(i.fileName, '.png')}">
+					                <img class="card-img-top imgStyle"  src="/wishfile/${i.fileName}">
+					            </c:when>
+					            <c:otherwise>
+					                <img  class="card-img-top imgStyle"  src="/images/egovframework/lib/cmmn/blank.png">
+					            </c:otherwise>
+					        </c:choose>
+                    		</div>
+                    	</div>
+                    	
+                    	<div class="card-body infoBox">
+	                        <h5 class="card-title">
+	                            <b>${i.title}</b>
+	                        </h5>
+	                        <p class="card-text bookInfo">
+	                            <span class="author"><b>저자</b> ${i.author}</span><br>
+	                            <span class="pub"><b>출판사</b> ${i.publisher}</span>
+	                        </p>
+	                    </div>
+                    	
+	                    <div class="card-footer btnBox">
+	                    	<input type="hidden" name="wishId" value="${i.wishId}"/>
+	                        <button class="btn btn-success wishBtn wish w-100">신청취소</button>
+	                    </div>
+                    
+                    </div>
+                    
+                    </c:forEach>
                         
-                        </c:forEach>
+                    </div>
                         
                     </div>
                 </div>

@@ -115,6 +115,10 @@
 				align-items: center;
 				border-bottom: 1px solid #e2e2e2;
 			}
+			.imgBoxSize {
+			    width: 147px;
+	    		height: 226px;
+			}
 			/* 기능 */
 			.selectSBox {
 				display: flex;
@@ -152,13 +156,13 @@
                     	<div class="col-lg-4 mb-5 rowBox">
                             <div class="card h-70 shadow border-0">
                             <div class="card-img-top imgSBox">
-	                            <div>
+	                            <div class="imgBoxSize">
 	                            	<img class="card-img-top imgStyle" src="/bookfile/${row.fileName}" alt="..."/>
 	                            </div>
                             </div>
                             <div class="card-body p-4">
                                 <div class="badge bg-primary bg-gradient rounded-pill mb-2">${row.ctgNm}</div>
-                                <h5 class="card-title mb-3"><b>${row.title}</b></h5>
+                                <h5 class="card-title"><b>${row.title}</b></h5>
                                 <p class="card-text mb-0">${row.author} | ${row.publisher}</p>
                                 <div class="selectSBox">
 								      	
