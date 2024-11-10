@@ -24,7 +24,7 @@
 <summary><b>유스케이스 다이어그램</b></summary>
 <div markdown="1">
   
-![lib_usecase](https://github.com/user-attachments/assets/ff226900-953b-4616-995e-62021e2ddd8b)
+![lib_usecase](https://github.com/user-attachments/assets/43bc6d8d-a674-4580-9c6c-21690eacf4d6)
 </div>
 </details>
 
