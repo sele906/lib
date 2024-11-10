@@ -52,6 +52,14 @@
 		    width: 147px;
     		height: 226px;
 		}
+		.titleStyle {
+			overflow: hidden;
+    		height: 24px;
+		}
+		.infoStyle {
+			overflow: hidden;
+    		height: 24px;
+		}
 		
 			/* 기능 */
 			.selectBox {
@@ -127,8 +135,8 @@
                             </div>
                             <div class="card-body p-4">
                                 <div class="badge bg-primary bg-gradient rounded-pill mb-2">${row.ctgNm}</div>
-                                <h5 class="card-title"><b>${row.title}</b></h5>
-                                <p class="card-text mb-0">${row.author} | ${row.publisher}</p>
+                                <h5 class="card-title titleStyle"><b>${row.title}</b></h5>
+                                <p class="card-text mb-0 infoStyle">${row.author} | ${row.publisher}</p>
                                 <div class="selectBox">
 								      	
 							      	<input type="hidden" id="bookId" name="bookId" value="${row.bookId}">
