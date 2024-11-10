@@ -370,7 +370,10 @@ public class MypageController {
 	public String seatList(@RequestParam(name = "msg", required = false) String msg, HttpSession session, Model model) throws Exception {
 		String userid = (String) session.getAttribute("userid");
 		List<EgovMap> list = multiDao.seatUserSelect(userid);
+		List<EgovMap> notUserList = multiDao.seatNotUserSelect(userid);
+		
 		model.addAttribute("list", list);
+		model.addAttribute("notUserList", notUserList);
 		model.addAttribute("msg", msg);
 		return "mypage/seatList";
 	}

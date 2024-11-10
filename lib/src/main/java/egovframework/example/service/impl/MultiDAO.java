@@ -29,9 +29,15 @@ public class MultiDAO {
 		List<EgovMap> list = sqlSession.selectList("seat.seat_user_select", userid);
 		return list;
 	}
+	
+	public List<EgovMap> seatNotUserSelect(String userid) throws Exception {
+		List<EgovMap> list = sqlSession.selectList("seat.seat_not_user_select", userid);
+		return list;
+	}
 
 	public void seatDelete(Map<String, Object> map) throws Exception {
 		sqlSession.delete("seat.seat_delete", map);
 	}
 
+	
 }

@@ -104,12 +104,9 @@ public class ALoanController {
 		map.put("returnDate", dateFormat.parse(returnDate));
 		map.put("loanState", loanState);
 
-		//		if (overdueState.equals("Y")) {
-		//			map.put("returnDate", loanDate);
-		//		}
-
 		try {
 			AloanDao.updateLoan(map);
+			AloanDao.loanStateUpdate(map);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

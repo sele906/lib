@@ -59,6 +59,12 @@
                         	</c:forEach>
                         </div>
                         
+                        <div class="hidden">
+                        	<c:forEach var="i" items="${notUserList}">
+                        		<input class="notUserSeatNum" value="${i.seatNum}">
+                        	</c:forEach>
+                        </div>
+                        
                         
                         <div class="seatBox">
                         
@@ -190,10 +196,16 @@
             let seatMemory = [];
 
             let Savedseats = document.querySelectorAll('.selectSeatNum');
+            let notUserSeats = document.querySelectorAll('.notUserSeatNum');
           	
             for (i=0; i<Savedseats.length; i++) {
             	let Savedseat = Savedseats[i].value.trim();
             	seats[Savedseat-1].className = "seat choose";
+            }
+            
+            for (i=0; i<notUserSeats.length; i++) {
+            	let notChoosedSeat = notUserSeats[i].value.trim();
+            	seats[notChoosedSeat-1].className = "seat notchoose";
             }
             
           	//좌석 수 세기
@@ -216,7 +228,7 @@
 
 
             seatArea.addEventListener('click', e => {
-            	if (e.target.classList.contains('seat') && !e.target.closest('.seat.choose')) {
+            	if (e.target.classList.contains('seat') && !e.target.closest('.seat.choose') && !e.target.closest('.seat.notchoose')) {
             		
             		seatMemory.length = 0;
             		e.target.classList.toggle('select');

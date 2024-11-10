@@ -30,6 +30,10 @@
 	background-color: #6A9AB0;
 	cursor: default;
 }
+.seat.notchoose {
+	background-color: #aba3ad;
+	cursor: default;
+}
 
 .seat-info p {
 	margin-left: 10px; 
