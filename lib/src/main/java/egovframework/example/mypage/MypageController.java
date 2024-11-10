@@ -129,7 +129,7 @@ public class MypageController {
 			map.put("returnDate", java.sql.Date.valueOf(returnDate));
 
 			try {
-				loanDao.loanUpdate(map);
+				loanDao.loanNotStateUpdate(map);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
