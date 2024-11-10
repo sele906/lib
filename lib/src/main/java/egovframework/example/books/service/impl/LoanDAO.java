@@ -92,6 +92,14 @@ public class LoanDAO {
 		}
 		return overdue;
 	}
+	
+	public void loanNotStateUpdate(Map<String, Object> map) {
+		try {
+			sqlSession.update("loan.loan_notState_update", map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	public void loanUpdate(Map<String, Object> map) {
 		try {
