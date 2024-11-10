@@ -423,7 +423,7 @@
 									    </c:otherwise>
 									    </c:choose>
 									    </c:if>
-								      	
+
 								      	<c:if test="${row.loanState eq 'Y'}">
 								      		<c:choose>
 									        <c:when test="${row.resvId eq row.bookId}">

@@ -37,6 +37,9 @@ public class ALoanDAO {
 	public void updateLoan(Map<String, Object> map) {
 		sqlSession.update("Aloan.loan_update", map);
 	}
+	public void loanStateUpdate(Map<String, Object> map) {
+		sqlSession.update("Aloan.loan_state_update", map);
+	}
 
 	public void overdueRedoUpdate(int loanId) {
 		sqlSession.update("Aloan.overdue_redo_update", loanId);
