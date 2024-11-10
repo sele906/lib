@@ -232,7 +232,7 @@ public class ServiceController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "faqFile.do", method = RequestMethod.GET)
+	@RequestMapping(value = "faqFile.do", method = RequestMethod.GET, produces = "application/json; charset=UTF-8")
 	public String faqFile(@RequestParam(name = "faqId") int faqId) throws Exception {
 
 		List<EgovMap> list = null;
