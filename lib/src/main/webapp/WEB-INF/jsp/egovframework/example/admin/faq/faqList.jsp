@@ -620,9 +620,10 @@
                 });
             },
             
-          	//db에 등록
+          	//faq 등록
             bindAddCntEvent: function() {
                 $('#addContent').on('click', function() {
+                	$('.fileBox').addClass('hidden');
                     
                   	//초기화
                     $('#m_faq_id').val('');

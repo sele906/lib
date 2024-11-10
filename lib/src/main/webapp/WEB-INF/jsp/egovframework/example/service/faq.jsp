@@ -62,7 +62,7 @@
 			    margin: 10px 0 0 0;
 			}
 			.imgSize {
-				height: 120px;
+				/* height: 120px; */
 			    border: 1px solid #dadada;
 			    padding: 10px;
 			    display: flex;
@@ -118,7 +118,7 @@
                     <div class="row gx-5">
                         <div class="col-xl-8">
                             <!-- FAQ Accordion 1-->
-                            <h2 class="fw-bolder mb-3">이용수칙</h2>
+                            <!-- <h2 class="fw-bolder mb-3">이용수칙</h2> -->
                             <div class="accordion mb-5" id="accordionExample">
                             
 	                            <c:forEach var="row" items="${list}" varStatus="status">
@@ -249,8 +249,9 @@
 		                url: '/service/faqFile.do',
 		                data: { faqId: faqId },
 		                dataType: 'json',
+		                contentType : "application/json; charset:UTF-8",
 		                success: function(data) {
-		                	
+		                	console.log(data);
 		                    var imgFile = "";
 		                    var downFile = "";
 		                    

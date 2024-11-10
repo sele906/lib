@@ -289,6 +289,7 @@
                             align: "center",
                             whiteSpace: 'normal',
                             width: 70,
+                            filter: { type: 'text', showApplyBtn: true, showClearBtn: true },
                             formatter: function(value) {
                                 let result = "";
                                 let src = value.value.toString();
@@ -305,7 +306,8 @@
                             name: 'type_name',
                             align: "center",
                             whiteSpace: 'normal',
-                            width: 100
+                            width: 100,
+                            filter: 'select'
                         },
                         {
                             header: '주제구분',
