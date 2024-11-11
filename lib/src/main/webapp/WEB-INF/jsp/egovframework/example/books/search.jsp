@@ -463,7 +463,7 @@
 								        </c:when>
 								
 								    <c:otherwise>
-								    	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}&ctgId=${map.ctgId}">이전</a></li>
+								    	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}&ctgId=${map.ctgId}">이전</a></li>
 								    </c:otherwise>
 								    </c:choose>
 								    
@@ -474,7 +474,7 @@
 									        </c:when>
 									
 									        <c:otherwise>
-									        	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}">${i}</a></li>
+									        	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}">${i}</a></li>
 									        </c:otherwise>
 									
 										</c:choose>
@@ -484,7 +484,7 @@
 							            <c:when test="${pageInfo.currentPageNo>=pageInfo.totalPageCount}">
 							            </c:when>
 							            <c:otherwise>
-							            	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo+1}&ctgId=${map.ctgId}">다음</a></li>
+							            	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo+1}&ctgId=${map.ctgId}">다음</a></li>
 							            </c:otherwise>
 							        </c:choose>
 							        
