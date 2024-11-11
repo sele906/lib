@@ -29,9 +29,6 @@
 				cursor: pointer;
 				font-weight: bold;
 			}
-			.page-item {
-			
-			}
 			.page-link {
 				color: #848484;
 			}
@@ -39,6 +36,7 @@
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
 			}
+			
 			.emtTable {
 				min-height: 360px;
 			    display: flex;
@@ -50,6 +48,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -123,17 +122,16 @@
 								      			<div class="selectBtn">
 								      			
 									      			<c:if test="${row.dueDate >= 28}">
-									      			<button class="btn btn-outline-primary extendsBtn disabled">연장불가</button>
+									      				<button class="btn btn-outline-primary extendsBtn disabled">연장불가</button>
 									      			</c:if>
 									      			
 									      			<c:if test="${row.dueDate < 28}">
-									      			<button class="btn btn-outline-primary extendsBtn">대출연장</button>
+									      				<button class="btn btn-outline-primary extendsBtn">대출연장</button>
 									      			</c:if>
 								      			
 								      				<button class="btn btn-outline-danger returnBtn">반납하기</button>
 								      				<input type="hidden" class="loanId" value="${row.loanId}"/>
 								      				<input type="hidden" class="dateVal" value="${row.returnDate}">
-								      				<!-- <button class="btn btn-outline-danger disabled">연장불가</button> -->
 								      				
 								      			</div>
 								      		</div>
@@ -204,13 +202,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -233,7 +224,7 @@
 					    loanId: loanId
 					}, 
 					success: function (response) {
-					    console.log(response);
+					    
 					    if (response === 'success') {
 					        
 					        alert('대출연장 되었습니다.');
@@ -268,7 +259,7 @@
 					}, 
 					success: function (response) {
 						var regex = /^[0-9]*$/;
-					    console.log(response);
+					    
 					    if (response === 'success') {
 					        
 					        alert('반납 되었습니다.');

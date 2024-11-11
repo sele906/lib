@@ -153,12 +153,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -172,8 +167,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            
+			</div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -192,9 +190,6 @@
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
 								<b>FAQ</b>
-                                <!-- <b>대출/반납 관리</b>
-								|
-                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
@@ -224,11 +219,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -238,7 +228,7 @@
         <!-- 모달창 -->
 		
 		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg"> <!-- Apply custom class here -->
+		    <div class="modal-dialog modal-lg"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
 		                <h5 class="modal-title" id="bookModalLabel">FAQ 상세정보</h5>
@@ -266,7 +256,6 @@
 		                        </div>
 		                    </div>
 		                    
-		                    
 		                	 <!-- 파일 업로드 -->
 		                    <div class="mb-3 row">
 			                    <label for="m_file" class="col-sm-2 col-form-label">파일 첨부</label>
@@ -287,7 +276,6 @@
 				            </div>
 				        
 		            <div class="modal-footer">
-		            	
 		                <button type="button" id="saveButton" class="btn btn-primary" onclick="saveBtn(param)">저장</button>
 		                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
 		            </div>
@@ -298,7 +286,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
         
         <script type="text/javascript">
         
@@ -319,7 +306,6 @@
                 this.drawGrid();
                 this.bindDeleteBook();
                 this.bindAddCntEvent();
-                /* this.bindUpdateCntEvent(); */
                 this.bindSearchEvent();
             },
 
@@ -685,7 +671,6 @@
                     alert('내용을 입력하세요');
                     return; 
                 } 
-                
                 
                 var formData = new FormData(document.getElementById('faqForm'));
                 

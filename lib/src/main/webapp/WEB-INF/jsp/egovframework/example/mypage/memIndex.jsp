@@ -23,17 +23,18 @@
 		</style>
         <style>
 		    .info-link {
-		        text-decoration: none; /* No underline by default */
+		        text-decoration: none; 
 		    }
 		
 		    .info-link:hover {
-		        text-decoration: underline; /* Underline on hover */
+		        text-decoration: underline;
 		    }
 		</style>
         
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -50,12 +51,6 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form id="loginForm" action="/mypage/memInfo.do" method="post">
                                     
-                                    <!-- Userid input-->
-                                    <!-- <div class="form-floating mb-1">
-                                        <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" required/>
-                                        <label for="userid">아이디</label>
-                                    </div> -->
-                                    
                                     <!-- Passwd  input-->
 									<div class="form-floating mb-3">
 									    <input class="form-control" id="passwd" name="passwd" type="password" placeholder="비밀번호를 입력하세요" required />
@@ -65,11 +60,6 @@
                                     <!-- Submit Button-->
                                     <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">확인</button></div>
                                 </form>
-                                
-                                <!-- <div class="d-flex justify-content-between mt-3">
-						            <a href="/member/findInfo.do" class="info-link text-muted">아이디/비밀번호 찾기</a>
-						            <a href="/member/join.do" class="info-link text-muted">회원가입</a>
-						        </div> -->
 						        
 						        <c:if test="${msg eq 'error'}">
 									<script>alert('비밀번호를 확인해주세요.')</script>
@@ -89,13 +79,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>

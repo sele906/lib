@@ -25,6 +25,7 @@
 		</style>
 		
 		<style type="text/css">
+		
 			.bookSelect {
 				width: 100px;
 			}
@@ -65,25 +66,7 @@
 				font-size: 0.9em;
 				font-weight: bold;
 				margin: 5px 0;
-			}/* 
-			.like {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
 			}
-			.like:hover, .like:active {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-			}
-			.liked {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				margin: 5px 0;
-			}
-			.like:hover, .like:active {
-				color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
-			} */
 			
 			/* 대출가능 */
 			.loanBtn {
@@ -151,6 +134,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -185,12 +169,6 @@
                     </c:forEach>
                         
                     </div>
-                    <!-- <div class="text-end mb-5 mb-xl-0">
-                        <a class="text-decoration-none" href="#!">
-                            More stories
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div> -->
                 </div>
             </section>
             
@@ -326,7 +304,7 @@
 							    userid: userid
 							}, 
 							success: function (response) {
-							    console.log(response);
+							    
 							    if (response === 'success') {
 							        
 							        alert('관심 도서로 등록되었습니다.');
@@ -358,7 +336,7 @@
 							    userid: userid
 							}, 
 							success: function (response) {
-							    console.log(response);
+							    
 							    if (response === 'success') {
 							        
 							        alert('관심도서 목록에서 해제되었습니다.');
@@ -408,7 +386,6 @@
 						            location.href = '/main.do';
 						        } else if (response.status === 'success') {
 								    alert('대출되었습니다.');
-								    console.log(response);
 								    
 								    row.find('input[name="resvCount"]').val(response.resvCnt); 
 							        row.find('.resvCountShow').text(response.resvCnt);
@@ -446,7 +423,7 @@
 							    loanId: loanId.val()
 							}, 
 							success: function (response) {
-							    console.log(response);
+							    
 							    if (response === 'success') {
 							        
 							        alert('예약되었습니다.');
@@ -477,7 +454,7 @@
 											    userid: userid
 											}, 
 											success: function (response) {
-											    console.log(response);
+											    
 											    if (response == 'success') {
 											        alert('예약 취소 되었습니다.');
 											        
@@ -515,9 +492,8 @@
 		    });
 	        
 	        $('.loanSBtn').on('click', function(event){
-	            console.log('hello');
-	            
-	            var row = $(this).closest('.rowBox');
+
+				var row = $(this).closest('.rowBox');
 	            var bookId = row.find('input[name="bookId"]').val();
 	            var userid = "${sessionScope.userid}";
 	            
@@ -539,8 +515,6 @@
 					            location.href = '/main.do';
 					        } else if (response.status === 'success') {
 							    alert('대출되었습니다.');
-							    console.log(response);
-							    
 							    location.href = '/books/newBooks.do';
 		                    }
 					    }
@@ -559,13 +533,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>

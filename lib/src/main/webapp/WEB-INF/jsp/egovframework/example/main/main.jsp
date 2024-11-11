@@ -61,31 +61,32 @@
     		height: 24px;
 		}
 		
-			/* 기능 */
-			.selectBox {
-				display: flex;
-			    flex-direction: row;
-			    align-items: center;
-			    justify-content: start;
-			    margin: 10px 0 0 0;
-			}
-			
-			/* 대출가능 */
-			.loanBtn {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-primary);
-				font-weight: bold;
-			}
-			.loanBtn:hover, .loanBtn:active {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-link-hover-color);
-			}
+		/* 기능 */
+		.selectBox {
+			display: flex;
+		    flex-direction: row;
+		    align-items: center;
+		    justify-content: start;
+		    margin: 10px 0 0 0;
+		}
+		
+		/* 대출가능 */
+		.loanBtn {
+			color: var(--bs-body-bg);
+			background-color: var(--bs-primary);
+			font-weight: bold;
+		}
+		.loanBtn:hover, .loanBtn:active {
+			color: var(--bs-body-bg);
+			background-color: var(--bs-link-hover-color);
+		}
 		       	
        	</style>
         
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -98,13 +99,9 @@
                             <div class="my-5 text-center text-xl-start">
                                 <h1 class="display-5 fw-bolder text-white mb-2">LiBLIO</h1>
                                 <p class="lead fw-normal text-white-50 mb-4" style="font-size: 1em; width: 540px;">손쉽게 도서를 관리하고, 대출과 반납을 효율적으로 처리하는 도서 관리 시스템 LiBLO와 함께하세요.</p>
-                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                                    <!-- <a class="btn btn-primary btn-lg px-4 me-sm-3" href="#features">Get Started</a>
-                                    <a class="btn btn-outline-light btn-lg px-4" href="#!">Learn More</a> -->
-                                </div>
+                                <div class="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start"></div>
                             </div>
                         </div>
-                        <!-- <div class="col-xl-5 col-xxl-6 d-none d-xl-block text-center"><img class="img-fluid rounded-3 my-5" src="https://dummyimage.com/600x400/343a40/6c757d" alt="..." /></div> -->
                     </div>
                 </div>
                 </div>
@@ -191,7 +188,6 @@
         
         <script>
         $('.loanBtn').on('click', function(event){
-            console.log('hello');
             
             var row = $(this).closest('.rowBox');
             var bookId = row.find('input[name="bookId"]').val();
@@ -207,7 +203,6 @@
 					}, 
 					dataType : 'json',
 					success: function (response) {
-						console.log(response);
 						
 						if (response.status === 'overdue') {
 				            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
@@ -233,13 +228,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>

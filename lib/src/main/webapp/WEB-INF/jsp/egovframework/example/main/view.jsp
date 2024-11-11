@@ -11,6 +11,7 @@
     <style>
         body, #renderCanvas { width: 100%; height: 100%; margin: 0; overflow: hidden; }
     </style>
+    
 </head>
 <body>
     <canvas id="renderCanvas"></canvas>
@@ -30,10 +31,10 @@
         scene.collisionsEnabled = true; 
         
         
-        const alpha = Math.PI / 4;
+        /* const alpha = Math.PI / 4;
         const beta = Math.PI / 3;
         const radius = 8;
-        const target = new BABYLON.Vector3(0, 0, 0);
+        const target = new BABYLON.Vector3(0, 0, 0); */
         
         const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(5, 8, 10), scene);
         camera.applyGravity = true;

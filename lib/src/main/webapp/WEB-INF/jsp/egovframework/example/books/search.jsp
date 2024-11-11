@@ -78,9 +78,6 @@
 			    margin: 0 12px;
 			}
 			
-			#searchBar {
-
-			}
 			#searchBtn {
 				cursor: pointer;
 				width: 50px;
@@ -112,8 +109,6 @@
 			    padding: 10px 5px 5px 5px;
 			    
 			}
-			.searchCount {
-			}
 			.searchOption {
 				display: flex;
     			align-items: center;
@@ -136,7 +131,6 @@
     			width: 150px;
     			margin: 0 0 0 10px;
 			}
-			
 			
 			/* table */
 			.rowNum {
@@ -206,25 +200,7 @@
 				font-size: 0.9em;
 				font-weight: bold;
 				margin: 5px 0;
-			}/* 
-			.like {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
 			}
-			.like:hover, .like:active {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-			}
-			.liked {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				margin: 5px 0;
-			}
-			.like:hover, .like:active {
-				color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
-			} */
 			
 			/* 대출가능 */
 			.loanBtn {
@@ -290,6 +266,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -330,7 +307,6 @@
                                 <figure class="mb-3">
                                 <form id="searchForm" action="/books/search.do" method="get">
                                     <div class="d-flex searchBar">
-                                    
                                     	<input class="insertSearch" id="searchBar" name="sKey" type="text" placeholder="제목 혹은 저자를 검색하세요" value="${map.sKey}">
                                     	<div id="searchBtn">
                                     		<i class="fa-solid fa-magnifying-glass searchIcon"></i>
@@ -504,13 +480,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -539,7 +508,7 @@
 								    userid: userid
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
 								        alert('관심 도서로 등록되었습니다.');
@@ -571,7 +540,7 @@
 								    userid: userid
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
 								        alert('관심도서 목록에서 해제되었습니다.');
@@ -613,8 +582,7 @@
 								}, 
 								dataType : 'json',
 								success: function (response) {
-									console.log(response);
-									
+
 									if (response.status === 'overdue') {
 							            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
 							            location.href = '/main.do';
@@ -660,7 +628,7 @@
 								    loanId: loanId.val()
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
 								        alert('예약되었습니다.');
@@ -691,7 +659,7 @@
 												    userid: userid
 												}, 
 												success: function (response) {
-												    console.log(response);
+												    
 												    if (response == 'success') {
 												        alert('예약 취소 되었습니다.');
 												        
@@ -739,12 +707,11 @@
 			        });
 			    });
 
-			    
 			    var ctgSelect = document.getElementById('ctgId');
     			
     			if (ctgSelect) {
     		        ctgSelect.addEventListener('change', function() {
-    		            console.log('Change event triggered');
+    		            
     		            const form = document.getElementById('ctgForm');
     		            form.querySelector('select[name="ctgId"]').value = this.value; 
     		            form.submit(); 

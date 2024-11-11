@@ -22,6 +22,7 @@
 		</style>
 		
 		<style type="text/css">
+		
 		.infoBox {
 			display: flex;
 		    flex-direction: column;
@@ -46,10 +47,12 @@
 			color: #6c757d;
 			cursor: pointer;
 		}
+		
 		</style>
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -61,7 +64,6 @@
                             <div class="text-center my-5">
                                 <h1 class="fw-bolder mb-3">이용안내</h1>
                                 <p class="lead fw-normal text-muted mb-4" style="font-size: 1em;">운영 시간, 대출/반납 절차, 열람실 이용 방법 등 편리하고 원활한 이용을 위한<br>다양한 정보를 확인해 보세요.</p>
-                                <!-- <a class="btn btn-primary btn-lg" href="#scroll-target">Read our story</a> -->
                             </div>
                         </div>
                     </div>
@@ -177,13 +179,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>

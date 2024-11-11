@@ -19,13 +19,14 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
-        
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
+		
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -41,19 +42,6 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form id="updateForm" action="/mypage/updateMem.do" method="post">
                                 
-	                                <!-- User Role Toggle-->
-					                <%-- <div class="mb-3">
-					                    <div class="d-flex align-items-center">
-					                        <div class="form-check me-3">
-					                            <input class="form-check-input" type="radio" id="level-user" name="level" value="ROLE_USER" ${info.level == 'ROLE_USER' ? 'checked' : ''}>
-					                            <label class="form-check-label" for="roleUser">사용자</label>
-					                        </div>
-					                        <div class="form-check">
-					                            <input class="form-check-input" type="radio" id="level-admin" name="level" value="ROLE_ADMIN" ${info.level == 'ROLE_ADMIN' ? 'checked' : ''}>
-					                            <label class="form-check-label" for="roleAdmin">관리자</label>
-					                        </div>
-					                    </div>
-					                </div> --%>
 					                <input type="hidden" name = "level" value="${info.level}">
                                 
                                     <!-- Name input-->
@@ -63,14 +51,7 @@
                                     </div>
                                     
                                     <!-- Userid input-->
-                                    <%-- <div class="mb-3 d-flex">
-										<div class="form-floating flex-grow-1 me-2">
-										    <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" value="${info.userid}"/>
-										    <label for="userid">아이디</label>
-									    </div>
-									    <button type="button" class="btn btn-primary" id="checkUserid" >중복확인</button>
-									</div> --%>
-									<input type="hidden" name = "userid" value="${info.userid}">
+                                    <input type="hidden" name = "userid" value="${info.userid}">
                                     
                                     <!-- Passwd  input-->
 									<div class="form-floating mb-1">
@@ -171,13 +152,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -193,31 +167,6 @@
     	var emailChk = true;
 	    
 		$(document).ready(function() {
-		    
-		    //아이디 중복확인
-		    /* $("#checkUserid").on('click', function(event){
-		        
-		        if ($("#userid").val().length > 20) {
-		            alert('아이디는 20자 이내로 입력해야 합니다.');
-		            $("#userid").focus();
-		        } else {
-		            $.ajax({
-			            url: '/member/useridCheck.do',
-			            method: 'post',
-			            dataType : 'text',
-			            data : {'userid' : $("#userid").val()},
-			            success: function (data) {
-			                if (data == 'unusable') {
-			                    idChk = false;
-			                    alert('이미 있는 아이디 입니다.');
-			                } else if (data == 'usable') {
-			                    idChk = true;
-			                    alert('사용가능한 아이디 입니다.');
-			                }
-			            }
-			        });
-		        }
-		    }); */
 		    
 		    //비밀번호 확인
 		    $('#passwd').keyup(function() {

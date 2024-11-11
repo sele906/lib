@@ -32,6 +32,7 @@
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
+        
         	<!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
         
@@ -163,13 +164,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -196,7 +190,6 @@
           	//좌석 수 세기
             function updateSelectedCount() {
             	let selectedSeats = document.querySelectorAll('.row .seat.select');
-            	console.log(selectedSeats);
             	
             	//좌석 위치
             	let seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));

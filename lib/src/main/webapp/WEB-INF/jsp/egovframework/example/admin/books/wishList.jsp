@@ -156,12 +156,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -175,8 +170,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            	
+            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -229,12 +227,7 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
-                        </div>
+                       	</div>
                     </div>
                 </footer>
             </div>
@@ -340,9 +333,8 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
         
-        <script type="text/javascript">
+		<script type="text/javascript">
         
         $(function() {
             bookGrid.init();
@@ -742,9 +734,6 @@
             } 
 
             var formData = new FormData(document.getElementById('bookForm'));
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
             
             $.ajax({
                 type: 'POST',
@@ -781,8 +770,6 @@
 		            document.getElementById('m_img').src = fr.result;
 		        }
 		        fr.readAsDataURL(files[0]);
-		    } else {
-		        console.log('hello');
 		    }
 		}
         

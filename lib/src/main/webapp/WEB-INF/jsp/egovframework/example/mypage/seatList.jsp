@@ -35,6 +35,7 @@
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
+        
         	<!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
         
@@ -51,7 +52,6 @@
                     </div>
                     <div class="row gx-5">
                         <div class="col-12 col-12 d-flex justify-content-center">
-                        <!-- <img class="img-fluid rounded-3 mb-5" src="https://dummyimage.com/1300x700/343a40/6c757d" alt="..." /> -->
                         
                         <div class="hidden">
                         	<c:forEach var="i" items="${list}">
@@ -172,13 +172,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -259,7 +252,7 @@
 					    seatNum: num
 					}, 
 					success: function (response) {
-					    console.log(response);
+					    
 					    if (response === 'success') {
 					        
 					        alert('예약 취소 되었습니다.');
