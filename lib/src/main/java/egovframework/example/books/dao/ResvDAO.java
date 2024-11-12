@@ -1,6 +1,5 @@
 package egovframework.example.books.dao;
 
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
@@ -16,7 +15,7 @@ public class ResvDAO {
 	@Resource(name = "sqlSessionTemplate")
 	private SqlSessionTemplate sqlSession;
 
-	//예약
+	//예약 등록
 	public void resvInsert(Map<String, Object> map) throws Exception {
 
 		try {
@@ -26,28 +25,7 @@ public class ResvDAO {
 		}
 	}
 
-	public List<EgovMap> resvList(Map<String, Object> map) throws Exception {
-
-		List<EgovMap> list = null;
-		try {
-			list = sqlSession.selectList("resv.resv_list", map);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	public int resvCount(Map<String, Object> map) {
-		int count = 0;
-		try {
-			count = sqlSession.selectOne("resv.resv_count", map);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return count;
-	}
-
-	//체크
+	//예약 체크
 	public EgovMap resvChkLoan(Map<String, Object> map) {
 		EgovMap emap = null;
 		try {
@@ -88,6 +66,7 @@ public class ResvDAO {
 		return emap;
 	}
 
+	//예약 취소
 	public void resvDelete(Map<String, Object> map) {
 		try {
 			sqlSession.delete("resv.resv_delete", map);

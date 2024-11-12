@@ -1,4 +1,4 @@
-package egovframework.example.service.dao;
+package egovframework.example.mypage.dao;
 
 import java.util.List;
 import java.util.Map;
@@ -20,9 +20,18 @@ public class MultiDAO {
 		sqlSession.insert("seat.seat_insert", map);
 	}
 
-	public List<EgovMap> seatSelect() throws Exception {
-		List<EgovMap> list = sqlSession.selectList("seat.seat_select");
+	public List<EgovMap> seatUserSelect(String userid) throws Exception {
+		List<EgovMap> list = sqlSession.selectList("seat.seat_user_select", userid);
 		return list;
+	}
+
+	public List<EgovMap> seatNotUserSelect(String userid) throws Exception {
+		List<EgovMap> list = sqlSession.selectList("seat.seat_not_user_select", userid);
+		return list;
+	}
+
+	public void seatDelete(Map<String, Object> map) throws Exception {
+		sqlSession.delete("seat.seat_delete", map);
 	}
 
 }

@@ -1,4 +1,4 @@
-package egovframework.example.member.model;
+package egovframework.example.service.model;
 
 public class WishVO {
 	private int wishId;

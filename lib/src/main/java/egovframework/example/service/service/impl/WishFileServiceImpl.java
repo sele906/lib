@@ -13,9 +13,10 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.service.dao.WishDAO;
+import egovframework.example.service.service.WishFileService;
 
 @Service("WishFileService")
-public class WishFileService {
+public class WishFileServiceImpl implements WishFileService {
 
 	@Resource(name = "WishDAO")
 	private WishDAO wishDao;
@@ -57,7 +58,7 @@ public class WishFileService {
 
 	}
 
-	public void deleteFile(int id) {
+	public void deleteFile(int id) throws Exception {
 		String path = wishDao.getFilePath(id);
 		if (path != null) {
 			new File(path).delete();

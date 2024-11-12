@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.Pagination;
-import egovframework.example.books.dao.LikeDAO;
-import egovframework.example.books.dao.LoanDAO;
-import egovframework.example.books.dao.ResvDAO;
 import egovframework.example.member.dao.MemberDAO;
 import egovframework.example.member.model.MemberVO;
 import egovframework.example.mypage.Pagination8;
-import egovframework.example.service.dao.MultiDAO;
-import egovframework.example.service.dao.WishDAO;
-import egovframework.example.service.service.impl.WishFileService;
+import egovframework.example.mypage.dao.LikeDAO;
+import egovframework.example.mypage.dao.LoanDAO;
+import egovframework.example.mypage.dao.MultiDAO;
+import egovframework.example.mypage.dao.ResvDAO;
+import egovframework.example.mypage.dao.WishDAO;
+import egovframework.example.service.service.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -146,12 +146,12 @@ public class MypageController {
 	@ResponseBody
 	@RequestMapping(value = "returnState.do", method = RequestMethod.GET)
 	public String returnState(@RequestParam(name = "loanId") int loanId, HttpSession session) throws Exception {
-		
+
 		String oriUserid = (String) session.getAttribute("userid");
 		String result = "";
 
 		try {
-			
+
 			LocalDate today = LocalDate.now();
 
 			Map<String, Object> map = new HashMap<String, Object>();
@@ -166,7 +166,7 @@ public class MypageController {
 				loanDao.loanOverdueUpdate(map);
 				//ㅇㅇ일동안 대여 불가능하다는 메세지 넣기
 				result = dueEmap.get("dueCount").toString();
-				
+
 			} else if (dueEmap.get("overdueState").equals("N")) {
 				//대출상태와 대출기간 업데이트
 				loanDao.loanUpdate(map);
@@ -372,7 +372,7 @@ public class MypageController {
 		String userid = (String) session.getAttribute("userid");
 		List<EgovMap> list = multiDao.seatUserSelect(userid);
 		List<EgovMap> notUserList = multiDao.seatNotUserSelect(userid);
-		
+
 		model.addAttribute("list", list);
 		model.addAttribute("notUserList", notUserList);
 		model.addAttribute("msg", msg);

@@ -37,7 +37,7 @@ import egovframework.example.mypage.Pagination8;
 import egovframework.example.service.dao.FaqDAO;
 import egovframework.example.service.dao.MultiDAO;
 import egovframework.example.service.dao.WishDAO;
-import egovframework.example.service.service.impl.WishFileService;
+import egovframework.example.service.service.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -57,7 +57,7 @@ public class ServiceController {
 
 	@Resource(name = "FaqDAO")
 	private FaqDAO faqDao;
-	
+
 	@Resource(name = "AFaqFileService")
 	private AFaqFileService fileService;
 
@@ -247,7 +247,7 @@ public class ServiceController {
 		}
 		return "error";
 	}
-	
+
 	//파일 다운로드
 	@ResponseBody
 	@RequestMapping(value = "/fileDownload.do", method = RequestMethod.POST)
