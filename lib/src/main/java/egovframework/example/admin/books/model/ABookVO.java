@@ -1,6 +1,8 @@
-package egovframework.example.books.model;
+package egovframework.example.admin.books.model;
 
-public class BookVO {
+public class ABookVO {
+	private String url;
+	private String fileName;
 	private int bookId;
 	private String title;
 	private String author;
@@ -9,6 +11,22 @@ public class BookVO {
 	private String publisher;
 	private String cheonggu;
 	private String isbn;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	/**
 	 * @bookID@ getter
@@ -148,7 +166,7 @@ public class BookVO {
 
 	@Override
 	public String toString() {
-		return "BookVO [bookId=" + bookId + ", title=" + title + ", author=" + author + ", ctgId=" + ctgId + ", ctgNm=" + ctgNm + ", publisher=" + publisher + ", cheonggu=" + cheonggu + ", isbn=" + isbn + "]";
+		return "BookVO [url=" + url + ", fileName=" + fileName + ", bookId=" + bookId + ", title=" + title + ", author=" + author + ", ctgId=" + ctgId + ", ctgNm=" + ctgNm + ", publisher=" + publisher + ", cheonggu=" + cheonggu + ", isbn=" + isbn + "]";
 	}
 
 }

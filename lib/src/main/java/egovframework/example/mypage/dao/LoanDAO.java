@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
-@Repository("LoanDAO")
+@Repository("MLoanDAO")
 public class LoanDAO {
 
 	@Resource(name = "sqlSessionTemplate")
@@ -32,7 +32,7 @@ public class LoanDAO {
 		return list;
 	}
 
-	public int loanCount(Map<String, Object> map) {
+	public int loanCount(Map<String, Object> map) throws Exception {
 		int count = 0;
 		try {
 			count = sqlSession.selectOne("loan.loan_count", map);
@@ -42,7 +42,7 @@ public class LoanDAO {
 		return count;
 	}
 
-	public EgovMap loanDateInfo(int loanId) {
+	public EgovMap loanDateInfo(int loanId) throws Exception {
 		EgovMap map = null;
 		try {
 			map = sqlSession.selectOne("loan.loan_date_info", loanId);
@@ -52,7 +52,7 @@ public class LoanDAO {
 		return map;
 	}
 
-	public void extendsDate(int loanId) {
+	public void extendsDate(int loanId) throws Exception {
 		try {
 			sqlSession.update("loan.loan_extends", loanId);
 		} catch (Exception e) {
@@ -60,7 +60,7 @@ public class LoanDAO {
 		}
 	}
 
-	public EgovMap loanChkOverdue(Map<String, Object> map) {
+	public EgovMap loanChkOverdue(Map<String, Object> map) throws Exception {
 		EgovMap overdue = null;
 		try {
 			overdue = sqlSession.selectOne("loan.loan_chk_overdue", map);
@@ -70,7 +70,7 @@ public class LoanDAO {
 		return overdue;
 	}
 
-	public void loanNotStateUpdate(Map<String, Object> map) {
+	public void loanNotStateUpdate(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.update("loan.loan_notState_update", map);
 		} catch (Exception e) {
@@ -78,7 +78,7 @@ public class LoanDAO {
 		}
 	}
 
-	public void loanUpdate(Map<String, Object> map) {
+	public void loanUpdate(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.update("loan.loan_update", map);
 		} catch (Exception e) {
@@ -86,7 +86,7 @@ public class LoanDAO {
 		}
 	}
 
-	public void loanOverdueUpdate(Map<String, Object> map) {
+	public void loanOverdueUpdate(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.update("loan.loan_overdue_update", map);
 		} catch (Exception e) {
@@ -117,7 +117,7 @@ public class LoanDAO {
 		return count;
 	}
 
-	public EgovMap loanChkResv(int loanId) {
+	public EgovMap loanChkResv(int loanId) throws Exception {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("loan.loan_chk_resv", loanId);

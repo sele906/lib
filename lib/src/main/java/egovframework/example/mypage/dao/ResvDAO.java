@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
-@Repository("ResvDAO")
+@Repository("MResvDAO")
 public class ResvDAO {
 
 	@Resource(name = "sqlSessionTemplate")
@@ -29,7 +29,7 @@ public class ResvDAO {
 	}
 
 	//예약 리스트 개수
-	public int resvCount(Map<String, Object> map) {
+	public int resvCount(Map<String, Object> map) throws Exception {
 		int count = 0;
 		try {
 			count = sqlSession.selectOne("resv.resv_count", map);
@@ -40,7 +40,7 @@ public class ResvDAO {
 	}
 
 	//예약 취소
-	public void resvDelete(Map<String, Object> map) {
+	public void resvDelete(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.delete("resv.resv_delete", map);
 		} catch (Exception e) {

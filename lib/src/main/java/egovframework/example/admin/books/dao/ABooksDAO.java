@@ -9,7 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
-import egovframework.example.admin.books.model.BookVO;
+import egovframework.example.admin.books.model.ABookVO;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -28,20 +28,20 @@ public class ABooksDAO {
 		return sqlSession.selectList("Abooks.data_ctg");
 	}
 
-	public EgovMap codeChange(Map<String, Object> map) throws Exception {
+	public String codeChange(String ctgNm) throws Exception {
 
-		EgovMap result = sqlSession.selectOne("Abooks.code_change", map);
+		String result = sqlSession.selectOne("Abooks.code_change", ctgNm);
 		return result;
 	}
 
 	//삽입
-	public int booksInsert(Map<String, Object> map) throws Exception {
+	public int booksInsert(ABookVO vo) throws Exception {
 
 		/** ID Generation */
 		int id = bookIds.getNextIntegerId();
-		map.put("bookId", id);
+		vo.setBookId(id);
 
-		sqlSession.insert("Abooks.books_insert", map);
+		sqlSession.insert("Abooks.books_insert", vo);
 
 		return id;
 	}
@@ -51,8 +51,8 @@ public class ABooksDAO {
 	}
 
 	//리스트
-	public List<EgovMap> booklist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Abooks.books_list", pinfo);
+	public List<ABookVO> booklist(Pagination pinfo) throws Exception {
+		List<ABookVO> list = sqlSession.selectList("Abooks.books_list", pinfo);
 		return list;
 	}
 
@@ -68,7 +68,7 @@ public class ABooksDAO {
 	}
 
 	//수정
-	public void updateBook(BookVO vo) {
+	public void updateBook(ABookVO vo) {
 		sqlSession.update("Abooks.books_update", vo);
 	}
 

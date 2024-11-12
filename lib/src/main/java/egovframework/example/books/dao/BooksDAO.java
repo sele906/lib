@@ -22,7 +22,7 @@ public class BooksDAO {
 	private EgovIdGnrService bookIds;
 
 	//코드
-	public List<EgovMap> dataCtg() {
+	public List<EgovMap> dataCtg() throws Exception {
 		return sqlSession.selectList("books.data_ctg");
 	}
 
@@ -59,7 +59,7 @@ public class BooksDAO {
 		return list;
 	}
 
-	public List<EgovMap> newlist() {
+	public List<EgovMap> newlist() throws Exception {
 		List<EgovMap> list = null;
 		try {
 			list = sqlSession.selectList("books.new_list");
@@ -69,7 +69,7 @@ public class BooksDAO {
 		return list;
 	}
 
-	public List<EgovMap> sampleBestlist() {
+	public List<EgovMap> sampleBestlist() throws Exception {
 		List<EgovMap> list = null;
 		try {
 			list = sqlSession.selectList("books.sample_best");
@@ -79,7 +79,7 @@ public class BooksDAO {
 		return list;
 	}
 
-	public List<EgovMap> sampleNewlist() {
+	public List<EgovMap> sampleNewlist() throws Exception {
 		List<EgovMap> list = null;
 		try {
 			list = sqlSession.selectList("books.sample_new");

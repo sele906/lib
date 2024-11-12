@@ -11,7 +11,7 @@ import org.springframework.stereotype.Repository;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
-@Repository("WishDAO")
+@Repository("MWishDAO")
 public class WishDAO {
 
 	@Resource(name = "sqlSessionTemplate")
@@ -21,17 +21,17 @@ public class WishDAO {
 	@Resource(name = "wishIds")
 	private EgovIdGnrService wishIds;
 
-	public List<EgovMap> wishList(Map<String, Object> map) {
+	public List<EgovMap> wishList(Map<String, Object> map) throws Exception {
 		List<EgovMap> list = sqlSession.selectList("wish.wish_list", map);
 		return list;
 	}
 
-	public int wishCount(Map<String, Object> map) {
+	public int wishCount(Map<String, Object> map) throws Exception {
 		int count = sqlSession.selectOne("wish.wish_count", map);
 		return count;
 	}
 
-	public void wishDelete(Map<String, Object> map) {
+	public void wishDelete(Map<String, Object> map) throws Exception {
 		sqlSession.delete("wish.wish_delete", map);
 	}
 

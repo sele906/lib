@@ -14,7 +14,7 @@ public class LikeDAO {
 	private SqlSessionTemplate sqlSession;
 
 	//추가
-	public void likeAdd(Map<String, Object> map) {
+	public void likeAdd(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.insert("like.like_add", map);
 		} catch (Exception e) {
@@ -23,7 +23,7 @@ public class LikeDAO {
 	}
 
 	//관심해제
-	public void likeDelete(Map<String, Object> map) {
+	public void likeDelete(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.delete("like.like_delete", map);
 		} catch (Exception e) {

@@ -21,7 +21,7 @@ public class MemberDAO {
 		return list;
 	}
 
-	public MemberVO login(MemberVO vo) {
+	public MemberVO login(MemberVO vo) throws Exception {
 		MemberVO rvo = sqlSession.selectOne("member.mem_login", vo);
 		return rvo;
 	}
@@ -30,7 +30,7 @@ public class MemberDAO {
 		sqlSession.insert("member.mem_insert", vo);
 	}
 
-	public String checkUserid(MemberVO vo) {
+	public String checkUserid(MemberVO vo) throws Exception {
 		String result = "";
 		int check = (int) sqlSession.selectOne("member.mem_countUserid", vo);
 		if (check > 0) {
@@ -58,22 +58,6 @@ public class MemberDAO {
 
 	public EgovMap getInfo(String userid) throws Exception {
 		return (EgovMap) sqlSession.selectOne("member.get_info", userid);
-	}
-
-	public String chkPasswd(String userid) {
-		return (String) sqlSession.selectOne("member.chk_passwd", userid);
-	}
-
-	public MemberVO getMemInfo(String userid) {
-		return (MemberVO) sqlSession.selectOne("member.get_mem_info", userid);
-	}
-
-	public void updateMem(MemberVO vo) {
-		sqlSession.update("member.update_mem", vo);
-	}
-
-	public void deleteMem(String userid) {
-		sqlSession.delete("member.delete_mem", userid);
 	}
 
 }

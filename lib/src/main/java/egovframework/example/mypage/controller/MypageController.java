@@ -22,11 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import egovframework.example.Pagination;
-import egovframework.example.member.dao.MemberDAO;
 import egovframework.example.member.model.MemberVO;
 import egovframework.example.mypage.Pagination8;
 import egovframework.example.mypage.dao.LikeDAO;
 import egovframework.example.mypage.dao.LoanDAO;
+import egovframework.example.mypage.dao.MemberDAO;
 import egovframework.example.mypage.dao.MultiDAO;
 import egovframework.example.mypage.dao.ResvDAO;
 import egovframework.example.mypage.dao.WishDAO;
@@ -38,22 +38,22 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @RequestMapping("/mypage/*")
 public class MypageController {
 
-	@Resource(name = "LoanDAO")
+	@Resource(name = "MLoanDAO")
 	private LoanDAO loanDao;
 
-	@Resource(name = "LikeDAO")
+	@Resource(name = "MLikeDAO")
 	private LikeDAO LikeDao;
 
-	@Resource(name = "ResvDAO")
+	@Resource(name = "MResvDAO")
 	private ResvDAO ResvDao;
 
-	@Resource(name = "WishDAO")
+	@Resource(name = "MWishDAO")
 	private WishDAO wishDao;
 
-	@Resource(name = "MemberDAO")
+	@Resource(name = "MMemberDAO")
 	private MemberDAO MemDao;
 
-	@Resource(name = "MultiDAO")
+	@Resource(name = "MMultiDAO")
 	private MultiDAO multiDao;
 
 	@Resource(name = "WishFileService")

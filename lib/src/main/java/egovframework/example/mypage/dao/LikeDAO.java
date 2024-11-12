@@ -10,14 +10,14 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
-@Repository("LikeDAO")
+@Repository("MLikeDAO")
 public class LikeDAO {
 
 	@Resource(name = "sqlSessionTemplate")
 	private SqlSessionTemplate sqlSession;
 
 	//리스트
-	public List<EgovMap> likeList(Map<String, Object> map) {
+	public List<EgovMap> likeList(Map<String, Object> map) throws Exception {
 		List<EgovMap> list = null;
 		try {
 			list = sqlSession.selectList("like.like_list", map);
@@ -28,7 +28,7 @@ public class LikeDAO {
 	}
 
 	//리스트 개수
-	public int count(Map<String, Object> map) {
+	public int count(Map<String, Object> map) throws Exception {
 		int count = 0;
 		try {
 			count = sqlSession.selectOne("like.like_count", map);
@@ -39,7 +39,7 @@ public class LikeDAO {
 	}
 
 	//관심 해제
-	public void likeDelete(Map<String, Object> map) {
+	public void likeDelete(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.delete("like.like_delete", map);
 		} catch (Exception e) {

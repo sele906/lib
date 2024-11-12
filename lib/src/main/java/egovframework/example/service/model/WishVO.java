@@ -1,6 +1,8 @@
 package egovframework.example.service.model;
 
 public class WishVO {
+
+	private String url;
 	private int wishId;
 	private String title;
 	private String author;
@@ -9,6 +11,14 @@ public class WishVO {
 	private String cheonggu;
 	private String isbn;
 	private String userid;
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 	/**
 	 * @wishId@ getter
@@ -148,7 +158,7 @@ public class WishVO {
 
 	@Override
 	public String toString() {
-		return "WishVO [wishId=" + wishId + ", title=" + title + ", author=" + author + ", ctgId=" + ctgId + ", publisher=" + publisher + ", cheonggu=" + cheonggu + ", isbn=" + isbn + ", userid=" + userid + "]";
+		return "WishVO [url=" + url + ", wishId=" + wishId + ", title=" + title + ", author=" + author + ", ctgId=" + ctgId + ", publisher=" + publisher + ", cheonggu=" + cheonggu + ", isbn=" + isbn + ", userid=" + userid + "]";
 	}
 
 }

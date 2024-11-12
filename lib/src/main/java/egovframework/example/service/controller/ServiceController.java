@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
@@ -37,6 +36,9 @@ import egovframework.example.mypage.Pagination8;
 import egovframework.example.service.dao.FaqDAO;
 import egovframework.example.service.dao.MultiDAO;
 import egovframework.example.service.dao.WishDAO;
+import egovframework.example.service.model.FaqVO;
+import egovframework.example.service.model.MultiVO;
+import egovframework.example.service.model.WishVO;
 import egovframework.example.service.service.WishFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -148,16 +150,15 @@ public class ServiceController {
 		String userid = (String) session.getAttribute("userid");
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		TypeReference<Map<String, Object>> typeReference = new TypeReference<Map<String, Object>>() {};
+		WishVO vo = objectMapper.readValue(data, WishVO.class);
 
-		Map<String, Object> returnData = objectMapper.readValue(data, typeReference);
-		returnData.put("userid", userid);
+		vo.setUserid(userid);
 
 		try {
-			int id = wishDao.wishInsert(returnData);
+			int id = wishDao.wishInsert(vo);
 
 			//이미지 처리
-			String imgURL = (String) returnData.get("url");
+			String imgURL = (String) vo.getUrl();
 			String fileExtension = imgURL.contains(".png") ? ".png" : imgURL.contains(".jpg") ? ".jpg" : null;
 
 			if (fileExtension != null) {
@@ -188,12 +189,13 @@ public class ServiceController {
 
 		try {
 			for (String seat : seatArray) {
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("seatNum", Integer.parseInt(seat));
-				map.put("status", "Y");
-				map.put("userid", userid);
 
-				multiDao.seatInsert(map);
+				MultiVO vo = new MultiVO();
+				vo.setSeatNum(seatNum);
+				vo.setStatus("Y");
+				vo.setUserid(userid);
+
+				multiDao.seatInsert(vo);
 
 			}
 		} catch (Exception e) {
@@ -222,7 +224,7 @@ public class ServiceController {
 		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> list = faqDao.faqlist(pinfo);
+		List<FaqVO> list = faqDao.faqlist(pinfo);
 
 		model.addAttribute("list", list);
 		model.addAttribute("count", count);

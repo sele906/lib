@@ -33,7 +33,7 @@ public class LoanDAO {
 		return idx;
 	}
 
-	public EgovMap overdueCount(String userid) {
+	public EgovMap overdueCount(String userid) throws Exception {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("loan.overdue_count", userid);
@@ -43,7 +43,7 @@ public class LoanDAO {
 		return emap;
 	}
 
-	public EgovMap loanBookCount(String userid) {
+	public EgovMap loanBookCount(String userid) throws Exception {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("loan.loan_book_count", userid);

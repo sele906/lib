@@ -25,8 +25,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.faq.dao.AFaqDAO;
+import egovframework.example.admin.faq.model.AFaqVO;
 import egovframework.example.admin.faq.service.AFaqFileService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -68,7 +68,7 @@ public class AFaqController {
 			pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 			pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			List<EgovMap> list = AfaqDao.faqlist(pinfo);
+			List<AFaqVO> list = AfaqDao.faqlist(pinfo);
 
 			// param
 			JSONObject paramData = new JSONObject();
@@ -102,20 +102,27 @@ public class AFaqController {
 	// DB에 삽입
 	@ResponseBody
 	@RequestMapping(value = "insertFaq.do", method = RequestMethod.POST)
-	public String insertFaq(@RequestParam(name = "faqId") String faqId, @RequestParam(name = "title") String title, @RequestParam(name = "cnt") String cnt, @RequestParam(name = "multifile") List<MultipartFile> multifile, HttpSession session) throws Exception {
-
-		String userid = (String) session.getAttribute("userid");
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userid", userid);
-		map.put("faqId", faqId);
-		map.put("title", title);
-		map.put("cnt", cnt);
-
+	public String insertFaq(AFaqVO vo) throws Exception {
 		try {
-			int id = AfaqDao.insertFaq(map);
 
-			fileService.insertFile(id, multifile);
+			/*String userid = (String) session.getAttribute("userid");*/
+
+			System.out.println(vo);
+
+			/*Map<String, Object> map = new HashMap<String, Object>();
+			map.put("userid", userid);
+			map.put("title", title);
+			map.put("cnt", cnt);
+			
+			AFaqVO vo = new AFaqVO();
+			vo.setUserid(userid);
+			vo.setTitle(title);
+			vo.setCnt(cnt);
+			System.out.println(vo);*/
+
+			/*int id = AfaqDao.insertFaq(vo);*/
+
+			/*fileService.insertFile(id, multifile);*/
 
 		} catch (Exception e) {
 			e.printStackTrace();

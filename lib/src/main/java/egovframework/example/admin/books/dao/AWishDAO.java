@@ -9,10 +9,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
-import egovframework.example.admin.books.model.BookVO;
-import egovframework.example.admin.books.model.WishVO;
+import egovframework.example.admin.books.model.AWishVO;
+import egovframework.example.service.model.WishVO;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("AWishDAO")
 public class AWishDAO {
@@ -25,8 +24,8 @@ public class AWishDAO {
 	private EgovIdGnrService bookIds;
 
 	// 리스트
-	public List<EgovMap> wishlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Awish.wish_list", pinfo);
+	public List<AWishVO> wishlist(Pagination pinfo) throws Exception {
+		List<AWishVO> list = sqlSession.selectList("Awish.wish_list", pinfo);
 		return list;
 	}
 
@@ -44,7 +43,7 @@ public class AWishDAO {
 	public void updateWishBook(WishVO vo) {
 		sqlSession.update("Awish.wish_update", vo);
 	}
-	
+
 	public String selectWishFile(int id) {
 		String path = null;
 		path = sqlSession.selectOne("Awish.wish_file_select", id);
@@ -55,11 +54,10 @@ public class AWishDAO {
 		sqlSession.delete("Awish.wish_file_delete", id);
 	}
 
-
 	public void insertWishFile(Map<String, Object> map) {
 		sqlSession.insert("Awish.wish_file_insert", map);
 	}
-	
+
 	//삭제
 	public void deleteWishBook(int id) {
 		sqlSession.delete("Awish.wish_delete", id);

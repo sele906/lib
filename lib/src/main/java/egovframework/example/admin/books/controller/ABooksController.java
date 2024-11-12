@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -31,10 +30,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import egovframework.example.Pagination;
 import egovframework.example.admin.books.dao.ABooksDAO;
 import egovframework.example.admin.books.dao.AWishDAO;
-import egovframework.example.admin.books.model.BookVO;
-import egovframework.example.admin.books.model.WishVO;
+import egovframework.example.admin.books.model.ABookVO;
+import egovframework.example.admin.books.model.AWishVO;
 import egovframework.example.admin.books.service.AFileService;
 import egovframework.example.admin.books.service.AWishFileService;
+import egovframework.example.service.model.WishVO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -89,7 +89,7 @@ public class ABooksController {
 			pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 			pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			List<EgovMap> list = AwishDao.wishlist(pinfo);
+			List<AWishVO> list = AwishDao.wishlist(pinfo);
 
 			// param
 			JSONObject paramData = new JSONObject();
@@ -171,30 +171,24 @@ public class ABooksController {
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> bookList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		List<ABookVO> bookList = objectMapper.readValue(param, new TypeReference<List<ABookVO>>() {});
 
-		for (Map<String, Object> bookMap : bookList) {
+		for (ABookVO vo : bookList) {
 
 			try {
 				// 카테고리 이름 > 코드 변환
-				String ctg = (String) bookMap.get("ctg");
-				Map<String, Object> ctgNm = new HashMap();
-				ctgNm.put("sclsNm", ctg);
-				ctgNm.put("sclsCd", "");
-
-				EgovMap ctgMap = AbooksDao.codeChange(ctgNm);
-				bookMap.put("ctgId", ctgMap.get("sclsCd"));
-				bookMap.remove("ctg");
+				String ctgId = AbooksDao.codeChange(vo.getCtgNm());
+				vo.setCtgId(ctgId);
 
 				// 데이터 삽입
-				int id = AbooksDao.booksInsert(bookMap);
+				int id = AbooksDao.booksInsert(vo);
 
 				// 이미지 처리
-				String imgNm = (String) bookMap.get("img");
+				String imgNm = (String) vo.getUrl();
 				String fileExtension = imgNm.contains(".png") ? ".png" : imgNm.contains(".jpg") ? ".jpg" : null;
 
 				if (fileExtension != null) {
-					String fileOriNm = ctgMap.get("sclsCd") + "_" + UUID.randomUUID() + fileExtension;
+					String fileOriNm = vo.getCtgId() + "_" + UUID.randomUUID() + fileExtension;
 					AFileService.moveImage(id, imgNm, fileOriNm);
 				}
 			} catch (Exception e) {
@@ -276,33 +270,28 @@ public class ABooksController {
 	@ResponseBody
 	@RequestMapping(value = "insertBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertBook(@RequestBody String param) throws Exception {
+
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> bookList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		List<ABookVO> bookList = objectMapper.readValue(param, new TypeReference<List<ABookVO>>() {});
 
-		for (Map<String, Object> bookMap : bookList) {
+		for (ABookVO vo : bookList) {
 
 			try {
 				// 카테고리 이름 > 코드 변환
-				String ctg = (String) bookMap.get("ctg");
-				Map<String, Object> ctgNm = new HashMap();
-				ctgNm.put("sclsNm", ctg);
-				ctgNm.put("sclsCd", "");
-
-				EgovMap ctgMap = AbooksDao.codeChange(ctgNm);
-				bookMap.put("ctgId", ctgMap.get("sclsCd"));
-				bookMap.remove("ctg");
+				String ctgId = AbooksDao.codeChange(vo.getCtgNm());
+				vo.setCtgId(ctgId);
 
 				// 데이터 삽입
-				int id = AbooksDao.booksInsert(bookMap);
+				int id = AbooksDao.booksInsert(vo);
 
 				// 이미지 처리
-				String imgURL = (String) bookMap.get("img");
+				String imgURL = (String) vo.getUrl();
 				String fileExtension = imgURL.contains(".png") ? ".png" : imgURL.contains(".jpg") ? ".jpg" : null;
 
 				if (fileExtension != null) {
-					String fileOriNm = ctgMap.get("sclsCd") + "_" + UUID.randomUUID() + fileExtension;
+					String fileOriNm = vo.getCtgId() + "_" + UUID.randomUUID() + fileExtension;
 					AFileService.insertImage(id, imgURL, fileOriNm);
 				}
 			} catch (Exception e) {
@@ -351,7 +340,7 @@ public class ABooksController {
 		pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 		pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> list = AbooksDao.booklist(pinfo);
+		List<ABookVO> list = AbooksDao.booklist(pinfo);
 
 		// param
 		JSONObject paramData = new JSONObject();
@@ -378,7 +367,7 @@ public class ABooksController {
 	// 책 정보 저장
 	@ResponseBody
 	@RequestMapping(value = "updateData.do", method = RequestMethod.POST)
-	public String updateData(BookVO vo, @RequestParam(name = "multifile") MultipartFile multifile) throws Exception {
+	public String updateData(ABookVO vo, @RequestParam(name = "multifile") MultipartFile multifile) throws Exception {
 
 		AbooksDao.updateBook(vo);
 

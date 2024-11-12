@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
-@Repository("MultiDAO")
+@Repository("MMultiDAO")
 public class MultiDAO {
 
 	@Resource(name = "sqlSessionTemplate")

@@ -9,6 +9,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
+import egovframework.example.admin.faq.model.AFaqVO;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -23,8 +24,8 @@ public class AFaqDAO {
 	private EgovIdGnrService faqIds;
 
 	//리스트
-	public List<EgovMap> faqlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Afaq.faq_list", pinfo);
+	public List<AFaqVO> faqlist(Pagination pinfo) throws Exception {
+		List<AFaqVO> list = sqlSession.selectList("Afaq.faq_list", pinfo);
 		return list;
 	}
 
@@ -39,12 +40,12 @@ public class AFaqDAO {
 		return count;
 	}
 
-	public int insertFaq(Map<String, Object> map) throws Exception {
+	public int insertFaq(AFaqVO vo) throws Exception {
 
 		/** ID Generation */
 		int id = faqIds.getNextIntegerId();
-		map.put("faqId", id);
-		sqlSession.insert("Afaq.faq_insert", map);
+		vo.setFaqId(String.valueOf(id));
+		sqlSession.insert("Afaq.faq_insert", vo);
 
 		return id;
 	}

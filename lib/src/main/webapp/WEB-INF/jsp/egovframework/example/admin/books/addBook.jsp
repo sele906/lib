@@ -411,10 +411,10 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            img: row.image_url ? row.image_url.toString() : "",
+                            url: row.image_url ? row.image_url.toString() : "",
                             title: row.title_info ? row.title_info.toString().replace(/'/g, "&#39;") : "",
                             author: row.author_info ? row.author_info.toString() : "",
-                            ctg: row.type_name ? row.type_name.toString() : "",
+                            ctgNm: row.type_name ? row.type_name.toString() : "",
                             publisher: row.pub_info ? row.pub_info.toString() : "",
                             cheonggu: row.call_no ? row.call_no.toString() : "",
                             isbn: row.isbn ? row.isbn.toString().substring(0,13) : ""

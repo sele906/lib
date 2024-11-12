@@ -8,6 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
+import egovframework.example.service.model.FaqVO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Repository("FaqDAO")
@@ -17,8 +18,8 @@ public class FaqDAO {
 	private SqlSessionTemplate sqlSession;
 
 	//리스트
-	public List<EgovMap> faqlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("faq.faq_list", pinfo);
+	public List<FaqVO> faqlist(Pagination pinfo) throws Exception {
+		List<FaqVO> list = sqlSession.selectList("faq.faq_list", pinfo);
 		return list;
 	}
 

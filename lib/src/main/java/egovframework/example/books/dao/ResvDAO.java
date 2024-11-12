@@ -26,7 +26,7 @@ public class ResvDAO {
 	}
 
 	//예약 체크
-	public EgovMap resvChkLoan(Map<String, Object> map) {
+	public EgovMap resvChkLoan(Map<String, Object> map) throws Exception {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("resv.resv_chk_loan", map);
@@ -36,7 +36,7 @@ public class ResvDAO {
 		return emap;
 	}
 
-	public int resvChkResv(Map<String, Object> map) {
+	public int resvChkResv(Map<String, Object> map) throws Exception {
 		int cnt = 0;
 		try {
 			cnt = sqlSession.selectOne("resv.resv_chk_resv", map);
@@ -46,7 +46,7 @@ public class ResvDAO {
 		return cnt;
 	}
 
-	public int resvChkResvCnt(int bookId) {
+	public int resvChkResvCnt(int bookId) throws Exception {
 		int cnt = 0;
 		try {
 			cnt = sqlSession.selectOne("resv.resv_chk_resv_cnt", bookId);
@@ -56,7 +56,7 @@ public class ResvDAO {
 		return cnt;
 	}
 
-	public EgovMap resvUserSelect(EgovMap param) {
+	public EgovMap resvUserSelect(EgovMap param) throws Exception {
 		EgovMap emap = null;
 		try {
 			emap = sqlSession.selectOne("resv.resv_user_select", param);
@@ -67,7 +67,7 @@ public class ResvDAO {
 	}
 
 	//예약 취소
-	public void resvDelete(Map<String, Object> map) {
+	public void resvDelete(Map<String, Object> map) throws Exception {
 		try {
 			sqlSession.delete("resv.resv_delete", map);
 		} catch (Exception e) {
