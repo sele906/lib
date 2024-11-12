@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import egovframework.example.admin.statics.dao.StatDAO;
 import egovframework.example.admin.statics.service.StatService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 

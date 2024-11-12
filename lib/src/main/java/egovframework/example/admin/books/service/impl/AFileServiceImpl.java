@@ -18,6 +18,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.example.admin.books.dao.ABooksDAO;
 import egovframework.example.admin.books.service.AFileService;
 
 @Service("AFileService")

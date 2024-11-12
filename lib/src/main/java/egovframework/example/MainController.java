@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import egovframework.example.books.service.impl.BooksDAO;
+import egovframework.example.books.dao.BooksDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
 @Controller
