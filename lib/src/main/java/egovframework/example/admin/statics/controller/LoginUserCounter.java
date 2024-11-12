@@ -1,4 +1,4 @@
-package egovframework.example.admin.statics;
+package egovframework.example.admin.statics.controller;
 
 import java.sql.Timestamp;
 import java.util.HashMap;

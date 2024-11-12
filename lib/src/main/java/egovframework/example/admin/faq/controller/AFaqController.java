@@ -24,8 +24,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
+import egovframework.example.admin.faq.dao.AFaqDAO;
 import egovframework.example.admin.faq.service.AFaqFileService;
-import egovframework.example.admin.faq.service.impl.AFaqDAO;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 

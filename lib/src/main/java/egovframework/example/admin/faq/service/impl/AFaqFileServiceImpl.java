@@ -16,6 +16,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.example.admin.faq.dao.AFaqDAO;
 import egovframework.example.admin.faq.service.AFaqFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 

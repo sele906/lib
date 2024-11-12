@@ -1,4 +1,4 @@
-package egovframework.example.admin.faq.service.impl;
+package egovframework.example.admin.faq.dao;
 
 import java.util.List;
 import java.util.Map;
