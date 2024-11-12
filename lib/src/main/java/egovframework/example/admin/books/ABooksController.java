@@ -167,7 +167,6 @@ public class ABooksController {
 	@RequestMapping(value = "insertWishBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertWishBook(@RequestBody String param) throws Exception {
 
-		System.out.println(param);
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();

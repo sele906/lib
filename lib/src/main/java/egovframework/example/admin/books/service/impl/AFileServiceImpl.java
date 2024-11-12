@@ -25,7 +25,6 @@ public class AFileServiceImpl implements AFileService {
 
 	@Resource(name = "ABooksDAO")
 	private ABooksDAO AbooksDao;
-	
 
 	private static String path = "C:\\fileupload\\lib\\books";
 
@@ -67,7 +66,7 @@ public class AFileServiceImpl implements AFileService {
 	public void updateImage(int id, String ctgId, MultipartFile multiFile) throws IOException {
 
 		if (multiFile.getSize() > 0 && !multiFile.getOriginalFilename().equals("")) {
-			
+
 			String fileNm = multiFile.getOriginalFilename();
 			String Fname = fileNm.substring(0, fileNm.lastIndexOf("."));
 			String ext = FilenameUtils.getExtension(fileNm);
@@ -116,14 +115,14 @@ public class AFileServiceImpl implements AFileService {
 
 	@Override
 	public void moveImage(int id, String imgNm, String fileOriNm) {
-		
+
 		String wishPath = "C:\\fileupload\\lib\\wish\\" + imgNm;
 		String filePath = path + "\\" + fileOriNm;
-		
+
 		try {
 			Path source = Paths.get(wishPath);
-            Path target = Paths.get(filePath);
-            Files.copy(source, target);
+			Path target = Paths.get(filePath);
+			Files.copy(source, target);
 
 			//파일 DB에 저장
 			String fileNm = fileOriNm.substring(0, 11) + fileOriNm.substring(fileOriNm.lastIndexOf("."));
@@ -139,7 +138,5 @@ public class AFileServiceImpl implements AFileService {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

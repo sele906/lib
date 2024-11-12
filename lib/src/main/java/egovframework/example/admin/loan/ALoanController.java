@@ -136,7 +136,6 @@ public class ALoanController {
 	@RequestMapping(value = "overdueUndoData.do", method = RequestMethod.POST)
 	public String overdueUndoData(@RequestParam(name = "loanId") int loanId) throws Exception {
 
-		System.out.println(loanId);
 		try {
 			AloanDao.overdueRedoUpdate(loanId);
 		} catch (Exception e) {

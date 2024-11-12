@@ -127,38 +127,6 @@ public class Pagination implements Serializable {
 		this.pageSize = pageSize;
 	}
 
-	/*public int getAfterIdx() {
-		return afterIdx;
-	}
-	
-	public void setAfterIdx(int afterIdx) {
-		this.afterIdx = afterIdx;
-	}
-	
-	public String getAfter() {
-		return after;
-	}
-	
-	public void setAfter(String after) {
-		this.after = after;
-	}
-	
-	public int getBeforeIdx() {
-		return beforeIdx;
-	}
-	
-	public void setBeforeIdx(int beforeIdx) {
-		this.beforeIdx = beforeIdx;
-	}
-	
-	public String getBefore() {
-		return before;
-	}
-	
-	public void setBefore(String before) {
-		this.before = before;
-	}*/
-
 	public int getPage() {
 		return page;
 	}

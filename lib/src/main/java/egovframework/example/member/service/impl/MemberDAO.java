@@ -18,7 +18,6 @@ public class MemberDAO {
 
 	public List<String> getUserid() throws Exception {
 		List<String> list = sqlSession.selectList("member.list");
-		System.out.println(list);
 		return list;
 	}
 
