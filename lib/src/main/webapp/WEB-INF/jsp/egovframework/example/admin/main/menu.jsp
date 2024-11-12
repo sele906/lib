@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
@@ -24,20 +24,6 @@
                 <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
                 	대출/반납/연체 관리
             </a>
-            
-            
-            <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLoans" aria-expanded="false" aria-controls="collapseLoans">
-                <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
-                대출/반납/연체 관리
-                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-            </a>
-            <div class="collapse" id="collapseLoans" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
-                <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="/admin/loan/loanList.do">대출/반납 관리</a>
-                    <a class="nav-link" href="/admin/loan/overdueList.do">연체 관리</a>
-                </nav>
-            </div> -->
-            
             
             <div class="sb-sidenav-menu-heading">회원관리</div>
             <a class="nav-link" href="/admin/member/list.do">

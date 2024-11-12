@@ -127,12 +127,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -146,8 +141,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            
+            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -166,16 +164,12 @@
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
 								<b>회원관리</b>
-                                <!-- <b>대출/반납 관리</b>
-								|
-                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
                             
                             <div id="infoBar">
                             	<div>
-	                            	<!-- <button class="btn btn-primary" id="addBook">등록하기</button> -->
 	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
                             	</div>
 								
@@ -198,11 +192,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -212,7 +201,7 @@
         <!-- 모달창 -->
 		
 		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg"> <!-- Apply custom class here -->
+		    <div class="modal-dialog modal-lg">
 		        <div class="modal-content">
 		            <div class="modal-header">
 		                <h5 class="modal-title" id="bookModalLabel">회원 상세정보</h5>
@@ -291,7 +280,6 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
         
         <script type="text/javascript">
         
@@ -311,7 +299,6 @@
                 this.applyGridTheme();
                 this.drawGrid();
                 this.bindDeleteBook();
-                /* this.bindAddBookEvent();   */
                 this.bindSearchEvent();
             },
 
@@ -331,8 +318,6 @@
                         
         				var paramData = data[0];
         				var items = data[1].items;
-        				
-        				console.log(items);
                         
                         _this.apiData = items;
                         _this.paramData = paramData;
@@ -477,7 +462,6 @@
             
             //책정보 수정
             openModal: function (rowData) {
-            	console.log(rowData);
             	
             	if (rowData.level) {
                     $('input[name="level"][value="' + rowData.level + '"]').prop('checked', true);
@@ -493,7 +477,6 @@
                 $('#m_addr1').val(rowData.addr1 || '');
                 $('#m_addr2').val(rowData.addr2 || '');
                 
-
                 let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
                     backdrop: 'static', 
                     keyboard: false 
@@ -577,67 +560,6 @@
                     }
                 });
             },
-            
-          	//db에 등록
-            /* bindAddBookEvent: function() {
-                $('#addBook').on('click', function() {
-                	let checkedRows = bookGrid.grid.getCheckedRows();
-
-                    if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
-                        return;
-                    }
-
-                    let bookList = [];
-                    for (let row of checkedRows) {
-                    	
-                        // 유효성 검사 
-                        if (row.userid.toString() === '') {
-                            alert('사용자를 입력하세요');
-                            return; 
-                        } else if (row.loanDate.toString() === '') {
-                            alert('대출일을 선택하세요');
-                            return; 
-                        } else if (row.returnDate.toString() === '') {
-                            alert('반납일을 선택하세요');
-                            return; 
-                        } else if (row.loanState.toString() === '') {
-                            alert('대출상태를 선택하세요');
-                            return;
-                        } else if (row.overdueState.toString() === '') {
-                            alert('연체상태를 선택하세요');
-                            return;
-                        }
-
-                        bookList.push({
-                            img: row.fileName ? row.fileName.toString() : "",
-                            title: row.title ? row.title.toString().replace(/'/g, "&#39;") : "",
-                            author: row.author ? row.author.toString() : "",
-                            ctg: row.ctgNm ? row.ctgNm.toString() : "",
-                            publisher: row.publisher ? row.publisher.toString() : "",
-                            cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
-                        });
-                    }
-
-                    if (bookList.length > 0) {
-                        $.ajax({
-                            type: 'post',
-                            url: '/admin/books/insertWishBook.do',
-                            data: JSON.stringify(bookList),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'text',
-                            success: function(data) {
-                                if (data === 'success') {
-                                    alert('책이 등록되었습니다.');
-                                } else {
-                                    alert('오류가 발생했습니다. 관리자에게 문의하세요.');
-                                }
-                            }
-                        });
-                    }
-                });
-            }, */
             
             updateGrid: function() {
                 if (this.grid && this.apiData) {

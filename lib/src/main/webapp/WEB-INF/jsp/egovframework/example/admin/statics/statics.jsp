@@ -25,12 +25,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -44,8 +39,10 @@
         </nav>
         <div id="layoutSidenav">
             <div id="layoutSidenav_nav">
+            
             	<!-- Navigation-->
             	<%@ include file="../main/menu.jsp" %>
+            	
             </div>
             <div id="layoutSidenav_content">
                 <main>
@@ -66,7 +63,6 @@
                                 <b>대출/반납 현황</b>
                             </div>
                             <div class="card-body"><canvas id="myAreaChart" width="100%" height="30"></canvas></div>
-                            <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
                         </div>
                         <div class="row">
                             <div class="col-lg-6">
@@ -76,7 +72,6 @@
                                         <b>로그인 현황</b>
                                     </div>
                                     <div class="card-body"><canvas id="myBarChart" width="100%" height="50"></canvas></div>
-                                    <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
                                 </div>
                             </div>
                             <div class="col-lg-6">
@@ -86,7 +81,6 @@
                                         <b>도서 보유 현황</b>
                                     </div>
                                     <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
-                                    <!-- <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div> -->
                                 </div>
                             </div>
                         </div>
@@ -97,11 +91,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -127,7 +116,6 @@
 	            url: '/admin/statics/statData.do',
 	            dataType: 'json',
 	            success: function(data) {
-					console.log(data);
 					dateArr = data[0];
 					loanArr = data[1];
 					returnArr = data[2];
@@ -165,8 +153,8 @@
 	            {
 	                label: "반납",
 	                lineTension: 0.3,
-	                backgroundColor: "rgba(220,53,69,0.2)",  // Red color for background
-	                borderColor: "rgba(220,53,69,1)",       // Red color for line
+	                backgroundColor: "rgba(220,53,69,0.2)", 
+	                borderColor: "rgba(220,53,69,1)",      
 	                pointRadius: 5,
 	                pointBackgroundColor: "rgba(220,53,69,1)",
 	                pointBorderColor: "rgba(255,255,255,0.8)",
