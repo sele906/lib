@@ -1,7 +1,6 @@
 package egovframework.example.admin.loan.dao;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,7 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.loan.model.ALoanVO;
 
 @Repository("ALoanDAO")
 public class ALoanDAO {
@@ -18,8 +17,8 @@ public class ALoanDAO {
 	private SqlSessionTemplate sqlSession;
 
 	//리스트
-	public List<EgovMap> loanlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Aloan.loans_list", pinfo);
+	public List<ALoanVO> loanlist(Pagination pinfo) throws Exception {
+		List<ALoanVO> list = sqlSession.selectList("Aloan.loans_list", pinfo);
 		return list;
 	}
 
@@ -34,11 +33,12 @@ public class ALoanDAO {
 		return count;
 	}
 
-	public void updateLoan(Map<String, Object> map) {
-		sqlSession.update("Aloan.loan_update", map);
+	public void updateLoan(ALoanVO vo) {
+		sqlSession.update("Aloan.loan_update", vo);
 	}
-	public void loanStateUpdate(Map<String, Object> map) {
-		sqlSession.update("Aloan.loan_state_update", map);
+
+	public void loanStateUpdate(ALoanVO vo) {
+		sqlSession.update("Aloan.loan_state_update", vo);
 	}
 
 	public void overdueRedoUpdate(int loanId) {

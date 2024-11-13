@@ -1,9 +1,7 @@
 package egovframework.example.admin.loan.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -21,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.loan.dao.ALoanDAO;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.loan.model.ALoanVO;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -60,7 +58,7 @@ public class ALoanController {
 			pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 			pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			List<EgovMap> list = AloanDao.loanlist(pinfo);
+			List<ALoanVO> list = AloanDao.loanlist(pinfo);
 
 			// param
 			JSONObject paramData = new JSONObject();
@@ -93,20 +91,14 @@ public class ALoanController {
 
 	@ResponseBody
 	@RequestMapping(value = "loanUpdateData.do", method = RequestMethod.POST)
-	public String loanUpdateData(@RequestParam(name = "loanId") int loanId, @RequestParam(name = "userid") String userid, @RequestParam(name = "loanDate") String loanDate, @RequestParam(name = "returnDate") String returnDate, @RequestParam(name = "loanState") String loanState) throws Exception {
+	public String loanUpdateData(ALoanVO vo) throws Exception {
 
-		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-		Map<String, Object> map = new HashMap();
-		map.put("loanId", loanId);
-		map.put("userid", userid);
-		map.put("loanDate", dateFormat.parse(loanDate));
-		map.put("returnDate", dateFormat.parse(returnDate));
-		map.put("loanState", loanState);
+		vo.setLoanDate(java.sql.Date.valueOf(vo.getLoanDateStr()));
+		vo.setReturnDate(java.sql.Date.valueOf(vo.getReturnDateStr()));
 
 		try {
-			AloanDao.updateLoan(map);
-			AloanDao.loanStateUpdate(map);
+			AloanDao.updateLoan(vo);
+			AloanDao.loanStateUpdate(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -118,11 +110,12 @@ public class ALoanController {
 	@RequestMapping(value = "loanDelete.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String loanDelete(@RequestBody String param) throws Exception {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> idList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		ObjectMapper mapper = new ObjectMapper();
+		List<ALoanVO> loanVO = mapper.readValue(param, new TypeReference<List<ALoanVO>>() {});
+
 		try {
-			for (Map<String, Object> map : idList) {
-				int id = Integer.parseInt((String) map.get("id"));
+			for (ALoanVO vo : loanVO) {
+				int id = vo.getLoanId();
 				AloanDao.deleteLoan(id);
 			}
 		} catch (Exception e) {
@@ -134,10 +127,10 @@ public class ALoanController {
 
 	@ResponseBody
 	@RequestMapping(value = "overdueUndoData.do", method = RequestMethod.POST)
-	public String overdueUndoData(@RequestParam(name = "loanId") int loanId) throws Exception {
+	public String overdueUndoData(ALoanVO vo) throws Exception {
 
 		try {
-			AloanDao.overdueRedoUpdate(loanId);
+			AloanDao.overdueRedoUpdate(vo.getLoanId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

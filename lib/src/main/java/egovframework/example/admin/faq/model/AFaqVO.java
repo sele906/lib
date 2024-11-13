@@ -4,7 +4,7 @@ import java.sql.Date;
 
 public class AFaqVO {
 
-	private String faqId = "0";
+	private int faqId;
 	private String userid;
 	private String title;
 	private String cnt;
@@ -15,7 +15,7 @@ public class AFaqVO {
 	 * @return	faqId
 	 */
 
-	public String getFaqId() {
+	public int getFaqId() {
 		return faqId;
 	}
 
@@ -24,7 +24,7 @@ public class AFaqVO {
 		* @param	faqId
 		*/
 
-	public void setFaqId(String faqId) {
+	public void setFaqId(int faqId) {
 		this.faqId = faqId;
 	}
 
@@ -77,19 +77,6 @@ public class AFaqVO {
 		this.cnt = cnt;
 	}
 
-	/** 
-	 *
-	 * @return
-	 *
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-
-	@Override
-	public String toString() {
-		return "AFaqVO [title=" + title + ", cnt=" + cnt + "]";
-	}
-
 	/**
 	 * @writeDate@ getter
 	 * @return	writeDate
@@ -106,6 +93,19 @@ public class AFaqVO {
 
 	public void setWriteDate(Date writeDate) {
 		this.writeDate = writeDate;
+	}
+
+	/** 
+	 *
+	 * @return
+	 *
+	 * (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
+
+	@Override
+	public String toString() {
+		return "AFaqVO [faqId=" + faqId + ", userid=" + userid + ", title=" + title + ", cnt=" + cnt + ", writeDate=" + writeDate + "]";
 	}
 
 }

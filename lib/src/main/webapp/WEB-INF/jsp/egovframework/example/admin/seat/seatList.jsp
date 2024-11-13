@@ -427,7 +427,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.seatId ? row.seatId.toString() : ""
+                            seatId: row.seatId ? row.seatId.toString() : ""
                         };
                     });
 
@@ -490,101 +490,6 @@
                 });
             }
         };
-        
-        function saveBtn(action) {
-            
-            if (action == 'add') {
-                console.log('add');
-                
-                var userid = "${sessionScope.userid}";
-                
-                if (userid == '') {
-                    alert('로그인이 필요합니다.');
-                    return; 
-                } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
-                    return; 
-                } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
-                    return; 
-                } 
-                
-                
-                var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
-                
-               $.ajax({
-                   type: 'POST',
-                   url: '/admin/faq/insertFaq.do',
-                   data: formData,
-                   processData: false,
-                   contentType: false,
-                   success: function(response) {
-                       
-                       if (response === 'success') {
-                           alert('정보가 저장되었습니다.');
-                           bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
-
-                           var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
-                           bookModal.hide();
-                       } else {
-                           alert('에러가 발생했습니다.');
-                       }
-                   },
-                   error: function() {
-                       alert('에러가 발생했습니다.');
-                   }
-               });
-                
-            }
-            
-            if (action == 'update') {
-                console.log('update');
-                
-				var userid = "${sessionScope.userid}";
-                
-                if (userid == '') {
-                    alert('로그인이 필요합니다.');
-                    return; 
-                } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
-                    return; 
-                } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
-                    return; 
-                } 
-                
-                var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
-                
-                $.ajax({
-                    type: 'post',
-                    url: '/admin/faq/updateFaq.do',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        
-                        if (response === 'success') {
-                            alert('정보가 저장되었습니다.');
-                            bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
-
-                            var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
-                            bookModal.hide();
-                        } else {
-                            alert('에러가 발생했습니다.');
-                        }
-                    },
-                    error: function() {
-                        alert('에러가 발생했습니다.');
-                    }
-                });
-            }
-        }
         
         </script>
     </body>

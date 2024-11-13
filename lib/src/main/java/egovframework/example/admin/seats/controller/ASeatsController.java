@@ -2,7 +2,6 @@ package egovframework.example.admin.seats.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,7 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.seats.dao.ASeatsDAO;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.seats.model.ASeatsVO;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -39,7 +38,6 @@ public class ASeatsController {
 	@ResponseBody
 	@RequestMapping(value = "seatData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String seatData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
-		System.out.println(kwdData);
 
 		try {
 			// 키워드와 페이지 전달
@@ -60,7 +58,7 @@ public class ASeatsController {
 			pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 			pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			List<EgovMap> list = AseatsDao.seatlist(pinfo);
+			List<ASeatsVO> list = AseatsDao.seatlist(pinfo);
 
 			// param
 			JSONObject paramData = new JSONObject();
@@ -95,12 +93,12 @@ public class ASeatsController {
 	@RequestMapping(value = "seatDelete.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String seatDelete(@RequestBody String param) throws Exception {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> idList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		ObjectMapper mapper = new ObjectMapper();
+		List<ASeatsVO> seatsVO = mapper.readValue(param, new TypeReference<List<ASeatsVO>>() {});
 
 		try {
-			for (Map<String, Object> map : idList) {
-				int seatId = Integer.parseInt(map.get("id").toString());
+			for (ASeatsVO vo : seatsVO) {
+				int seatId = vo.getSeatId();
 				AseatsDao.deleteSeat(seatId);
 			}
 		} catch (Exception e) {

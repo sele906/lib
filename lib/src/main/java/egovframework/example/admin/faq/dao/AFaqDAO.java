@@ -44,14 +44,14 @@ public class AFaqDAO {
 
 		/** ID Generation */
 		int id = faqIds.getNextIntegerId();
-		vo.setFaqId(String.valueOf(id));
+		vo.setFaqId(id);
 		sqlSession.insert("Afaq.faq_insert", vo);
 
 		return id;
 	}
 
-	public void updateFaq(Map<String, Object> map) {
-		sqlSession.update("Afaq.faq_update", map);
+	public void updateFaq(AFaqVO vo) {
+		sqlSession.update("Afaq.faq_update", vo);
 	}
 
 	public void deleteFaq(int faqId) {

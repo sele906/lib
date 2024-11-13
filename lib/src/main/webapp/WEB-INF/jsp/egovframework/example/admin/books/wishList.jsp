@@ -578,7 +578,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.wishId ? row.wishId.toString() : ""
+                            wishId: row.wishId ? row.wishId.toString() : ""
                         };
                     });
 

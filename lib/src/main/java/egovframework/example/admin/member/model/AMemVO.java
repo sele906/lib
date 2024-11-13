@@ -2,7 +2,7 @@ package egovframework.example.admin.member.model;
 
 import java.sql.Date;
 
-public class MemberVO {
+public class AMemVO {
 	private String userid;
 	private String passwd;
 	private String level;

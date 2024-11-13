@@ -140,12 +140,12 @@ public class ABooksController {
 
 		String result = "";
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> dataList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		ObjectMapper mapper = new ObjectMapper();
+		List<AWishVO> wishVO = mapper.readValue(param, new TypeReference<List<AWishVO>>() {});
 
-		for (Map<String, Object> data : dataList) {
+		for (AWishVO vo : wishVO) {
 
-			int id = Integer.parseInt(data.get("id").toString());
+			int id = vo.getWishId();
 
 			// 파일 삭제
 			AWishFileService.deleteWishFile(id);

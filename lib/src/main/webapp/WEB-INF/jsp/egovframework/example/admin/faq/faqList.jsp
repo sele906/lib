@@ -237,7 +237,8 @@
 				            <div class="modal-body mx-5">
 				            
 				            <form id="faqForm" method="post" enctype="multipart/form-data">    	
-				            <input type="hidden" id="m_faq_id" name="faqId">
+				            
+				            <input type="hidden" id="m_faq_id" name="faqId" value="0">
 		                	
 		                	
 		                	<!-- 제목 -->
@@ -567,7 +568,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.faqId ? row.faqId.toString() : ""
+                            faqId: row.faqId ? row.faqId.toString() : ""
                         };
                     });
 
@@ -612,7 +613,7 @@
                 	$('.fileBox').addClass('hidden');
                     
                   	//초기화
-                    $('#m_faq_id').val('');
+                    $('#m_faq_id').val(0);
 	                $('#m_userid').val('');
 	                $('#m_title').val('');
 	                $('#m_cnt').val(''); 
@@ -715,6 +716,9 @@
                 } 
                 
                 var formData = new FormData(document.getElementById('faqForm'));
+                formData.forEach((value, key) => {
+                    console.log(key + ': ' + value);
+                  });
                 
                 $.ajax({
                     type: 'post',

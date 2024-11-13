@@ -8,7 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.seats.model.ASeatsVO;
 
 @Repository("ASeatsDAO")
 public class ASeatsDAO {
@@ -17,8 +17,8 @@ public class ASeatsDAO {
 	private SqlSessionTemplate sqlSession;
 
 	//리스트
-	public List<EgovMap> seatlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Aseat.seat_list", pinfo);
+	public List<ASeatsVO> seatlist(Pagination pinfo) throws Exception {
+		List<ASeatsVO> list = sqlSession.selectList("Aseat.seat_list", pinfo);
 		return list;
 	}
 

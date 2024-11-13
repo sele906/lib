@@ -96,19 +96,19 @@ public class BooksController {
 	public String loan(@RequestParam(name = "bookId") int bookId, @RequestParam(name = "userid") String userid) throws Exception {
 
 		Map<String, Object> response = new HashMap<>();
-		
+
 		//연체 상태인지 확인
 		EgovMap emap = loanDao.overdueCount(userid);
 		if (emap != null) {
 			if (emap.get("overdueState").equals("Y")) {
 				response.put("status", "overdue");
-	            response.put("dueCount", emap.get("dueCount").toString());
-	            // Convert the response map to JSON and return
-	            ObjectMapper objectMapper = new ObjectMapper();
-	            return objectMapper.writeValueAsString(response);
+				response.put("dueCount", emap.get("dueCount").toString());
+
+				ObjectMapper objectMapper = new ObjectMapper();
+				return objectMapper.writeValueAsString(response);
 			}
 		}
-	
+
 		//몇 권 빌렸는지 확인
 		EgovMap loanBook = loanDao.loanBookCount(userid);
 		if (loanBook != null) {
@@ -116,9 +116,9 @@ public class BooksController {
 			System.out.println(loanBookCount);
 			if (loanBookCount > 14) {
 				response.put("status", "toomuchbook");
-	            // Convert the response map to JSON and return
-	            ObjectMapper objectMapper = new ObjectMapper();
-	            return objectMapper.writeValueAsString(response);
+
+				ObjectMapper objectMapper = new ObjectMapper();
+				return objectMapper.writeValueAsString(response);
 			}
 		}
 
@@ -134,7 +134,7 @@ public class BooksController {
 
 		int idx = loanDao.loanInsert(vo);
 		response.put("status", "success");
-	    response.put("idx", idx);
+		response.put("idx", idx);
 
 		//예약도서라면
 		EgovMap param = new EgovMap();

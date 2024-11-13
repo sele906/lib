@@ -279,7 +279,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_loan_date" class="col-sm-3 col-form-label">대출일</label>
 		                        <div class="col-sm-9">
-		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="대출일을 입력하세요">
+		                            <input type="date" class="form-control" id="m_loan_date" name="loanDateStr" placeholder="대출일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -287,7 +287,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_return_date" class="col-sm-3 col-form-label">반납일</label>
 		                        <div class="col-sm-9">
-		                            <input type="date" class="form-control" id="m_return_date" name="returnDate" placeholder="반납일을 입력하세요">
+		                            <input type="date" class="form-control" id="m_return_date" name="returnDateStr" placeholder="반납일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -612,7 +612,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.loanId ? row.loanId.toString() : ""
+                            loanId: row.loanId ? row.loanId.toString() : ""
                         };
                     });
 

@@ -522,7 +522,7 @@
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.userid ? row.userid.toString() : ""
+                            userid: row.userid ? row.userid.toString() : ""
                         };
                     });
 

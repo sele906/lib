@@ -2,7 +2,6 @@ package egovframework.example.admin.member.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -20,8 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.example.Pagination;
 import egovframework.example.admin.member.dao.AMemDAO;
-import egovframework.example.admin.member.model.MemberVO;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.member.model.AMemVO;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
@@ -40,7 +38,6 @@ public class AMemberController {
 	@ResponseBody
 	@RequestMapping(value = "memData.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String memData(@RequestParam(name = "page", defaultValue = "1") int pageNum, @RequestParam(name = "kwd", defaultValue = "") String kwdData) throws Exception {
-		System.out.println(kwdData);
 
 		try {
 			// 키워드와 페이지 전달
@@ -61,7 +58,7 @@ public class AMemberController {
 			pinfo.setLastIndex(paginationInfo.getLastRecordIndex());
 			pinfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			List<EgovMap> list = AMemDao.memlist(pinfo);
+			List<AMemVO> list = AMemDao.memlist(pinfo);
 
 			// param
 			JSONObject paramData = new JSONObject();
@@ -94,10 +91,9 @@ public class AMemberController {
 
 	@ResponseBody
 	@RequestMapping(value = "memUpdateData.do", method = RequestMethod.POST)
-	public String memUpdateData(MemberVO vo) throws Exception {
+	public String memUpdateData(AMemVO vo) throws Exception {
 
 		vo.setBirth(java.sql.Date.valueOf(vo.getBirthdate()));
-		System.out.println(vo);
 
 		try {
 			AMemDao.updateMem(vo);
@@ -112,13 +108,12 @@ public class AMemberController {
 	@RequestMapping(value = "memDelete.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String memDelete(@RequestBody String param) throws Exception {
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<Map<String, Object>> idList = objectMapper.readValue(param, new TypeReference<List<Map<String, Object>>>() {});
+		ObjectMapper mapper = new ObjectMapper();
+		List<AMemVO> memVO = mapper.readValue(param, new TypeReference<List<AMemVO>>() {});
 
 		try {
-			for (Map<String, Object> map : idList) {
-				String userid = (String) map.get("id");
-				AMemDao.deleteMem(userid);
+			for (AMemVO vo : memVO) {
+				AMemDao.deleteMem(vo.getUserid());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

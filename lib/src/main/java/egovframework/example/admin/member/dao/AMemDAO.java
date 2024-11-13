@@ -8,8 +8,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import egovframework.example.Pagination;
-import egovframework.example.admin.member.model.MemberVO;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import egovframework.example.admin.member.model.AMemVO;
 
 @Repository("AMemDAO")
 public class AMemDAO {
@@ -18,8 +17,8 @@ public class AMemDAO {
 	private SqlSessionTemplate sqlSession;
 
 	//리스트
-	public List<EgovMap> memlist(Pagination pinfo) throws Exception {
-		List<EgovMap> list = sqlSession.selectList("Amember.mem_list", pinfo);
+	public List<AMemVO> memlist(Pagination pinfo) throws Exception {
+		List<AMemVO> list = sqlSession.selectList("Amember.mem_list", pinfo);
 		return list;
 	}
 
@@ -34,7 +33,7 @@ public class AMemDAO {
 		return count;
 	}
 
-	public void updateMem(MemberVO vo) {
+	public void updateMem(AMemVO vo) {
 		sqlSession.update("Amember.mem_update", vo);
 	}
 
