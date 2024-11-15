@@ -649,10 +649,10 @@
                         }
 
                         bookList.push({
-                            img: row.fileName ? row.fileName.toString() : "",
+                            fileName: row.fileName ? row.fileName.toString() : "",
                             title: row.title ? row.title.toString().replace(/'/g, "&#39;") : "",
                             author: row.author ? row.author.toString() : "",
-                            ctg: row.ctgNm ? row.ctgNm.toString() : "",
+                            ctgNm: row.ctgNm ? row.ctgNm.toString() : "",
                             publisher: row.publisher ? row.publisher.toString() : "",
                             cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
                             isbn: row.isbn ? row.isbn.toString().substring(0,13) : ""

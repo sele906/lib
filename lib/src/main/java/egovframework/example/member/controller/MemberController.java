@@ -90,28 +90,22 @@ public class MemberController {
 	//AJAX 이메일 값 가져오기
 	@RequestMapping(value = "/infoFind.do", method = RequestMethod.POST)
 	@ResponseBody
-	public String infoFind(@RequestParam(name = "phone", required = false) String phone, @RequestParam(name = "userid", required = false) String userid, @RequestParam(name = "type") String type) throws Exception {
-
-		MemberVO vo = new MemberVO();
+	public String infoFind(MemberVO vo, @RequestParam(name = "type") String type) throws Exception {
 
 		if (type.equals("findId")) { //아이디 찾기
 
-			vo.setPhone(phone);
-			vo = memberDAO.findId(vo);
-
-			return vo.getUserid();
+			MemberVO mvo = memberDAO.findId(vo);
+			JSONObject o = new JSONObject(mvo);
+			return o.toString();
 
 		} else if (type.equals("findEmail")) { //비밀번호 찾기
 
-			vo.setUserid(userid);
-			vo = memberDAO.findEmail(vo);
-
-			return vo.getEmail();
+			MemberVO mvo = memberDAO.findEmail(vo);
+			JSONObject o = new JSONObject(mvo);
+			return o.toString();
 
 		}
-
-		JSONObject o = new JSONObject(vo);
-		return o.toString();
+		return "error";
 	}
 
 	//AJAX 메일

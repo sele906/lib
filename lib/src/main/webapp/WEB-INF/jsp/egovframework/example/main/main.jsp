@@ -123,7 +123,7 @@
                     <div class="row gx-5 ">
                     
                     <c:forEach var="row" items="${list}">
-                    	<div class="col-lg-4 rowBox">
+                    	<div class="col-lg-4 mb-5 rowBox">
                             <div class="card h-70 shadow border-0">
                             <div class="card-img-top imgBox">
 	                            <div class="imgBoxSize">

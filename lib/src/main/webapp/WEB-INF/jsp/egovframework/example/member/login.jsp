@@ -24,12 +24,16 @@
 		
         <style>
 		    .info-link {
-		        text-decoration: none; /* No underline by default */
+		        text-decoration: none; 
 		    }
 		
 		    .info-link:hover {
-		        text-decoration: underline; /* Underline on hover */
+		        text-decoration: underline; 
 		    }
+		    
+		    .btnStyle {
+				font-weight: bold;
+			}
 		</style>
         
     </head>
@@ -64,7 +68,7 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">로그인</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg btnStyle" id="submitButton" type="submit">로그인</button></div>
                                 </form>
                                 
                                 <div class="d-flex justify-content-between mt-3">

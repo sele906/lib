@@ -9,5 +9,6 @@
 
 <body>
     <spring:message code='fail.common.msg' />
+    <!-- 에러가 발생했습니다! -->
 </body>
 </html>

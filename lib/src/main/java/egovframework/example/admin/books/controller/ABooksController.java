@@ -173,6 +173,8 @@ public class ABooksController {
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<ABookVO> bookList = objectMapper.readValue(param, new TypeReference<List<ABookVO>>() {});
 
+		bookList = null;
+
 		for (ABookVO vo : bookList) {
 
 			try {
@@ -184,7 +186,7 @@ public class ABooksController {
 				int id = AbooksDao.booksInsert(vo);
 
 				// 이미지 처리
-				String imgNm = (String) vo.getUrl();
+				String imgNm = (String) vo.getFileName();
 				String fileExtension = imgNm.contains(".png") ? ".png" : imgNm.contains(".jpg") ? ".jpg" : null;
 
 				if (fileExtension != null) {

@@ -9,5 +9,6 @@
 
 <body>
     <spring:message code='fail.common.sql' />
+    <!-- sql 에러가 발생했습니다! error code: {0}, error msg: {1} -->
 </body>
 </html>

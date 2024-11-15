@@ -313,7 +313,14 @@
                             whiteSpace: 'normal',
                             formatter: function(value) {
                                 let detailUrl = value.row.detail_link ? value.row.detail_link.toString() : "";
-                                return "<a href=https://www.nl.go.kr/" + detailUrl + " target='_blank'>" + value.value + "</a>";
+                                
+                                console.log(detailUrl);
+                                console.log(value.value);
+                                
+                                var url = "<a href='https://www.nl.go.kr" + detailUrl + "' target='_blank'>" + value.value + "</a>";
+                                console.log(url);
+                                
+                                return url;
                             }
                         },
                         {

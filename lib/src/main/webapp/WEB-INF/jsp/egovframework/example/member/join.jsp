@@ -18,8 +18,17 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
+        <link href="/template/alert/toastr.min.css" rel="stylesheet" />
+        <script src="/template/alert/toastr.min.js"></script>
+        
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
+		</style>
+		
+		<style type="text/css">
+			.btnStyle {
+				font-weight: bold;
+			}
 		</style>
 		
     </head>
@@ -67,7 +76,7 @@
 										    <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" />
 										    <label for="userid">아이디</label>
 									    </div>
-									    <button type="button" class="btn btn-primary" id="checkUserid" >중복확인</button>
+									    <button type="button" class="btn btn-primary btnStyle" id="checkUserid" >중복확인</button>
 									</div>
                                     
                                     <!-- Passwd  input-->
@@ -126,7 +135,7 @@
 								        <input class="form-control" id="email" name="email" type="email" placeholder="name" />
 								        <label for="email">이메일 주소</label>
 								    </div>
-								    <button type="button" class="btn btn-primary" id="mailChk" >인증하기</button>
+								    <button type="button" class="btn btn-primary btnStyle" id="mailChk" >인증하기</button>
 									</div>
                                     
                                     <!-- Address input-->
@@ -135,7 +144,7 @@
 										    <input class="form-control" id="addr1" name="addr1" type="text" placeholder="주소를 입력하세요" />
 										    <label for="addr1">주소</label>
 									    </div>
-									    <button type="button" class="btn btn-primary" id="findAddr" >주소찾기</button>
+									    <button type="button" class="btn btn-primary btnStyle" id="findAddr" >주소찾기</button>
 									</div>
 									
 									<!-- Detailed address input-->
@@ -145,7 +154,7 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button type="button" class="btn btn-primary btn-lg" id="submitButton" onclick="joinMem()" >가입하기</button></div>
+                                    <div class="d-grid"><button type="button" class="btn btn-primary btn-lg btnStyle" id="submitButton" onclick="joinMem()" >가입하기</button></div>
                                 </form>
                             </div>
                         </div>
@@ -167,6 +176,9 @@
         <script src="/template/user/js/scripts.js"></script>
         
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- javascript -->
     	<script>
     	
@@ -190,10 +202,10 @@
 			            success: function (data) {
 			                if (data == 'unusable') {
 			                    idChk = false;
-			                    alert('이미 있는 아이디 입니다.');
+			                    sweet.warningAlert('이미 있는 아이디 입니다.');
 			                } else if (data == 'usable') {
 			                    idChk = true;
-			                    alert('사용가능한 아이디 입니다.');
+			                    sweet.successAlert('사용가능한 아이디 입니다.');
 			                }
 			            }
 			        });
@@ -237,6 +249,9 @@
 		            alert('이메일을 입력하세요');
 		            $("#email").focus();
 		        } else {
+		            
+		            toastr.info('잠시만 기다려주세요...', '메일을 보내는 중입니다.');
+		            
 		            $.ajax({
 						type: 'post',
 						url: '/member/mailSend.do',
@@ -246,15 +261,19 @@
 						}, 
 						success: function (response) {
 						    if (response != null) {
-						        let checkBox = prompt('메일로 인증 코드를 발송했습니다. 인증코드를 입력해주세요');
-						        if (checkBox == response) {
-						            emailChk = true;
-						            alert('인증되었습니다.');
-						        }
+						        sweet.modal('메일로 인증 코드를 발송했습니다. 인증코드를 입력해주세요.', 
+						                function(inputCode){ 
+								            if (inputCode == response) {
+								                sweet.successAlert('인증되었습니다.');
+							                    emailChk = true;
+							                } else {
+							                    sweet.errorAlert('인증 코드가 일치하지 않습니다.');
+							                }
+						            	});
 		                    }
 					    },
 					    error: function(error) {
-					        alert('인증에 실패했습니다. 메일을 다시 인증해주세요');
+					        sweet.errorAlert('인증에 실패했습니다. 메일을 다시 인증해주세요');
 						}
 					});
 		        }
