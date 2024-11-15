@@ -168,8 +168,10 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'success'}">
-			<script>alert('좌석이 예약되었습니다.')</script>
+			<script>sweet.successAlert('', '좌석이 예약되었습니다.')</script>
 		</c:if>
         
         <script>
@@ -218,9 +220,9 @@
             	var userid = "${sessionScope.userid}";
             	
             	if (userid == '') {
-            		alert('로그인 후 이용해주세요');
+            	    sweet.warningAlert('', '로그인 후 이용해주세요.');
             	} else if ($("#seat_position").val() == '') {
-            		alert('좌석을 선택해주세요');
+            	    sweet.warningAlert('', '좌석을 선택해주세요.');
             	} else {
             		$('#seatForm').submit();
             	}

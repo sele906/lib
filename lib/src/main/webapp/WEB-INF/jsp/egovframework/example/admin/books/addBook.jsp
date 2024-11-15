@@ -184,6 +184,8 @@
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         
+        <%@ include file="../../common/Alert.jsp" %> 
+        
 		<script type="text/javascript">
         
         $(function() {
@@ -412,7 +414,7 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        sweet.warningAlert('','선택된 책이 없습니다.');
                         return;
                     }
 
@@ -436,9 +438,9 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('책이 등록되었습니다.');
+                                sweet.successAlert('','책이 등록되었습니다.');
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다','관리자에게 문의하세요.');
                             }
                         }
                     });

@@ -186,6 +186,8 @@
 
         </main>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <script>
         $('.loanBtn').on('click', function(event){
             
@@ -205,19 +207,16 @@
 					success: function (response) {
 						
 						if (response.status === 'overdue') {
-				            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
-				            location.href = '/main.do';
-				        } else if (response.status === 'toomuchbook') {
-				            alert('총 14권을 초과하여 대여할 수 없습니다.');
+						    sweet.successAlert('연체 상태입니다.',  response.dueCount + '일 동안 대여할 수 없습니다.');
 				            location.href = '/main.do';
 				        } else if (response.status === 'success') {
-						    alert('대출되었습니다.');
+				            sweet.successAlert('','대출되었습니다.');
 						    location.href = '/main.do';
 	                    }
 				    }
 				});
 	        } else {
-	            alert('로그인 후 이용해주세요.');
+	            sweet.successAlert('','로그인 후 이용해주세요.');
 	            location.href = '/member/login.do';
 	        }
         });
@@ -232,20 +231,22 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'error'}">
-			<script>alert('접근 권한이 없습니다.')</script>
+			<script>sweet.warningAlert('','접근 권한이 없습니다.')</script>
 		</c:if>
         
         <c:if test="${msg eq 'logout'}">
-			<script>alert('로그아웃되었습니다.')</script>
+			<script>sweet.warningAlert('','로그아웃되었습니다.')</script>
 		</c:if>
         
         <c:if test="${msg eq 'updateMemSuccess'}">
-			<script>alert('회원정보 수정이 완료되었습니다.')</script>
+			<script>sweet.warningAlert('','회원정보 수정이 완료되었습니다.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'deleteMem'}">
-			<script>alert('탈퇴 완료되었습니다.')</script>
+			<script>sweet.warningAlert('','탈퇴 완료되었습니다.')</script>
 		</c:if>
         
         <!-- Bootstrap core JS-->

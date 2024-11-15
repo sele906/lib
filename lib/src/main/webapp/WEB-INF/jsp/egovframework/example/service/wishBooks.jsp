@@ -108,8 +108,6 @@
 					                <img  class="card-img-top imgStyle" src="/images/egovframework/lib/cmmn/blank.png">
 					            </c:otherwise>
 					        </c:choose>
-                    		
-                    			
                     		</div>
                     	</div>
                     	
@@ -188,6 +186,8 @@
             </section>
         </main>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- script -->
         <script>
         
@@ -201,8 +201,7 @@
                 
                 var userid = "${sessionScope.userid}";
                 if (userid == '') {
-                    alert('로그인 후 이용가능합니다.');
-                    location.href = "/member/login.do";
+                    sweet.warningAlert('', '로그인 후 이용가능합니다.');
                 } else {
                 
                 event.preventDefault();
@@ -226,9 +225,8 @@
                     data: JSON.stringify(formData),
                     contentType:"application/json; charset=UTF-8",
                     success: function(data) {
-                        console.log(data);
                         if (data == 'success') {
-                            alert('신청되었습니다.');
+                            sweet.successAlert('', '신청되었습니다.');
                         }
                     }
                 });

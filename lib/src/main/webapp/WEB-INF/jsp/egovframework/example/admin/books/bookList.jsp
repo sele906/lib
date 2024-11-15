@@ -314,6 +314,8 @@
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
         
+        <%@ include file="../../common/Alert.jsp" %> 
+        
 		<script type="text/javascript">
         
         $(function() {
@@ -534,7 +536,7 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    alert('데이터를 가져오는데 실패했습니다.');
+                    sweet.errorAlert('','데이터를 가져오는데 실패했습니다.');
                 });
             },
             
@@ -544,7 +546,7 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        sweet.warningAlert('','선택된 책이 없습니다.');
                         return;
                     }
 
@@ -562,10 +564,10 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 책이 삭제되었습니다.');
+                                sweet.successAlert('','선택된 책이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다.','관리자에게 문의하세요.');
                             }
                         }
                     });
@@ -619,27 +621,27 @@
         	
         	//유효성 검사
             if ($('#m_wishId').val() == '') {
-            	alert('인덱스 값을 입력하세요');
+                sweet.warningAlert('','인덱스 값을 입력하세요');
             	$('#m_wishId').focus();
             	return;
             } else if ($('#m_title').val() == '') {
-            	alert('제목을 입력하세요');
+                sweet.warningAlert('','제목을 입력하세요');
             	$('#m_title').focus();
             	return;
             } else if ($('#m_author').val() == '') {
-            	alert('저자를 입력하세요');
+                sweet.warningAlert('','저자를 입력하세요');
             	$('#m_author').focus();
             	return;
             } else if ($('#m_ctg').val() === '' || $('#m_ctg').val() === null) {
-            	alert('카테고리를 선택하세요');
+                sweet.warningAlert('','카테고리를 선택하세요');
             	$('#m_ctg').focus();
             	return;
             } else if ($('#m_publisher').val() == '') {
-            	alert('출판사를 입력하세요');
+                sweet.warningAlert('','출판사를 입력하세요');
             	$('#m_publisher').focus();
             	return;
             } else if ($('#m_cheonggu').val() == '') {
-            	alert('청구기호를 입력하세요');
+                sweet.warningAlert('','청구기호를 입력하세요');
             	$('#m_cheonggu').focus();
             	return;
             } 
@@ -655,17 +657,17 @@
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('책 정보가 저장되었습니다.');
+                        sweet.successAlert('','책 정보가 저장되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
                         bookModal.hide();
                     } else {
-                        alert('에러가 발생했습니다.');
+                        sweet.errorAlert('','에러가 발생했습니다.');
                     }
                 },
                 error: function() {
-                    alert('에러가 발생했습니다.');
+                    sweet.errorAlert('','에러가 발생했습니다.');
                 }
             });
         }
@@ -682,7 +684,7 @@
 		        }
 		        fr.readAsDataURL(files[0]);
 		    } else {
-		        console.log('error');
+		        sweet.errorAlert('','에러가 발생했습니다.');
 		    }
 		}
         

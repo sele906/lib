@@ -18,9 +18,6 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
-        <link href="/template/alert/toastr.min.css" rel="stylesheet" />
-        <script src="/template/alert/toastr.min.js"></script>
-        
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
@@ -113,6 +110,8 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- script -->
 		<script>
 			$(document).ready(function() {
@@ -121,11 +120,11 @@
 			    $('#findId').on('click', function(event){
 			        
 			        if ($("#name").val() == '') {
-			            alert('이름을 입력하세요');
+			            sweet.warningAlert('', '이름을 입력하세요');
 			            $("#name").focus();
 			            return;
 			        } else if ($("#phone").val() == '') {
-			            alert('전화번호를 입력하세요');
+			            sweet.warningAlert('', '전화번호를 입력하세요');
 			            $("#phone").focus();
 			            return;
 			        } 
@@ -142,15 +141,15 @@
 						success: function (response) {
 						    
 						    if (response.userid != null) {
-						        alert('회원님의 아이디는 ' + response.userid + '입니다.');
+						        sweet.infoAlert('', '회원님의 아이디는 ' + response.userid + '입니다.');
 						    } else if (response == 'error') {
-						        alert('잘못된 아이디 또는 비밀번호 입니다.');
+						        sweet.errorAlert('','잘못된 아이디 또는 비밀번호 입니다.');
 						    } else {
-						        alert('잘못된 아이디 또는 비밀번호 입니다.');
+						        sweet.errorAlert('',('잘못된 아이디 또는 비밀번호 입니다.');
 						    }
 					    },
 					    error: function(error) {
-					        alert('잘못된 아이디 또는 비밀번호 입니다.');
+					        sweet.errorAlert('','잘못된 아이디 또는 비밀번호 입니다.');
 						}
 					});
 			    });
@@ -159,7 +158,7 @@
 			    $('#findPwd').on('click', function(event){
 	
 			        if ($("#userid").val() == '') {
-			            alert('아이디를 입력하세요');
+			            sweet.warningAlert('','아이디를 입력하세요.');
 			            $("#userid").focus();
 			            return;
 			        } 
@@ -174,7 +173,7 @@
 						dataType: 'json',
 						success: function (response) {
 						    
-						    toastr.info('잠시만 기다려주세요...', '메일을 보내는 중입니다.');
+						    const toast1 = sweet.toast('메일을 보내는 중입니다. 잠시만 기다려주세요...', 5000);
 						    
 						    if (response.email != null) {
 						        $.ajax({
@@ -187,24 +186,28 @@
 									}, 
 									success: function (response) {
 									    
+									    toast1.close();
 									    
 									    if (response == 'success') {
-									        toastr.success('메일로 발송된 임시 비밀번호로 로그인 해주세요.', '메일을 성공적으로 발송했습니다.');
+									        sweet.successAlert('메일이 발송되었습니다.', '임시 비밀번호로 로그인 해주세요.');
 									    } else {
-					                        alert('메일발송이 실패했습니다. 관리자에게 문의하세요');
+									        sweet.errorAlert('메일발송이 실패했습니다.', '관리자에게 문의하세요');
 					                    }
 								    },
 								    error: function(error) {
-								        alert('메일발송이 실패했습니다. 관리자에게 문의하세요');
+								        sweet.errorAlert('메일발송이 실패했습니다.', '관리자에게 문의하세요');
 									}
 								});
 						    } else if (response == 'error') {
-						        alert('아이디를 확인해주세요.');
+						        sweet.errorAlert('','아이디를 확인해주세요.');
 						    } else {
-						        alert('아이디를 확인해주세요.');
+						        sweet.errorAlert('','아이디를 확인해주세요.');
 						    }
 				            
-					    }
+					    },
+					    error: function(error) {
+					        sweet.errorAlert('','아이디를 확인해주세요.');
+						}
 					});
 			    });
 			});

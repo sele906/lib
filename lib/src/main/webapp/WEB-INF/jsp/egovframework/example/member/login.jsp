@@ -90,21 +90,25 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'notmatch'}">
-			<script>alert('아이디 혹은 비밀번호가 맞지 않습니다.')</script>
+			<script>sweet.warningAlert('', '아이디 혹은 비밀번호가 맞지 않습니다.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'success'}">
-			<script>alert('가입되었습니다. 아이디와 비밀번호를 입력해주세요.')</script>
+			<script>sweet.successAlert('가입되었습니다','아이디와 비밀번호를 입력해주세요.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'logout'}">
-			<script>alert('로그아웃 되었습니다.')</script>
+			<script>sweet.successAlert('로그아웃 되었습니다.')</script>
 		</c:if>
         
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
+        
+        
     </body>
 </html>

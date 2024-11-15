@@ -176,8 +176,10 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'success'}">
-			<script>alert('좌석이 예약되었습니다.')</script>
+			<script>sweet.successAlert('', '좌석이 예약되었습니다.')</script>
 		</c:if>
         
         <script>
@@ -232,7 +234,7 @@
             $('#resvSeat').on('click', function(event) {
             	
             	if ($("#seat_position").val() == '') {
-            		alert('좌석을 선택해주세요');
+            	    sweet.warningAlert('', '좌석을 선택해주세요');
             	} else {
             		$('#seatForm').submit();
             	}
@@ -240,29 +242,30 @@
     	    });
             
             $('.seat.choose').on('click', function(event) {
-            	alert('좌석을 취소하시겠습니까?');
-            	
-            	var $seatElement = $(this);
+                
+                var $seatElement = $(this);
             	var num = $seatElement.text();
-            	
-            	$.ajax({
-					type: 'get',
-					url: '/mypage/seatDelete.do',
-					data: {
-					    seatNum: num
-					}, 
-					success: function (response) {
-					    
-					    if (response === 'success') {
-					        
-					        alert('예약 취소 되었습니다.');
-					        $seatElement.removeClass('choose');
-	                        
-	                    } else {
-	                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
-	                    }
-				    }
-				});
+                
+                sweet.confirm('', '좌석을 취소하시겠습니까?', function() {
+                        $.ajax({
+        					type: 'get',
+        					url: '/mypage/seatDelete.do',
+        					data: {
+        					    seatNum: num
+        					}, 
+        					success: function (response) {
+        					    
+        					    if (response === 'success') {
+        					        
+        					        sweet.successAlert('', '예약 취소 되었습니다.');
+        					        $seatElement.removeClass('choose');
+        	                        
+        	                    } else {
+        	                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
+        	                    }
+        				    }
+        				});        
+                });
             
     	    });
             

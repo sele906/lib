@@ -161,6 +161,9 @@
         <script src="/template/user/js/scripts.js"></script>
         
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- javascript -->
     	<script>
     	
@@ -191,15 +194,18 @@
 		    
 		    
 		    
-		    //메일 인증
+		  //메일 인증
 		    $('#mailChk').on('click', function(event){
 		        
 		        var email = $('#email').val();
 		        
 		        if (email == '') { 
-		            alert('이메일을 입력하세요');
+		            sweet.warningAlert('','이메일을 입력하세요');
 		            $("#email").focus();
 		        } else {
+		            
+		            const toast1 = sweet.toast('메일을 보내는 중입니다. 잠시만 기다려주세요...', 5000);
+		            
 		            $.ajax({
 						type: 'post',
 						url: '/member/mailSend.do',
@@ -209,15 +215,22 @@
 						}, 
 						success: function (response) {
 						    if (response != null) {
-						        let checkBox = prompt('메일로 인증 코드를 발송했습니다. 인증코드를 입력해주세요');
-						        if (checkBox == response) {
-						            emailChk = true;
-						            alert('인증되었습니다.');
-						        }
+						        
+						        toast1.close();
+						        
+						        sweet.modal('메일을 발송했습니다.', '인증코드를 입력해주세요.',
+						                function(inputCode){ 
+								            if (inputCode == response) {
+								                sweet.successAlert('','인증되었습니다.');
+							                    emailChk = true;
+							                } else {
+							                    sweet.errorAlert('','인증 코드가 일치하지 않습니다.');
+							                }
+						            	});
 		                    }
 					    },
 					    error: function(error) {
-					        alert('인증에 실패했습니다. 메일을 다시 인증해주세요');
+					        sweet.errorAlert('인증에 실패했습니다.', '다시 인증해주세요');
 						}
 					});
 		        }
@@ -264,61 +277,62 @@
 			
 			//유효성 검사
 	        if ($("#name").val() == '') { //이름
-	            alert('이름을 입력하세요');
+	            sweet.warningAlert('', '이름을 입력하세요.');
 	            $("#name").focus();
 	        } else if ($("#name").val().length > 20) {
-	            alert('이름은 20자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('', '이름은 20자 이내로 입력해야 합니다.');
 	            $("#name").focus();
 	        } else if ($("#year").val() == '') { //연도
-	            alert('연도를 선택하세요');
+	            sweet.warningAlert('', '연도를 선택하세요.');
 	            $("#year").focus();
 	        } else if ($("#month").val() == '') { //월
-	            alert('월을 선택하세요');
+	            sweet.warningAlert('', '월을 선택하세요.');
 	            $("#month").focus();
 	        } else if ($("#day").val() == '') { //일
-	            alert('날을 선택하세요');
+	            sweet.warningAlert('', '일을 선택하세요.');
 	            $("#day").focus();
 	        } else if ($("#passwd").val() == '') { //비밀번호
-	            alert('비밀번호를 입력하세요');
+	            sweet.warningAlert('', '비밀번호를 입력하세요.');
 	            $("#passwd").focus();
 	        } else if ($("#passwd").val().length < 8) {
-	            alert('비밀번호는 8자 이상 입력해야 합니다.');
+	            sweet.warningAlert('', '비밀번호는 8자 이상 입력해야 합니다.');
 	            $("#passwd").focus();
 	        } else if ($("#passwd-chk").val() == '') { //비밀번호 확인
-	            alert('비밀번호를 확인하세요');
+	            sweet.warningAlert('', '비밀번호를 확인하세요');
 	            $("#passwd-chk").focus();
 	        } else if ($("#phone").val() == '') { //전화번호
-	            alert('전화번호를 입력하세요');
+	            sweet.warningAlert('', '전화번호를 입력하세요');
 	            $("#phone").focus();
 	        } else if ($("#phone").val().length > 15) {
-	            alert('전화번호는 15자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('', '전화번호는 15자 이내로 입력해야 합니다.');
 	            $("#phone").focus();
 	        } else if ($("#email").val() == '') { //이메일
-	            alert('이메일을 입력하세요');
+	            sweet.warningAlert('', '이메일을 입력하세요');
 	            $("#email").focus();
 	        } else if (emailChk == false) { //이메일
-	            alert('이메일 인증을 해주세요');
+	            sweet.warningAlert('', '이메일 인증을 해주세요');
 	            $("#email").focus();
 	        } else if ($("#email").val().length > 320) {
-	            alert('이메일은 320자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('', '이메일은 320자 이내로 입력해야 합니다.');
 	            $("#email").focus();
 	        } else if ($("#addr1").val() == '') { //주소
-	            alert('주소를 입력하세요');
+	            sweet.warningAlert('', '주소를 입력하세요');
 	            $("#addr1").focus();
 	        } else if ($("#addr2").val() == '') { //상세주소
-	            alert('상세주소를 입력하세요');
+	            sweet.warningAlert('', '상세주소를 입력하세요');
 	            $("#addr2").focus();
 	        } else {
-	            alert('회원정보를 수정하시겠습니까?');
-	            $('#updateForm').submit();
+	            sweet.confirm('', '회원정보를 수정하시겠습니까?', function() {
+	                $('#updateForm').submit();
+	            });
 	        }
 		}
 		
 		function quitMem() {
-		    alert('탈퇴하시겠습니까?');
-		    location.href = "/mypage/deleteMem.do";
+		    sweet.confirm('', '탈퇴하시겠습니까?', function() {
+		        location.href = "/mypage/deleteMem.do";
+            });
 		}
-		    
 		    
 		</script>
         

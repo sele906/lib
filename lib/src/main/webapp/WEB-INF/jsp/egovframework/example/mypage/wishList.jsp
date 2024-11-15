@@ -186,6 +186,8 @@
             </section>
         </main>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- script -->
         <script>
         
@@ -213,18 +215,18 @@
 						    
 						    if (response === 'success') {
 						        
-						        alert('신청도서 목록에서 해제되었습니다.');
+						        sweet.successAlert('', '신청도서 목록에서 해제되었습니다.');
 						        
 						        //숨기기
 						        row.addClass('hidden'); 
 		                        
 		                    } else {
-		                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+		                        sweet.warningAlert('문제가 발생했습니다','관리자에게 문의하세요');
 		                    }
 					    }
 					});
 		        } else {
-		            alert('로그인 후 이용해주세요.');
+		            sweet.warningAlert('', '로그인 후 이용해주세요.');
 		            location.href = '/member/login.do';
 		        }
             });

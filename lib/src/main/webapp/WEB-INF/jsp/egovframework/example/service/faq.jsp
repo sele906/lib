@@ -227,6 +227,8 @@
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <script>
 		    $(document).ready(function() {
 		        

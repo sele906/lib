@@ -2,7 +2,11 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
-<script src="/template/alert/sweetAlert.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.css">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.10/dist/sweetalert2.min.js"></script>
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
@@ -13,6 +17,7 @@
 .swal-text {
     font-family: "Nanum Gothic", sans-serif; 
     font-size: 16px;
+    word-break: keep-all;
 }
 
 .swal-title {
@@ -21,70 +26,120 @@
     word-break: keep-all;
 }
 
-/* .swal-button--confirm {
-    background-color: #234250;
-} */
-
 </style>
 <script>
 
 var sweet = {};
 
-sweet.successAlert = function(title, okFn = function() {}) {
-    swal({
+//alert
+sweet.successAlert = function(title, text, okFn = function() {}) {
+    Swal.fire({
         title: title,
+        text: text,
         icon: 'success',
-        button: '확인',
-        closeOnClickOutside: false
+        confirmButtonText: '확인',
+        confirmButtonColor: '#84b16a',
+        allowOutsideClick: false
     }).then(function() {
         okFn();
     });
 };
 
-sweet.errorAlert = function(title, okFn = function() {}) {
-    swal({
+sweet.errorAlert = function(title, text, okFn = function() {}) {
+    Swal.fire({
         title: title,
+        text: text,
         icon: 'error',
-        button: '확인',
-        closeOnClickOutside: false
+        confirmButtonText: '확인',
+        confirmButtonColor: '#d74040',
+        allowOutsideClick: false
     }).then(function() {
         okFn();
     });
 };
 
-sweet.warningAlert = function(title, okFn = function() {}) {
-    swal({
+sweet.warningAlert = function(title, text, okFn = function() {}) {
+    Swal.fire({
         title: title,
+        text: text,
         icon: 'warning',
-        button: '확인',
-        closeOnClickOutside: false
+        confirmButtonText: '확인',
+        confirmButtonColor: '#eba043',
+        allowOutsideClick: false
     }).then(function() {
         okFn();
     });
 };
 
-sweet.modal = function(title, okFn = function() {}) {
-    swal({
-        content: "input",
+sweet.infoAlert = function(title, text, okFn = function() {}) {
+    Swal.fire({
         title: title,
+        text: text,
         icon: 'info',
-        button: ["확인", "취소"],
-        closeOnClickOutside: false
-    }).then(function(value) {
-        if (value) {
-            okFn(value);
+        confirmButtonText: '확인',
+        confirmButtonColor: '#7db4c6',
+        allowOutsideClick: false
+    }).then(function() {
+        okFn();
+    });
+};
+
+//confirm
+sweet.confirm = function(title, text, okFn = function() {}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        icon: 'question',
+        showCancelButton : true,
+        confirmButtonColor: '#7db4c6',
+		confirmButtonText : "예",
+		cancelButtonText : "아니오",
+		closeOnConfirm : false,
+		closeOnCancel : true
+	}).then((result) => {
+        if (result.isConfirmed) {
+            okFn(); 
         }
     });
 };
 
-sweet.infoAlert = function(title, okFn = function() {}) {
-    swal({
+//toast
+sweet.toast = function(title, timer = 2000) {
+    const toast = Swal.fire({
         title: title,
         icon: 'info',
-        button: '확인',
-        closeOnClickOutside: false
-    }).then(function() {
-        okFn();
+        toast: true,
+        position: 'center-center',
+        showConfirmButton: false,
+        timer: timer,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        },
+        customClass: {
+            icon: 'no-animate'
+          }
+    });
+    return toast;
+};
+
+//modal
+sweet.modal = function(title, text = '', okFn = function() {}) {
+    Swal.fire({
+        title: title,
+        text: text,
+        input: 'text',
+        icon: 'info',
+        showCancelButton: true,
+        cancelButtonText: "취소",
+        confirmButtonText: '확인',
+        confirmButtonColor: '#3085d6',
+        allowOutsideClick: false
+    }).then(function(result) {
+        if (result.isConfirmed && result.value) {
+            okFn(result.value);
+        }
     });
 };
 

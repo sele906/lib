@@ -206,6 +206,8 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <script type="text/javascript">
         
         $(document).ready(function() {
@@ -227,7 +229,7 @@
 					    
 					    if (response === 'success') {
 					        
-					        alert('대출연장 되었습니다.');
+					        sweet.successAlert('', '대출연장 되었습니다.');
 					        
 					        const currentDate = new Date(dateElmt.val());
 					        currentDate.setDate(currentDate.getDate() + 7);
@@ -236,7 +238,7 @@
 					        dateElmt.val(newReturnDate);
 					        returnDateSpan.text(newReturnDate);
 	                    } else {
-	                        alert('연장이 불가능합니다.');
+	                        sweet.warningAlert('', '연장이 불가능합니다.');
 	                        
 	                        row.find('.extendsBtn')
 	                           .addClass('disabled')
@@ -262,11 +264,11 @@
 					    
 					    if (response === 'success') {
 					        
-					        alert('반납 되었습니다.');
+					        sweet.successAlert('', '반납 되었습니다.');
 					        $(event.target).closest('tr').hide();
 					        
 	                    } else if (regex.test(response)) {
-	                    	alert('대출기간을 지나 반납하셨습니다. ' + response + '일동안 대여하실 수 없습니다.');
+	                        sweet.warningAlert('연체 상태입니다.', response + '일동안 대여하실 수 없습니다.');
 	                    	$(event.target).closest('tr').hide();
 	                    }
 				    }

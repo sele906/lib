@@ -283,6 +283,8 @@
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <script type="text/javascript">
         $(document).ready(function() {
         
@@ -305,7 +307,7 @@
 							    
 							    if (response === 'success') {
 							        
-							        alert('관심 도서로 등록되었습니다.');
+							        sweet.successAlert('','관심 도서로 등록되었습니다.');
 							        
 							        //관심버튼 관심 해제로 바꾸기
 							        row.find('.likeBtn')
@@ -314,12 +316,12 @@
 			                           	.text('관심해제'); 
 			                        
 			                    } else {
-			                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+			                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 			                    }
 						    }
 						});
 			        } else {
-			            alert('로그인 후 이용해주세요.');
+			            sweet.warningAlert('','로그인 후 이용해주세요.');
 			            location.href = '/member/login.do';
 			        }
 		            
@@ -337,7 +339,7 @@
 							    
 							    if (response === 'success') {
 							        
-							        alert('관심도서 목록에서 해제되었습니다.');
+							        sweet.successAlert('','관심도서 목록에서 해제되었습니다.');
 							        
 							        //관심해제버튼 관심으로 바꾸기
 							        row.find('.likeBtn')
@@ -346,12 +348,12 @@
 			                           	.text('관심도서'); 
 			                        
 			                    } else {
-			                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+			                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 			                    }
 						    }
 						});
 			        } else {
-			            alert('로그인 후 이용해주세요.');
+			            sweet.warningAlert('','로그인 후 이용해주세요.');
 			            location.href = '/member/login.do';
 			        }
 		        }
@@ -377,13 +379,10 @@
 							dataType : 'json',
 							success: function (response) {
 								if (response.status === 'overdue') {
-						            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
-						            location.href = '/main.do';
-						        } else if (response.status === 'toomuchbook') {
-						            alert('총 14권을 초과하여 대여할 수 없습니다.');
+								    sweet.errorAlert('연체 상태입니다.', response.dueCount + '일 동안 대여할 수 없습니다.');
 						            location.href = '/main.do';
 						        } else if (response.status === 'success') {
-								    alert('대출되었습니다.');
+						            sweet.successAlert('','대출되었습니다.');
 								    
 								    row.find('input[name="resvCount"]').val(response.resvCnt); 
 							        row.find('.resvCountShow').text(response.resvCnt);
@@ -404,7 +403,7 @@
 						    }
 						});
 			        } else {
-			            alert('로그인 후 이용해주세요.');
+			            sweet.warningAlert('','로그인 후 이용해주세요.');
 			            location.href = '/member/login.do';
 			        }
 		            
@@ -424,7 +423,7 @@
 							    
 							    if (response === 'success') {
 							        
-							        alert('예약되었습니다.');
+							        sweet.successAlert('','예약되었습니다.');
 							        
 							      	//예약 버튼 예약취소로 바꾸기
 							        row.find('.resvBtn')
@@ -441,7 +440,7 @@
 							        row.find('.resvCountShow').text(cnt);
 							        
 			                    } else if (response === 'alreadyLoaned') {
-			                        alert('이미 대출한 도서입니다.');
+			                        sweet.warningAlert('','이미 대출한 도서입니다.');
 			                    } else if (response === 'alreadyReserved') {
 			                        if (confirm('예약 취소하시겠습니까?')) {
 			                            $.ajax({
@@ -454,7 +453,7 @@
 											success: function (response) {
 											    
 											    if (response == 'success') {
-											        alert('예약 취소 되었습니다.');
+											        sweet.successAlert('','예약 취소 되었습니다.');
 											        
 											      	//예약 버튼 예약으로 바꾸기
 											        row.find('.resvBtn')
@@ -474,14 +473,14 @@
 										});
 			                        }
 			                    } else if (response === 'fullyReserved') {
-			                        alert('예약이 불가능합니다.');
+			                        sweet.warningAlert('','예약이 불가능합니다.');
 			                    } else {
-			                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+			                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 			                    }
 						    }
 						});
 			        } else {
-			            alert('로그인 후 이용해주세요.');
+			            sweet.warningAlert('','로그인 후 이용해주세요.');
 			            location.href = '/member/login.do';
 			        }
 		            
@@ -506,19 +505,16 @@
 						dataType : 'json',
 						success: function (response) {
 							if (response.status === 'overdue') {
-					            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
-					            location.href = '/main.do';
-					        } else if (response.status === 'toomuchbook') {
-					            alert('총 14권을 초과하여 대여할 수 없습니다.');
+							    sweet.warningAlert('연체 상태입니다.', response.dueCount + '일 동안 대여할 수 없습니다.');
 					            location.href = '/main.do';
 					        } else if (response.status === 'success') {
-							    alert('대출되었습니다.');
+					            sweet.successAlert('','대출되었습니다.');
 							    location.href = '/books/bestBooks.do';
 		                    }
 					    }
 					});
 		        } else {
-		            alert('로그인 후 이용해주세요.');
+		            sweet.warningAlert('','로그인 후 이용해주세요.');
 		            location.href = '/member/login.do';
 		        }
 	        });
