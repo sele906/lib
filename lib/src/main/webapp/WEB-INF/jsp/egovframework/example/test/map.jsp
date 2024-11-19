@@ -20,5 +20,22 @@
 	var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
 	
 </script>
+<script>
+
+const socket = new WebSocket("ws://localhost:8080/echo-ws");
+socket.onopen = function(event) {
+    console.log("WebSocket connection established");
+};
+socket.onmessage = function(event) {
+    console.log("Message from server: ", event.data);
+};
+socket.onerror = function(event) {
+    console.error("WebSocket error: ", event);
+};
+socket.onclose = function(event) {
+    console.log("WebSocket connection closed");
+};
+
+</script>
 </body>
 </html>

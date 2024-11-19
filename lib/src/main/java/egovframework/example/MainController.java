@@ -46,6 +46,6 @@ public class MainController {
 	@RequestMapping(value = "map.do", method = RequestMethod.GET)
 	public String map(Model model) throws Exception {
 		model.addAttribute("mapApiKey", mapApiKey);
-		return "test/map";
+		return "test/test";
 	}
 }

@@ -3,6 +3,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
     <script src="https://cdn.babylonjs.com/babylon.js"></script>
     <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
     <script src="https://cdn.babylonjs.com/physics/babylon.physics.min.js"></script>

@@ -9,7 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>관리자 - 통계관리</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
