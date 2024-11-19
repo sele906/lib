@@ -35,8 +35,6 @@
 	    width: 100%;
 	    height: 100vh;
 	    justify-content: space-evenly;
-	    max-width: 550px;
-}
 	}
 	
 	#infoBox {
@@ -54,14 +52,6 @@
 		display: flex;
 	    align-items: center;
 	    justify-content: center;
-	}
-	
-	#infoBox h1 {
-	  font-family: "Nanum Gothic", sans-serif;
-	  font-size: 150px;
-	  font-weight: 900;
-	  margin: 0px;
-	  text-transform: uppercase;
 	}
 	
 	#infoBox h1 {
@@ -121,6 +111,8 @@
 	@media only screen and (max-width: 767px) {
 	  #pageWrap {
 	  	flex-direction: column;
+        align-items: center;
+        justify-content: center;
 	  }
 	  
 	  #infoBox {
@@ -133,8 +125,7 @@
 	  }
 	  
 	  #iconError {
-	  	min-width: 80%;
-	  	justify-content: center;
+	  	display: none;
 	  }
 	  
 	  #iconImg {
@@ -148,6 +139,52 @@
 		}
 	} 
 	
+	#simGame {
+		position: absolute;
+	    z-index: 100;
+	    width: 80%;
+	    height: 120px;
+	    top: 40px;
+	    left: 10%;
+	    display: none;
+	    justify-content: center;
+	}
+	
+	#gameCan {
+		width: 400px;
+		height: 120px;
+		border-bottom: 3px solid gray;
+		background-color: white;
+	}
+	
+	#askGame {
+		display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    margin: 10px 0;
+	}
+	
+	#askGame p {
+		margin: 0;
+	    color: gray;
+	    padding: 0 10px 0 0;
+	    font-size: small;
+	}
+	
+	#askGame button {
+	    color: gray;
+	    background: none;
+	    border: gray 1px solid;
+	    border-radius: 5px;
+	    padding: 3px 5px;
+	    font-size: small;
+	}
+	
+	#askGame button:hover {
+	    color: white;
+	    background: gray;
+	    cursor: pointer;
+	}
 	
 	</style>
 
@@ -156,12 +193,19 @@
 <body>
 
 <div id="pageWrap">
+	<div id="simGame">
+		<canvas id="gameCan"></canvas>
+	</div>
 	<div id="infoBox">
 			<div class="errorMsg">
 				<h1>404</h1>
 			</div>
 			<h2>요청하신 페이지를 찾을 수 없습니다.</h2>
 			<p>찾으시려는 페이지의 주소가 잘못 입력되었거나, 페이지 주소의 변경 혹은 삭제로 인해 현재 사용하실 수 없습니다.<br>입력하신 페이지의 주소가 정확한지 다시 한번 확인해 주시길 부탁드립니다.</p>
+			<div id="askGame">
+				<p>기다리는동안 게임을 하시겠습니까?</p>
+				<button onclick="play()">시작</button>
+			</div>
 			<a href="/main.do">확인</a>
 	</div>
 	
@@ -172,6 +216,7 @@
 	</div>
 </div>
 
-	
+<script src="/template/user/js/game.js"></script>
+
 </body>
 </html>

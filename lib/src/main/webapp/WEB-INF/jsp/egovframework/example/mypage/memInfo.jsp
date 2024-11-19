@@ -23,6 +23,12 @@
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
 		
+		<style>
+			.btnStyle {
+				font-weight: bold;
+			}
+		</style>
+		
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
@@ -118,7 +124,7 @@
 								        <input class="form-control" id="email" name="email" type="email" placeholder="name" value="${info.email}"/>
 								        <label for="email">이메일 주소</label>
 								    </div>
-								    <button type="button" class="btn btn-primary" id="mailChk" >인증하기</button>
+								    <button type="button" class="btn btn-primary btnStyle" id="mailChk" >인증하기</button>
 									</div>
                                     
                                     <!-- Address input-->
@@ -127,7 +133,7 @@
 										    <input class="form-control" id="addr1" name="addr1" type="text" placeholder="주소를 입력하세요" value="${info.addr1}"/>
 										    <label for="addr1">주소</label>
 									    </div>
-									    <button type="button" class="btn btn-primary" id="findAddr" >주소찾기</button>
+									    <button type="button" class="btn btn-primary btnStyle" id="findAddr" >주소찾기</button>
 									</div>
 									
 									<!-- Detailed address input-->
@@ -138,8 +144,8 @@
 
                                     <!-- Submit Button-->
                                     <div class="d-grid">
-                                    <button type="button" class="btn btn-primary btn-lg mb-2" id="submitButton" onclick="updateMem()" >수정하기</button>
-                                    <button type="button" class="btn btn-danger btn-lg" id="quitButton" onclick="quitMem()" >탈퇴하기</button></div>
+                                    <button type="button" class="btn btn-primary btn-lg mb-2 btnStyle" id="submitButton" onclick="updateMem()" >수정하기</button>
+                                    <button type="button" class="btn btn-danger btn-lg btnStyle" id="quitButton" onclick="quitMem()" >탈퇴하기</button></div>
                                 </form>
                             </div>
                         </div>

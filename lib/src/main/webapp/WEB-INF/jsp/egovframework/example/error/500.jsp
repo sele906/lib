@@ -61,14 +61,6 @@
 	  text-transform: uppercase;
 	}
 	
-	#infoBox h1 {
-	  font-family: "Nanum Gothic", sans-serif;
-	  font-size: 150px;
-	  font-weight: 900;
-	  margin: 0px;
-	  text-transform: uppercase;
-	}
-	
 	#infoBox h2 {
 	  font-family: "Nanum Gothic", sans-serif;
 	  font-size: 20px;
@@ -145,6 +137,52 @@
 		}
 	} 
 	
+	#simGame {
+		position: absolute;
+	    z-index: 100;
+	    width: 80%;
+	    height: 120px;
+	    top: 40px;
+	    left: 10%;
+	    display: none;
+	    justify-content: center;
+	}
+	
+	#gameCan {
+		width: 400px;
+		height: 120px;
+		border-bottom: 3px solid gray;
+		background-color: white;
+	}
+	
+	#askGame {
+		display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    margin: 10px 0;
+	}
+	
+	#askGame p {
+		margin: 0;
+	    color: gray;
+	    padding: 0 10px 0 0;
+	    font-size: small;
+	}
+	
+	#askGame button {
+	    color: gray;
+	    background: none;
+	    border: gray 1px solid;
+	    border-radius: 5px;
+	    padding: 3px 5px;
+	    font-size: small;
+	}
+	
+	#askGame button:hover {
+	    color: white;
+	    background: gray;
+	    cursor: pointer;
+	}
 	
 	</style>
 
@@ -153,12 +191,19 @@
 <body>
 
 <div id="pageWrap">
+	<div id="simGame">
+		<canvas id="gameCan"></canvas>
+	</div>
 	<div id="infoBox">
 			<div class="errorMsg">
 				<h1>500</h1>
 			</div>
 			<h2>내부 서버 오류</h2>
 			<p>접속이 원할하지 않습니다. 잠시후 다시 방문하거나, 새로고침해주세요.</p>
+			<div id="askGame">
+				<p>기다리는동안 게임을 하시겠습니까?</p>
+				<button onclick="play()">시작</button>
+			</div>
 			<a href="/main.do">확인</a>
 	</div>
 	
@@ -169,6 +214,7 @@
 	</div>
 </div>
 
+<script src="/template/user/js/game.js"></script>
 	
 </body>
 </html>

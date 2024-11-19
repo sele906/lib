@@ -29,6 +29,10 @@
 		    .info-link:hover {
 		        text-decoration: underline;
 		    }
+		    
+		    .btnStyle {
+				font-weight: bold;
+			}
 		</style>
         
     </head>
@@ -58,7 +62,7 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">확인</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg btnStyle" id="submitButton" type="submit">확인</button></div>
                                 </form>
                                 
                                 <%@ include file="../common/Alert.jsp" %> 
