@@ -152,7 +152,7 @@
 	
 	#gameCan {
 		width: 400px;
-		height: 120px;
+		height: 130px;
 		border-bottom: 3px solid gray;
 		background-color: white;
 	}
