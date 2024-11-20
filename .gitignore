@@ -13,7 +13,6 @@ local.properties
 .settings/
 .loadpath
 .recommenders
-*.glb
 
 # External tool builders
 .externalToolBuilders/
@@ -120,13 +119,16 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-# 개인 설정
+###
+
 sample/
 dispatcher-servlet.xml
 **/egovframework/spring/
 **/egovframework/sqlmap/
 prop/
 pom.xml
+*.glb
+server.js
 
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
