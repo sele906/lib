@@ -10,7 +10,6 @@ import java.util.UUID;
 
 import javax.annotation.Resource;
 import javax.net.ssl.HttpsURLConnection;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -167,19 +166,17 @@ public class ABooksController {
 	@ResponseBody
 	@RequestMapping(value = "insertWishBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertWishBook(@RequestBody String param) throws Exception {
-
+		
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		List<ABookVO> bookList = objectMapper.readValue(param, new TypeReference<List<ABookVO>>() {});
 
-		bookList = null;
-
 		for (ABookVO vo : bookList) {
 
 			try {
 				// 카테고리 이름 > 코드 변환
-				String ctgId = AbooksDao.codeChange(vo.getCtgNm());
+				String ctgId = AbooksDao.codeChange(vo.getCtgNm()); 
 				vo.setCtgId(ctgId);
 
 				// 데이터 삽입
@@ -209,7 +206,6 @@ public class ABooksController {
 
 	@RequestMapping(value = "addBook.do")
 	public String addBook() throws Exception {
-
 		return "/admin/books/addBook";
 	}
 
@@ -272,7 +268,7 @@ public class ABooksController {
 	@ResponseBody
 	@RequestMapping(value = "insertBook.do", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
 	public String insertBook(@RequestBody String param) throws Exception {
-
+		
 		String result = "";
 
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -284,14 +280,14 @@ public class ABooksController {
 				// 카테고리 이름 > 코드 변환
 				String ctgId = AbooksDao.codeChange(vo.getCtgNm());
 				vo.setCtgId(ctgId);
-
+				
 				// 데이터 삽입
 				int id = AbooksDao.booksInsert(vo);
 
 				// 이미지 처리
 				String imgURL = (String) vo.getUrl();
 				String fileExtension = imgURL.contains(".png") ? ".png" : imgURL.contains(".jpg") ? ".jpg" : null;
-
+				
 				if (fileExtension != null) {
 					String fileOriNm = vo.getCtgId() + "_" + UUID.randomUUID() + fileExtension;
 					AFileService.insertImage(id, imgURL, fileOriNm);

@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import egovframework.example.service.dao.WishDAO;
@@ -21,11 +22,12 @@ public class WishFileServiceImpl implements WishFileService {
 	@Resource(name = "WishDAO")
 	private WishDAO wishDao;
 
-	private static String path = "C:\\fileupload\\lib\\wish";
+	@Value("${wishPath}")
+	private String wishPath;
 
 	public void insertImage(int id, String imgURL, String fileOriNm) throws IOException {
 
-		String filePath = path + "\\" + fileOriNm;
+		String filePath = wishPath + fileOriNm;
 
 		URL url = new URL(imgURL);
 

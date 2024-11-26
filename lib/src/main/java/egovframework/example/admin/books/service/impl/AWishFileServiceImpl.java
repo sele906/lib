@@ -8,6 +8,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,10 +21,13 @@ public class AWishFileServiceImpl implements AWishFileService {
 	@Resource(name = "AWishDAO")
 	private AWishDAO AWishDao;
 	
-	private static String path = "C:\\fileupload\\lib\\wish";
+	@Value("${wishPath}")
+	private String wishPath;
 	
 	@Override
 	public void updateWishImage(int id, String ctgId, MultipartFile multifile) throws Exception {
+		
+		System.out.println(wishPath);
 		
 		if (multifile.getSize() > 0 && !multifile.getOriginalFilename().equals("")) {
 			
@@ -31,7 +35,7 @@ public class AWishFileServiceImpl implements AWishFileService {
 			String Fname = fileNm.substring(0, fileNm.lastIndexOf("."));
 			String ext = FilenameUtils.getExtension(fileNm);
 			String fileOriNm = ctgId + "_" + Fname + "_" + UUID.randomUUID() + "." + ext;
-			String filePath = path + "\\" + fileOriNm;
+			String filePath = wishPath + fileOriNm;
 
 			try {
 

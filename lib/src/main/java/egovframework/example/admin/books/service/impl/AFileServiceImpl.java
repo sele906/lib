@@ -15,6 +15,7 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +27,16 @@ public class AFileServiceImpl implements AFileService {
 
 	@Resource(name = "ABooksDAO")
 	private ABooksDAO AbooksDao;
-
-	private static String path = "C:\\fileupload\\lib\\books";
+	
+	@Value("${bookPath}")
+	private String bookPath;
+	
+	@Value("${wishPath}")
+	private String wishPath;
 
 	public void insertImage(int id, String imgURL, String fileOriNm) throws IOException {
 
-		String filePath = path + "\\" + fileOriNm;
+		String filePath = bookPath + fileOriNm;
 
 		URL url = new URL(imgURL);
 
@@ -72,7 +77,7 @@ public class AFileServiceImpl implements AFileService {
 			String Fname = fileNm.substring(0, fileNm.lastIndexOf("."));
 			String ext = FilenameUtils.getExtension(fileNm);
 			String fileOriNm = ctgId + "_" + Fname + "_" + UUID.randomUUID() + "." + ext;
-			String filePath = path + "\\" + fileOriNm;
+			String filePath = bookPath + fileOriNm;
 
 			try {
 
@@ -117,11 +122,11 @@ public class AFileServiceImpl implements AFileService {
 	@Override
 	public void moveImage(int id, String imgNm, String fileOriNm) {
 
-		String wishPath = "C:\\fileupload\\lib\\wish\\" + imgNm;
-		String filePath = path + "\\" + fileOriNm;
+		String wishPathNm = wishPath + imgNm;
+		String filePath = bookPath + fileOriNm;
 
 		try {
-			Path source = Paths.get(wishPath);
+			Path source = Paths.get(wishPathNm);
 			Path target = Paths.get(filePath);
 			Files.copy(source, target);
 
