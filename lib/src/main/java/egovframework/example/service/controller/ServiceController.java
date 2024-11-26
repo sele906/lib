@@ -191,7 +191,7 @@ public class ServiceController {
 			for (String seat : seatArray) {
 
 				MultiVO vo = new MultiVO();
-				vo.setSeatNum(seatNum);
+				vo.setSeatNum(seat);
 				vo.setStatus("Y");
 				vo.setUserid(userid);
 
