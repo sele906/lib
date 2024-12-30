@@ -10,7 +10,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>관리자 - 대출/반납/연체 관리</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -24,7 +25,6 @@
         <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
         <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 		<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 		
 		<style>
 		
@@ -110,7 +110,6 @@
 	        justify-content: center;
 	    }
 	    
-	    /* linkButton */
 	    .linkButton {
 	    	color: #424549;
 		    font-size: 0.9em;
@@ -170,12 +169,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -190,8 +184,11 @@
         
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            	
+            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -210,16 +207,12 @@
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
 								<b>대출/반납/연체 관리</b>
-                                <!-- <b>대출/반납 관리</b>
-								|
-                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
                             
                             <div id="infoBar">
                             	<div>
-	                            	<!-- <button class="btn btn-primary" id="addBook">등록하기</button> -->
 	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
                             	</div>
 								
@@ -242,12 +235,7 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
-                        </div>
+						</div>
                     </div>
                 </footer>
             </div>
@@ -274,13 +262,6 @@
 		                        <img id="m_img" src='' class="img-fluid shadow-sm" alt="도서 표지">
 		                    </div>
 		                	
-		                	 <!-- 파일 업로드 -->
-		                    <!-- <div class="mb-3 row">
-		                        <div class="col-sm-12">
-		                            <input type="file" class="form-control" id="m_file" name="multifile">
-		                        </div>
-		                    </div> -->
-		                	
 		                	</div>
 		                	
 		                	<!-- 우측 -->
@@ -298,7 +279,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_loan_date" class="col-sm-3 col-form-label">대출일</label>
 		                        <div class="col-sm-9">
-		                            <input type="date" class="form-control" id="m_loan_date" name="loanDate" placeholder="대출일을 입력하세요">
+		                            <input type="date" class="form-control" id="m_loan_date" name="loanDateStr" placeholder="대출일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -306,7 +287,7 @@
 		                    <div class="mb-3 row">
 		                        <label for="m_return_date" class="col-sm-3 col-form-label">반납일</label>
 		                        <div class="col-sm-9">
-		                            <input type="date" class="form-control" id="m_return_date" name="returnDate" placeholder="반납일을 입력하세요">
+		                            <input type="date" class="form-control" id="m_return_date" name="returnDateStr" placeholder="반납일을 입력하세요">
 		                        </div>
 		                    </div>
 		
@@ -331,15 +312,6 @@
 							    <div class="col-sm-9 d-flex align-items-center">
 							    	<span id="m_overdue_state"></span>
 							    	<button type="button" class="btn btn-sm hidden" id="overdueBtn" onclick="undoOverdue()">연체 해제</button>
-							        <!-- <div class="form-check form-check-inline">
-							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_false" value="N" disabled="disabled">
-							            <label class="form-check-label" for="overdue_state_false">정상 상태</label>
-							        </div>
-							        <div class="form-check form-check-inline d-flex align-items-center">
-							            <input class="form-check-input" type="radio" name="overdueState" id="overdue_state_true" value="Y" disabled="disabled">
-							            <label class="form-check-label mx-2" for="overdue_state_true">연체 상태</label>
-							            <button type="button" class="btn btn-sm" id="overdueBtn">연체 해제</button>
-							        </div> -->
 							    </div>
 							</div>
 		                	
@@ -356,8 +328,8 @@
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
+        
+        <%@ include file="../../common/Alert.jsp" %> 
         
         <script type="text/javascript">
         
@@ -377,7 +349,6 @@
                 this.applyGridTheme();
                 this.drawGrid();
                 this.bindDeleteBook();
-                /* this.bindAddBookEvent();   */
                 this.bindSearchEvent();
             },
 
@@ -626,7 +597,7 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    alert('데이터를 가져오는데 실패했습니다.');
+                    sweet.errorAlert('','데이터를 가져오는데 실패했습니다.');
                 });
             },
             
@@ -636,13 +607,13 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        sweet.warningAlert('','선택된 책이 없습니다.');
                         return;
                     }
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.loanId ? row.loanId.toString() : ""
+                            loanId: row.loanId ? row.loanId.toString() : ""
                         };
                     });
 
@@ -654,10 +625,10 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 대출기록이 삭제되었습니다.');
+                                sweet.successAlert('','선택된 대출기록이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다.','관리자에게 문의하세요.');
                             }
                         }
                     });
@@ -680,67 +651,6 @@
                     }
                 });
             },
-            
-          	//db에 등록
-            /* bindAddBookEvent: function() {
-                $('#addBook').on('click', function() {
-                	let checkedRows = bookGrid.grid.getCheckedRows();
-
-                    if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
-                        return;
-                    }
-
-                    let bookList = [];
-                    for (let row of checkedRows) {
-                    	
-                        // 유효성 검사 
-                        if (row.userid.toString() === '') {
-                            alert('사용자를 입력하세요');
-                            return; 
-                        } else if (row.loanDate.toString() === '') {
-                            alert('대출일을 선택하세요');
-                            return; 
-                        } else if (row.returnDate.toString() === '') {
-                            alert('반납일을 선택하세요');
-                            return; 
-                        } else if (row.loanState.toString() === '') {
-                            alert('대출상태를 선택하세요');
-                            return;
-                        } else if (row.overdueState.toString() === '') {
-                            alert('연체상태를 선택하세요');
-                            return;
-                        }
-
-                        bookList.push({
-                            img: row.fileName ? row.fileName.toString() : "",
-                            title: row.title ? row.title.toString().replace(/'/g, "&#39;") : "",
-                            author: row.author ? row.author.toString() : "",
-                            ctg: row.ctgNm ? row.ctgNm.toString() : "",
-                            publisher: row.publisher ? row.publisher.toString() : "",
-                            cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
-                            isbn: row.isbn ? row.isbn.toString() : ""
-                        });
-                    }
-
-                    if (bookList.length > 0) {
-                        $.ajax({
-                            type: 'post',
-                            url: '/admin/books/insertWishBook.do',
-                            data: JSON.stringify(bookList),
-                            contentType: 'application/json; charset=utf-8',
-                            dataType: 'text',
-                            success: function(data) {
-                                if (data === 'success') {
-                                    alert('책이 등록되었습니다.');
-                                } else {
-                                    alert('오류가 발생했습니다. 관리자에게 문의하세요.');
-                                }
-                            }
-                        });
-                    }
-                });
-            }, */
             
             updateGrid: function() {
                 if (this.grid && this.apiData) {
@@ -772,19 +682,19 @@
         	
         	//유효성 검사
             if ($('#m_userid').val() == '') {
-            	alert('아이디를 입력하세요');
+                sweet.warningAlert('','아이디를 입력하세요');
             	$('#m_userid').focus();
             	return;
             } else if ($('#m_loan_date').val() == '') {
-            	alert('대출일을 입력하세요');
+                sweet.warningAlert('','대출일을 입력하세요');
             	$('#m_loan_date').focus();
             	return;
             } else if ($('#m_return_date').val() === '') {
-            	alert('반납일을 선택하세요');
+                sweet.warningAlert('','반납일을 선택하세요');
             	$('#m_return_date').focus();
             	return;
             } else if ($('#m_loan_state').val() == '') {
-            	alert('대출상태를 선택하세요');
+                sweet.warningAlert('','대출상태를 선택하세요');
             	$('#m_loan_state').focus();
             	return;
             }
@@ -800,17 +710,45 @@
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('대출기록이 저장되었습니다.');
+                        sweet.successAlert('','대출기록이 저장되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
                         bookModal.hide();
                     } else {
-                        alert('에러가 발생했습니다.');
+                        sweet.errorAlert('','에러가 발생했습니다.');
                     }
                 },
                 error: function() {
-                    alert('에러가 발생했습니다.');
+                    sweet.errorAlert('','에러가 발생했습니다.');
+                }
+            });
+        }
+        
+        function undoOverdue() {
+            
+			var formData = new FormData(document.getElementById('bookForm'));
+            
+            $.ajax({
+                type: 'POST',
+                url: '/admin/loan/overdueUndoData.do',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    
+                    if (response === 'success') {
+                        sweet.successAlert('','연체상태가 해제되었습니다.');
+                        bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
+
+                        var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
+                        bookModal.hide();
+                    } else {
+                        sweet.errorAlert('','에러가 발생했습니다.');
+                    }
+                },
+                error: function() {
+                    sweet.errorAlert('','에러가 발생했습니다.');
                 }
             });
         }

@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 로그인</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -21,19 +21,25 @@
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
+		
         <style>
 		    .info-link {
-		        text-decoration: none; /* No underline by default */
+		        text-decoration: none; 
 		    }
 		
 		    .info-link:hover {
-		        text-decoration: underline; /* Underline on hover */
+		        text-decoration: underline; 
 		    }
+		    
+		    .btnStyle {
+				font-weight: bold;
+			}
 		</style>
         
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -62,7 +68,7 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">로그인</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg btnStyle" id="submitButton" type="submit">로그인</button></div>
                                 </form>
                                 
                                 <div class="d-flex justify-content-between mt-3">
@@ -80,32 +86,29 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'notmatch'}">
-			<script>alert('아이디 혹은 비밀번호가 맞지 않습니다.')</script>
+			<script>sweet.warningAlert('', '아이디 혹은 비밀번호가 맞지 않습니다.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'success'}">
-			<script>alert('가입되었습니다. 아이디와 비밀번호를 입력해주세요.')</script>
+			<script>sweet.successAlert('가입되었습니다','아이디와 비밀번호를 입력해주세요.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'logout'}">
-			<script>alert('로그아웃 되었습니다.')</script>
+			<script>sweet.successAlert('로그아웃 되었습니다.')</script>
 		</c:if>
         
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
+        
+        
     </body>
 </html>

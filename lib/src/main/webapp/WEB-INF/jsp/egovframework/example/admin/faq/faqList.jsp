@@ -10,7 +10,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>관리자 - FAQ 조회</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -24,7 +25,6 @@
         <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
         <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 		<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 		
 		<style>
 		
@@ -153,12 +153,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -172,8 +167,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            
+			</div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -192,9 +190,6 @@
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
 								<b>FAQ</b>
-                                <!-- <b>대출/반납 관리</b>
-								|
-                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
@@ -224,11 +219,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -238,7 +228,7 @@
         <!-- 모달창 -->
 		
 		<div class="modal fade" id="bookModal" tabindex="-1" aria-labelledby="bookModalLabel" aria-hidden="true">
-		    <div class="modal-dialog modal-lg"> <!-- Apply custom class here -->
+		    <div class="modal-dialog modal-lg"> 
 		        <div class="modal-content">
 		            <div class="modal-header">
 		                <h5 class="modal-title" id="bookModalLabel">FAQ 상세정보</h5>
@@ -246,8 +236,8 @@
 		            </div>
 				            <div class="modal-body mx-5">
 				            
-				            <form id="faqForm" method="post" enctype="multipart/form-data">    	
-				            <input type="hidden" id="m_faq_id" name="faqId">
+				            <form id="faqForm" method="post" enctype="multipart/form-data">  
+				            <input type="hidden" id="m_faq_id" name="faqId" value="0">
 		                	
 		                	
 		                	<!-- 제목 -->
@@ -265,7 +255,6 @@
 		                            <textarea type="text" class="form-control content" id="m_cnt" name="cnt" placeholder="내용을 입력하세요" id="summernote"></textarea>
 		                        </div>
 		                    </div>
-		                    
 		                    
 		                	 <!-- 파일 업로드 -->
 		                    <div class="mb-3 row">
@@ -297,8 +286,8 @@
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
+        
+        <%@ include file="../../common/Alert.jsp" %> 
         
         <script type="text/javascript">
         
@@ -319,7 +308,6 @@
                 this.drawGrid();
                 this.bindDeleteBook();
                 this.bindAddCntEvent();
-                /* this.bindUpdateCntEvent(); */
                 this.bindSearchEvent();
             },
 
@@ -565,7 +553,7 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    alert('데이터를 가져오는데 실패했습니다.');
+                    sweet.errorAlert('','데이터를 가져오는데 실패했습니다.');
                 });
             },
             
@@ -575,13 +563,13 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 목록이 없습니다.');
+                        sweet.warningAlert('','선택된 목록이 없습니다.');
                         return;
                     }
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.faqId ? row.faqId.toString() : ""
+                            faqId: row.faqId ? row.faqId.toString() : ""
                         };
                     });
 
@@ -593,10 +581,10 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 게시물이 삭제되었습니다.');
+                            	sweet.successAlert('','선택된 게시물이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다.','관리자에게 문의하세요.');
                             }
                         }
                     });
@@ -626,7 +614,7 @@
                 	$('.fileBox').addClass('hidden');
                     
                   	//초기화
-                    $('#m_faq_id').val('');
+                    $('#m_faq_id').val(0);
 	                $('#m_userid').val('');
 	                $('#m_title').val('');
 	                $('#m_cnt').val(''); 
@@ -676,16 +664,15 @@
                 var userid = "${sessionScope.userid}";
                 
                 if (userid == '') {
-                    alert('로그인이 필요합니다.');
+                    sweet.warningAlert('','로그인이 필요합니다.');
                     return; 
                 } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
+                    sweet.warningAlert('','제목을 입력하세요');
                     return; 
                 } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
+                    sweet.warningAlert('','내용을 입력하세요');
                     return; 
                 } 
-                
                 
                 var formData = new FormData(document.getElementById('faqForm'));
                 
@@ -698,17 +685,17 @@
                    success: function(response) {
                        
                        if (response === 'success') {
-                           alert('정보가 저장되었습니다.');
+                           sweet.successAlert('','정보가 저장되었습니다.');
                            bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                            var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
                            bookModal.hide();
                        } else {
-                           alert('에러가 발생했습니다.');
+                           sweet.errorAlert('','에러가 발생했습니다.');
                        }
                    },
                    error: function() {
-                       alert('에러가 발생했습니다.');
+                       sweet.errorAlert('','에러가 발생했습니다.');
                    }
                });
                 
@@ -719,17 +706,20 @@
 				var userid = "${sessionScope.userid}";
                 
                 if (userid == '') {
-                    alert('로그인이 필요합니다.');
+                    sweet.warningAlert('','로그인이 필요합니다.');
                     return; 
                 } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
+                    sweet.warningAlert('','제목을 입력하세요');
                     return; 
                 } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
+                    sweet.warningAlert('','내용을 입력하세요');
                     return; 
                 } 
                 
                 var formData = new FormData(document.getElementById('faqForm'));
+                formData.forEach((value, key) => {
+                    console.log(key + ': ' + value);
+                  });
                 
                 $.ajax({
                     type: 'post',
@@ -740,17 +730,17 @@
                     success: function(response) {
                         
                         if (response === 'success') {
-                            alert('정보가 저장되었습니다.');
+                            sweet.successAlert('','정보가 저장되었습니다.');
                             bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                             var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
                             bookModal.hide();
                         } else {
-                            alert('에러가 발생했습니다.');
+                            sweet.errorAlert('','에러가 발생했습니다.');
                         }
                     },
                     error: function() {
-                        alert('에러가 발생했습니다.');
+                        sweet.errorAlert('','에러가 발생했습니다.');
                     }
                 });
             }
@@ -770,15 +760,15 @@
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('해당 파일이 삭제되었습니다.');
+                        sweet.successAlert('','해당 파일이 삭제되었습니다.');
                         info.addClass('hidden'); 
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                     } else {
-                        alert('에러가 발생했습니다.');
+                        sweet.errorAlert('','에러가 발생했습니다.');
                     }
                 },
                 error: function() {
-                    alert('에러가 발생했습니다.');
+                    sweet.errorAlert('','에러가 발생했습니다.');
                 }
             });
         });

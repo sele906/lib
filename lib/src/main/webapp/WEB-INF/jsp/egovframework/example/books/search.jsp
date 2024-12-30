@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 통합검색</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -78,9 +78,6 @@
 			    margin: 0 12px;
 			}
 			
-			#searchBar {
-
-			}
 			#searchBtn {
 				cursor: pointer;
 				width: 50px;
@@ -112,8 +109,6 @@
 			    padding: 10px 5px 5px 5px;
 			    
 			}
-			.searchCount {
-			}
 			.searchOption {
 				display: flex;
     			align-items: center;
@@ -136,7 +131,6 @@
     			width: 150px;
     			margin: 0 0 0 10px;
 			}
-			
 			
 			/* table */
 			.rowNum {
@@ -206,25 +200,7 @@
 				font-size: 0.9em;
 				font-weight: bold;
 				margin: 5px 0;
-			}/* 
-			.like {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
 			}
-			.like:hover, .like:active {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-			}
-			.liked {
-				color: var(--bs-body-bg);
-				background-color: var(--bs-danger);
-				margin: 5px 0;
-			}
-			.like:hover, .like:active {
-				color: var(--bs-danger);
-				border: 1px solid var(--bs-danger);
-			} */
 			
 			/* 대출가능 */
 			.loanBtn {
@@ -290,6 +266,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -330,7 +307,6 @@
                                 <figure class="mb-3">
                                 <form id="searchForm" action="/books/search.do" method="get">
                                     <div class="d-flex searchBar">
-                                    
                                     	<input class="insertSearch" id="searchBar" name="sKey" type="text" placeholder="제목 혹은 저자를 검색하세요" value="${map.sKey}">
                                     	<div id="searchBtn">
                                     		<i class="fa-solid fa-magnifying-glass searchIcon"></i>
@@ -463,7 +439,7 @@
 								        </c:when>
 								
 								    <c:otherwise>
-								    	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}&ctgId=${map.ctgId}">이전</a></li>
+								    	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo-1}&ctgId=${map.ctgId}">이전</a></li>
 								    </c:otherwise>
 								    </c:choose>
 								    
@@ -474,7 +450,7 @@
 									        </c:when>
 									
 									        <c:otherwise>
-									        	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}">${i}</a></li>
+									        	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${i}&ctgId=${map.ctgId}">${i}</a></li>
 									        </c:otherwise>
 									
 										</c:choose>
@@ -484,7 +460,7 @@
 							            <c:when test="${pageInfo.currentPageNo>=pageInfo.totalPageCount}">
 							            </c:when>
 							            <c:otherwise>
-							            	<li class="page-item"><a class="page-link" href="/books/search.do?sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo+1}&ctgId=${map.ctgId}">다음</a></li>
+							            	<li class="page-item"><a class="page-link" href="/books/search.do?sort=${map.sort}&sKey=${pinfo.sKey}&page=${pageInfo.currentPageNo+1}&ctgId=${map.ctgId}">다음</a></li>
 							            </c:otherwise>
 							        </c:choose>
 							        
@@ -504,16 +480,11 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
+        
+        <%@ include file="../common/Alert.jsp" %> 
         
         <!-- script -->
 		<script>
@@ -539,10 +510,10 @@
 								    userid: userid
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
-								        alert('관심 도서로 등록되었습니다.');
+								        sweet.successAlert('','관심 도서로 등록되었습니다.');
 								        
 								        //관심버튼 관심 해제로 바꾸기
 								        row.find('.likeBtn')
@@ -551,12 +522,12 @@
 				                           	.text('관심해제'); 
 				                        
 				                    } else {
-				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 				                    }
 							    }
 							});
 				        } else {
-				            alert('로그인 후 이용해주세요.');
+				            sweet.successAlert('','로그인 후 이용해주세요.');
 				            location.href = '/member/login.do';
 				        }
 			            
@@ -571,10 +542,10 @@
 								    userid: userid
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
-								        alert('관심도서 목록에서 해제되었습니다.');
+								        sweet.successAlert('','관심도서 목록에서 해제되었습니다.');
 								        
 								        //관심해제버튼 관심으로 바꾸기
 								        row.find('.likeBtn')
@@ -583,12 +554,12 @@
 				                           	.text('관심도서'); 
 				                        
 				                    } else {
-				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 				                    }
 							    }
 							});
 				        } else {
-				            alert('로그인 후 이용해주세요.');
+				            sweet.warningAlert('','로그인 후 이용해주세요.');
 				            location.href = '/member/login.do';
 				        }
 			        }
@@ -613,16 +584,15 @@
 								}, 
 								dataType : 'json',
 								success: function (response) {
-									console.log(response);
-									
+
 									if (response.status === 'overdue') {
-							            alert('연체 중입니다. ' + response.dueCount + '일 동안 대여할 수 없습니다.');
+									    sweet.warningAlert('연체 상태입니다.', response.dueCount + '일 동안 대여할 수 없습니다.');
 							            location.href = '/main.do';
 							        } else if (response.status === 'toomuchbook') {
-							            alert('총 14권을 초과하여 대여할 수 없습니다.');
+							            sweet.warningAlert('','총 14권을 초과하여 대여할 수 없습니다.');
 							            location.href = '/main.do';
 							        } else if (response.status === 'success') {
-							        	alert('대출되었습니다.');
+							            sweet.successAlert('','대출되었습니다.');
 							        	
 							        	row.find('input[name="resvCount"]').val(response.resvCnt); 
 								        row.find('.resvCountShow').text(response.resvCnt);
@@ -643,7 +613,7 @@
 							    }
 							});
 				        } else {
-				            alert('로그인 후 이용해주세요.');
+				            sweet.warningAlert('', '로그인 후 이용해주세요.');
 				            location.href = '/member/login.do';
 				        }
 			            
@@ -660,10 +630,10 @@
 								    loanId: loanId.val()
 								}, 
 								success: function (response) {
-								    console.log(response);
+								    
 								    if (response === 'success') {
 								        
-								        alert('예약되었습니다.');
+								        sweet.successAlert('', '예약되었습니다.');
 								        
 								      	//예약 버튼 예약취소로 바꾸기
 								        row.find('.resvBtn')
@@ -680,7 +650,7 @@
 								        row.find('.resvCountShow').text(cnt);
 								        
 				                    } else if (response === 'alreadyLoaned') {
-				                        alert('이미 대출한 도서입니다.');
+				                      	sweet.warningAlert('','이미 대출한 도서입니다.');
 				                    } else if (response === 'alreadyReserved') {
 				                        if (confirm('예약 취소하시겠습니까?')) {
 				                            $.ajax({
@@ -691,9 +661,9 @@
 												    userid: userid
 												}, 
 												success: function (response) {
-												    console.log(response);
+												    
 												    if (response == 'success') {
-												        alert('예약 취소 되었습니다.');
+												        sweet.successAlert('','예약 취소 되었습니다.');
 												        
 												      	//예약 버튼 예약으로 바꾸기
 												        row.find('.resvBtn')
@@ -713,14 +683,14 @@
 											});
 				                        }
 				                    } else if (response === 'fullyReserved') {
-				                        alert('예약이 불가능합니다.');
+				                        sweet.warningAlert('','예약이 불가능합니다.');
 				                    } else {
-				                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+				                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 				                    }
 							    }
 							});
 				        } else {
-				            alert('로그인 후 이용해주세요.');
+				            sweet.warningAlert('','로그인 후 이용해주세요.');
 				            location.href = '/member/login.do';
 				        }
 			            
@@ -739,12 +709,11 @@
 			        });
 			    });
 
-			    
 			    var ctgSelect = document.getElementById('ctgId');
     			
     			if (ctgSelect) {
     		        ctgSelect.addEventListener('change', function() {
-    		            console.log('Change event triggered');
+    		            
     		            const form = document.getElementById('ctgForm');
     		            form.querySelector('select[name="ctgId"]').value = this.value; 
     		            form.submit(); 

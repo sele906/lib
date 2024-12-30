@@ -13,9 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.example.admin.faq.dao.AFaqDAO;
 import egovframework.example.admin.faq.service.AFaqFileService;
 import egovframework.rte.psl.dataaccess.util.EgovMap;
 
@@ -24,8 +26,9 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 
 	@Resource(name = "AFaqDAO")
 	private AFaqDAO AfaqDao;
-
-	private static String path = "C:\\fileupload\\lib\\faq";
+	
+	@Value("${faqPath}")
+	private String faqPath;
 
 	public void insertFile(int id, List<MultipartFile> multifile) throws Exception {
 
@@ -44,7 +47,7 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 					String newFileNm = originFileName + "_" + UUID.randomUUID() + "." + ext;
 
 					//파일 로컬에 올리기
-					File uploadFile = new File(path + "\\" + newFileNm);
+					File uploadFile = new File(faqPath + newFileNm);
 					multifile.get(i).transferTo(uploadFile);
 
 					//파일정보 DB에 저장
@@ -52,7 +55,7 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 					map.put("faqId", id);
 					map.put("faqFileName", originFile);
 					map.put("faqFileOriName", newFileNm);
-					map.put("faqFilePath", (String) path + "\\" + newFileNm);
+					map.put("faqFilePath", (String) faqPath + newFileNm);
 
 					//db에 파일정보 저장
 					try {
@@ -72,7 +75,7 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 				//성공 못했을 경우
 				//파일 삭제
 				for (int i = 0; i < multifile.size(); i++) {
-					new File(path + "\\" + tmp.get(i).get("newFileNm")).delete();
+					new File(faqPath + tmp.get(i).get("newFileNm")).delete();
 				}
 
 				//db 정보 삭제
@@ -87,7 +90,7 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 	public void downloadFile(HttpServletResponse response, String fileName) throws Exception {
 		
 		try {
-			File file = new File(path + "\\" + fileName);
+			File file = new File(faqPath + fileName);
 			
 			byte fileByte[] = FileUtils.readFileToByteArray(file);
 
@@ -115,8 +118,8 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 
 		//파일 삭제
 		for (EgovMap e : tmp) {
-			String faqPath = path + "//" + e.get("faqFileOriName");
-			File file = new File(faqPath);
+			String faqPathNm = faqPath + e.get("faqFileOriName");
+			File file = new File(faqPathNm);
 			file.delete();
 		}
 
@@ -129,8 +132,8 @@ public class AFaqFileServiceImpl implements AFaqFileService {
 	public void fileDeleteOne(String fileName) {
 
 		try {
-			String faqPath = path + "//" + fileName;
-			File file = new File(faqPath);
+			String faqPathNm = faqPath + fileName;
+			File file = new File(faqPathNm);
 			file.delete();
 
 			int faqFileId = AfaqDao.selectFileId(fileName);

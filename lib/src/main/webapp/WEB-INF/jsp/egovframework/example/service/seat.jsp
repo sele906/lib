@@ -10,7 +10,7 @@
         <meta name="author" content="" />
         <title>LiBLIO - 멀티미디어 좌석예약</title>
         <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -32,6 +32,7 @@
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
+        
         	<!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
         
@@ -163,19 +164,14 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'success'}">
-			<script>alert('좌석이 예약되었습니다.')</script>
+			<script>sweet.successAlert('', '좌석이 예약되었습니다.')</script>
 		</c:if>
         
         <script>
@@ -196,7 +192,6 @@
           	//좌석 수 세기
             function updateSelectedCount() {
             	let selectedSeats = document.querySelectorAll('.row .seat.select');
-            	console.log(selectedSeats);
             	
             	//좌석 위치
             	let seatsIndex = [...selectedSeats].map(seat => [...seats].indexOf(seat));
@@ -225,9 +220,9 @@
             	var userid = "${sessionScope.userid}";
             	
             	if (userid == '') {
-            		alert('로그인 후 이용해주세요');
+            	    sweet.warningAlert('', '로그인 후 이용해주세요.');
             	} else if ($("#seat_position").val() == '') {
-            		alert('좌석을 선택해주세요');
+            	    sweet.warningAlert('', '좌석을 선택해주세요.');
             	} else {
             		$('#seatForm').submit();
             	}

@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 좌석 예약 조회</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -35,6 +35,7 @@
     </head>
     <body class="d-flex flex-column h-100">
         <main class="flex-shrink-0">
+        
         	<!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
         
@@ -51,7 +52,6 @@
                     </div>
                     <div class="row gx-5">
                         <div class="col-12 col-12 d-flex justify-content-center">
-                        <!-- <img class="img-fluid rounded-3 mb-5" src="https://dummyimage.com/1300x700/343a40/6c757d" alt="..." /> -->
                         
                         <div class="hidden">
                         	<c:forEach var="i" items="${list}">
@@ -172,19 +172,14 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
         
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <c:if test="${msg eq 'success'}">
-			<script>alert('좌석이 예약되었습니다.')</script>
+			<script>sweet.successAlert('', '좌석이 예약되었습니다.')</script>
 		</c:if>
         
         <script>
@@ -239,7 +234,7 @@
             $('#resvSeat').on('click', function(event) {
             	
             	if ($("#seat_position").val() == '') {
-            		alert('좌석을 선택해주세요');
+            	    sweet.warningAlert('', '좌석을 선택해주세요');
             	} else {
             		$('#seatForm').submit();
             	}
@@ -247,29 +242,30 @@
     	    });
             
             $('.seat.choose').on('click', function(event) {
-            	alert('좌석을 취소하시겠습니까?');
-            	
-            	var $seatElement = $(this);
+                
+                var $seatElement = $(this);
             	var num = $seatElement.text();
-            	
-            	$.ajax({
-					type: 'get',
-					url: '/mypage/seatDelete.do',
-					data: {
-					    seatNum: num
-					}, 
-					success: function (response) {
-					    console.log(response);
-					    if (response === 'success') {
-					        
-					        alert('예약 취소 되었습니다.');
-					        $seatElement.removeClass('choose');
-	                        
-	                    } else {
-	                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
-	                    }
-				    }
-				});
+                
+                sweet.confirm('', '좌석을 취소하시겠습니까?', function() {
+                        $.ajax({
+        					type: 'get',
+        					url: '/mypage/seatDelete.do',
+        					data: {
+        					    seatNum: num
+        					}, 
+        					success: function (response) {
+        					    
+        					    if (response === 'success') {
+        					        
+        					        sweet.successAlert('', '예약 취소 되었습니다.');
+        					        $seatElement.removeClass('choose');
+        	                        
+        	                    } else {
+        	                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
+        	                    }
+        				    }
+        				});        
+                });
             
     	    });
             

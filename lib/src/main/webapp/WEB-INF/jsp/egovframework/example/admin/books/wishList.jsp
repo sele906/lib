@@ -10,7 +10,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>관리자 - 희망도서 등록</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -24,7 +25,6 @@
         <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
         <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 		<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 		
 		<style>
 		
@@ -156,12 +156,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -175,8 +170,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            	
+            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -229,11 +227,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -340,9 +333,10 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
         
-        <script type="text/javascript">
+        <%@ include file="../../common/Alert.jsp" %> 
+        
+		<script type="text/javascript">
         
         $(function() {
             bookGrid.init();
@@ -570,7 +564,7 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    alert('데이터를 가져오는데 실패했습니다.');
+                    sweet.errorAlert('','데이터를 가져오는데 실패했습니다.');
                 });
             },
             
@@ -580,13 +574,13 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        sweet.warningAlert('','선택된 책이 없습니다.');
                         return;
                     }
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.wishId ? row.wishId.toString() : ""
+                            wishId: row.wishId ? row.wishId.toString() : ""
                         };
                     });
 
@@ -598,10 +592,10 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 책이 삭제되었습니다.');
+                                sweet.successAlert('','선택된 책이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다.','관리자에게 문의하세요.');
                             }
                         }
                     });
@@ -631,7 +625,7 @@
                 	let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 책이 없습니다.');
+                        sweet.warningAlert('','선택된 책이 없습니다.');
                         return;
                     }
 
@@ -640,27 +634,27 @@
                     	
                         // 유효성 검사 
                         if (row.title.toString() === '') {
-                            alert('제목을 입력하세요');
+                            sweet.warningAlert('','제목을 입력하세요');
                             return; 
                         } else if (row.author.toString() === '') {
-                            alert('저자를 입력하세요');
+                            sweet.warningAlert('','저자를 입력하세요');
                             return; 
                         } else if (row.ctgNm.toString() === '') {
-                            alert('카테고리를 선택하세요');
+                            sweet.warningAlert('','카테고리를 선택하세요');
                             return; 
                         } else if (row.publisher.toString() === '') {
-                            alert('출판사를 입력하세요');
+                            sweet.warningAlert('','출판사를 입력하세요');
                             return;
                         } else if (row.cheonggu.toString() === '') {
-                            alert('청구기호를 입력하세요');
+                            sweet.warningAlert('','청구기호를 입력하세요');
                             return;
                         }
 
                         bookList.push({
-                            img: row.fileName ? row.fileName.toString() : "",
+                            fileName: row.fileName ? row.fileName.toString() : "",
                             title: row.title ? row.title.toString().replace(/'/g, "&#39;") : "",
                             author: row.author ? row.author.toString() : "",
-                            ctg: row.ctgNm ? row.ctgNm.toString() : "",
+                            ctgNm: row.ctgNm ? row.ctgNm.toString() : "",
                             publisher: row.publisher ? row.publisher.toString() : "",
                             cheonggu: row.cheonggu ? row.cheonggu.toString() : "",
                             isbn: row.isbn ? row.isbn.toString().substring(0,13) : ""
@@ -676,9 +670,9 @@
                             dataType: 'text',
                             success: function(data) {
                                 if (data === 'success') {
-                                    alert('책이 등록되었습니다.');
+                                    sweet.successAlert('','책이 등록되었습니다.');
                                 } else {
-                                    alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                    sweet.errorAlert('오류가 발생했습니다.','관리자에게 문의하세요.');
                                 }
                             }
                         });
@@ -716,35 +710,32 @@
         	
         	//유효성 검사
             if ($('#m_wishId').val() == '') {
-            	alert('인덱스 값을 입력하세요');
+                sweet.warningAlert('','인덱스 값을 입력하세요');
             	$('#m_wishId').focus();
             	return;
             } else if ($('#m_title').val() == '') {
-            	alert('제목을 입력하세요');
+                sweet.warningAlert('','제목을 입력하세요');
             	$('#m_title').focus();
             	return;
             } else if ($('#m_author').val() == '') {
-            	alert('저자를 입력하세요');
+                sweet.warningAlert('','저자를 입력하세요');
             	$('#m_author').focus();
             	return;
             } else if ($('#m_ctg').val() === '' || $('#m_ctg').val() === null) {
-            	alert('카테고리를 선택하세요');
+                sweet.warningAlert('','카테고리를 선택하세요');
             	$('#m_ctg').focus();
             	return;
             } else if ($('#m_publisher').val() == '') {
-            	alert('출판사를 입력하세요');
+                sweet.warningAlert('','출판사를 입력하세요');
             	$('#m_publisher').focus();
             	return;
             } else if ($('#m_cheonggu').val() == '') {
-            	alert('청구기호를 입력하세요');
+                sweet.warningAlert('','청구기호를 입력하세요');
             	$('#m_cheonggu').focus();
             	return;
             } 
 
             var formData = new FormData(document.getElementById('bookForm'));
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
             
             $.ajax({
                 type: 'POST',
@@ -755,17 +746,17 @@
                 success: function(response) {
                     
                     if (response === 'success') {
-                        alert('책 정보가 저장되었습니다.');
+                        sweet.successAlert('','책 정보가 저장되었습니다.');
                         bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
 
                         var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
                         bookModal.hide();
                     } else {
-                        alert('에러가 발생했습니다.');
+                        sweet.errorAlert('','에러가 발생했습니다.');
                     }
                 },
                 error: function() {
-                    alert('에러가 발생했습니다.');
+                    sweet.errorAlert('','에러가 발생했습니다.');
                 }
             });
         }
@@ -781,8 +772,6 @@
 		            document.getElementById('m_img').src = fr.result;
 		        }
 		        fr.readAsDataURL(files[0]);
-		    } else {
-		        console.log('hello');
 		    }
 		}
         

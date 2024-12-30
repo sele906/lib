@@ -15,9 +15,11 @@ import java.util.UUID;
 import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import egovframework.example.admin.books.dao.ABooksDAO;
 import egovframework.example.admin.books.service.AFileService;
 
 @Service("AFileService")
@@ -26,12 +28,15 @@ public class AFileServiceImpl implements AFileService {
 	@Resource(name = "ABooksDAO")
 	private ABooksDAO AbooksDao;
 	
-
-	private static String path = "C:\\fileupload\\lib\\books";
+	@Value("${bookPath}")
+	private String bookPath;
+	
+	@Value("${wishPath}")
+	private String wishPath;
 
 	public void insertImage(int id, String imgURL, String fileOriNm) throws IOException {
 
-		String filePath = path + "\\" + fileOriNm;
+		String filePath = bookPath + fileOriNm;
 
 		URL url = new URL(imgURL);
 
@@ -67,12 +72,12 @@ public class AFileServiceImpl implements AFileService {
 	public void updateImage(int id, String ctgId, MultipartFile multiFile) throws IOException {
 
 		if (multiFile.getSize() > 0 && !multiFile.getOriginalFilename().equals("")) {
-			
+
 			String fileNm = multiFile.getOriginalFilename();
 			String Fname = fileNm.substring(0, fileNm.lastIndexOf("."));
 			String ext = FilenameUtils.getExtension(fileNm);
 			String fileOriNm = ctgId + "_" + Fname + "_" + UUID.randomUUID() + "." + ext;
-			String filePath = path + "\\" + fileOriNm;
+			String filePath = bookPath + fileOriNm;
 
 			try {
 
@@ -116,14 +121,14 @@ public class AFileServiceImpl implements AFileService {
 
 	@Override
 	public void moveImage(int id, String imgNm, String fileOriNm) {
-		
-		String wishPath = "C:\\fileupload\\lib\\wish\\" + imgNm;
-		String filePath = path + "\\" + fileOriNm;
-		
+
+		String wishPathNm = wishPath + imgNm;
+		String filePath = bookPath + fileOriNm;
+
 		try {
-			Path source = Paths.get(wishPath);
-            Path target = Paths.get(filePath);
-            Files.copy(source, target);
+			Path source = Paths.get(wishPathNm);
+			Path target = Paths.get(filePath);
+			Files.copy(source, target);
 
 			//파일 DB에 저장
 			String fileNm = fileOriNm.substring(0, 11) + fileOriNm.substring(fileOriNm.lastIndexOf("."));
@@ -139,7 +144,5 @@ public class AFileServiceImpl implements AFileService {
 			e.printStackTrace();
 		}
 	}
-
-
 
 }

@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 관심도서 조회</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -46,12 +46,10 @@
 			   width: 100%;
     			text-align: center;
 			 }
+			 
 			 .pagination {
 				cursor: pointer;
 				font-weight: bold;
-			}
-			.page-item {
-			
 			}
 			.page-link {
 				color: #848484;
@@ -64,6 +62,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -195,16 +194,11 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
+        
+        <%@ include file="../common/Alert.jsp" %> 
         
         <script>
         
@@ -229,128 +223,26 @@
 						    userid: userid
 						}, 
 						success: function (response) {
-						    console.log(response);
+						    
 						    if (response === 'success') {
 						        
-						        alert('관심도서 목록에서 해제되었습니다.');
+						        sweet.successAlert('', '관심도서 목록에서 해제되었습니다.');
 						        
 						        //숨기기
 						        row.addClass('hidden'); 
 		                        
 		                    } else {
-		                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+		                        sweet.errorAlert('문제가 발생했습니다. ','관리자에게 문의하세요');
 		                    }
 					    }
 					});
 		        } else {
-		            alert('로그인 후 이용해주세요.');
+		            sweet.warningAlert('', '로그인 후 이용해주세요.');
 		            location.href = '/member/login.do';
 		        }
 	        }
 	        
 	    });
-        
-        /* $('.selectBtn').on('click', function(event) {
-            
-            var row = $(this).closest('.item');
-            var bookId = row.find('input[name="bookId"]').val();
-	        var loanId = row.find('input[name="loanId"]');
-	        var userid = "${sessionScope.userid}";
-            
-            if ($(this).hasClass('loanBtn')) {
-                
-                //대출
-                $.ajax({
-					type: 'get',
-					url: '/books/loan.do',
-					data: {
-					    bookId: bookId,
-					    userid: userid
-					}, 
-					success: function (response) {
-					    alert('대출되었습니다.');
-					    console.log(response);
-					    if (!isNaN(response)) {
-					    
-					    	loanId.val(response);
-					    	
-					    	//대출 버튼 대출중으로 바꾸기
-					        //대출 버튼 예약하기로 바꾸기
-					        
-	                    } 
-				    }
-				});
-                
-            } else if ($(this).hasClass('returnBtn')) {
-
-				//반납
-                $.ajax({
-					type: 'get',
-					url: '/mypage/returnState.do',
-					data: {
-					    loanId: loanId
-					}, 
-					success: function (response) {
-					    console.log(response);
-					    if (response === 'success') {
-					        
-					        alert('반납 되었습니다.');
-					        
-	                    }
-				    }
-				});
-				
-            } else if ($(this).hasClass('resvRedoBtn')) {
-
-				//예약취소
-                $.ajax({
-					type: 'get',
-					url: '/books/resvDelete.do',
-					data: {
-					    bookId: bookId,
-					    userid: userid
-					}, 
-					success: function (response) {
-					    console.log(response);
-					    if (response == 'success') {
-					        alert('예약 취소 되었습니다.');
-					        
-					      	//예약 버튼 예약으로 바꾸기
-					        row.find('.resvBtn')
-	                           .text('예약하기');  
-					        
-					      	//예약 숫자 업데이트
-					        var cnt = parseInt(row.find('input[name="resvCount"]').val());
-					        cnt -= 1; 
-
-					        row.find('input[name="resvCount"]').val(cnt); 
-					        row.find('.resvCountShow').text(cnt);
-	                    } 
-				    }
-				});
-				
-            } else if ($(this).hasClass('resvBtn')) {
-                
-                //예약
-                $.ajax({
-					type: 'get',
-					url: '/books/resv.do',
-					data: {
-					    bookId: bookId,
-					    userid: userid,
-					    loanId: loanId.val()
-					}, 
-					success: function (response) {
-					    console.log(response);
-					    if (response === 'success') {
-					        
-					        alert('예약되었습니다.');
-					        
-	                    }
-				    }
-				});
-            } 
-        });  */
         
         </script>
         

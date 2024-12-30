@@ -10,7 +10,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>관리자 - 멀티미디어  좌석조회</title>
-        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+        <!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <link href="/template/admin/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -24,7 +25,6 @@
         <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.css" />
         <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 		<script src="https://uicdn.toast.com/grid/latest/tui-grid.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 		
 		<style>
 		
@@ -130,12 +130,7 @@
             <!-- Sidebar Toggle-->
             <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
             <!-- Navbar Search-->
-            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-                <!-- <div class="input-group">
-                    <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button> 
-                </div> -->
-            </div>
+            <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
             <!-- Navbar-->
             <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
                 <li class="nav-item dropdown">
@@ -149,8 +144,11 @@
         </nav>
         <div id="layoutSidenav">
         	<div id="layoutSidenav_nav">
+        	
             	<!-- Navigation-->
-            	<%@ include file="../main/menu.jsp" %></div>
+            	<%@ include file="../main/menu.jsp" %>
+            	
+            </div>
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
@@ -169,16 +167,12 @@
                             <div class="card-header">
 								<i class="fas fa-table me-1"></i>
 								<b>멀티미디어 좌석조회</b>
-                                <!-- <b>대출/반납 관리</b>
-								|
-                                <a href="/admin/loan/overdueList.do" class="linkButton">연체 관리</a> -->
                             </div>
                             
                             <div class="card-body">
                             
                             <div id="infoBar">
                             	<div>
-	                            	<!-- <button class="btn btn-primary" id="addContent">등록하기</button> -->
 	                            	<button class="btn btn-primary" id="deleteBtn">삭제하기</button>
                             	</div>
 								
@@ -201,11 +195,6 @@
                     <div class="container-fluid px-4">
                         <div class="d-flex align-items-center justify-content-between small">
                             <div class="text-muted">Copyright &copy; LIBLO 2024</div>
-                            <!-- <div>
-                                <a href="#">Privacy Policy</a>
-                                &middot;
-                                <a href="#">Terms &amp; Conditions</a>
-                            </div> -->
                         </div>
                     </div>
                 </footer>
@@ -225,8 +214,7 @@
 				            <div class="modal-body mx-5">
 				                	
 				            <input type="hidden" id="m_faq_id" name="faqId">
-		                	
-		                	
+				            
 		                	<!-- 제목 -->
 		                    <div class="mb-3 row">
 		                        <label for="m_title" class="col-sm-2 col-form-label">제목</label>
@@ -251,7 +239,6 @@
 			                           <input type="file" type="text" class="form-control" id="m_file" name="multifile" placeholder="파일을 선택하세요">
 		                    </div>
 		
-		                    
 				            </div>
 				        </form>
 		            <div class="modal-footer">
@@ -264,8 +251,8 @@
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="/template/admin/js/scripts.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <!-- <script src="/template/admin/js/datatables-simple-demo.js"></script> --> 
+        
+        <%@ include file="../../common/Alert.jsp" %> 
         
         <script type="text/javascript">
         
@@ -285,8 +272,6 @@
                 this.applyGridTheme();
                 this.drawGrid();
                 this.bindDeleteBook();
-                /* this.bindAddCntEvent(); */
-                /* this.bindUpdateCntEvent(); */
                 this.bindSearchEvent();
             },
 
@@ -404,34 +389,7 @@
                 
                 // 페이지네이션 초기화
                 this.updatePagination();
-                
-             	// 행 클릭 이벤트 추가
-                /* this.grid.on('click', function(ev) {
-                    if (ev.columnName !== '_checked' && ev.columnName !== 'checkbox') { 
-                        let rowKey = ev.rowKey;
-                        let rowData = _this.grid.getRow(rowKey);
-                        _this.openModal(rowData);
-                    }
-                }); */
             },
-            
-            //정보 수정
-            /* openModal: function (rowData) {
-                
-                $('#m_faq_id').val(rowData.faqId || '');
-                $('#m_userid').val(rowData.userid || '');
-                $('#m_title').val(rowData.title || '');
-                $('#m_cnt').val(rowData.cnt || ''); 
-
-                let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
-                    backdrop: 'static', 
-                    keyboard: false 
-                });
-                
-                document.getElementById('saveButton').setAttribute('onclick', "saveBtn('update')");
-                
-                bookModal.show();
-            }, */
             
             //데이터 읽어오기
             readData: function(params) {
@@ -454,7 +412,7 @@
                     _this.updateGrid();
                     _this.updatePagination();
                 }).fail(function() {
-                    alert('데이터를 가져오는데 실패했습니다.');
+                    sweet.errorAlert('','데이터를 가져오는데 실패했습니다.');
                 });
             },
             
@@ -464,13 +422,13 @@
                     let checkedRows = bookGrid.grid.getCheckedRows();
 
                     if (checkedRows.length === 0) {
-                        alert('선택된 좌석이 없습니다.');
+                        sweet.warningAlert('','선택된 좌석이 없습니다.');
                         return;
                     }
 
                     let bookList = checkedRows.map(function(row)  {
                         return {
-                            id: row.seatId ? row.seatId.toString() : ""
+                            seatId: row.seatId ? row.seatId.toString() : ""
                         };
                     });
 
@@ -482,10 +440,10 @@
                         dataType: 'text',
                         success: function(data) {
                             if (data === 'success') {
-                                alert('선택된 좌석이 삭제되었습니다.');
+                                sweet.successAlert('','선택된 좌석이 삭제되었습니다.');
                                 bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
                             } else {
-                                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                                sweet.errorAlert('오류가 발생했습니다','관리자에게 문의하세요.');
                             }
                         }
                     });
@@ -508,21 +466,6 @@
                     }
                 });
             },
-            
-          	//db에 등록
-            /* bindAddCntEvent: function() {
-                $('#addContent').on('click', function() {
-                    
-                    let bookModal = new bootstrap.Modal(document.getElementById('bookModal'), {
-                        backdrop: 'static', 
-                        keyboard: false 
-                    });
-                    
-                    bookModal.show();
-                    
-                    document.getElementById('saveButton').setAttribute('onclick', "saveBtn('add')");
-                });
-            }, */
             
             updateGrid: function() {
                 if (this.grid && this.apiData) {
@@ -548,101 +491,6 @@
                 });
             }
         };
-        
-        function saveBtn(action) {
-            
-            if (action == 'add') {
-                console.log('add');
-                
-                var userid = "${sessionScope.userid}";
-                
-                if (userid == '') {
-                    alert('로그인이 필요합니다.');
-                    return; 
-                } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
-                    return; 
-                } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
-                    return; 
-                } 
-                
-                
-                var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
-                
-               $.ajax({
-                   type: 'POST',
-                   url: '/admin/faq/insertFaq.do',
-                   data: formData,
-                   processData: false,
-                   contentType: false,
-                   success: function(response) {
-                       
-                       if (response === 'success') {
-                           alert('정보가 저장되었습니다.');
-                           bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
-
-                           var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
-                           bookModal.hide();
-                       } else {
-                           alert('에러가 발생했습니다.');
-                       }
-                   },
-                   error: function() {
-                       alert('에러가 발생했습니다.');
-                   }
-               });
-                
-            }
-            
-            if (action == 'update') {
-                console.log('update');
-                
-				var userid = "${sessionScope.userid}";
-                
-                if (userid == '') {
-                    alert('로그인이 필요합니다.');
-                    return; 
-                } else if ($('#m_title').val() === '') {
-                    alert('제목을 입력하세요');
-                    return; 
-                } else if ($('#m_cnt').val() === '') {
-                    alert('내용을 입력하세요');
-                    return; 
-                } 
-                
-                var formData = new FormData(document.getElementById('faqForm'));
-                for (var pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
-                
-                $.ajax({
-                    type: 'post',
-                    url: '/admin/faq/updateFaq.do',
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    success: function(response) {
-                        
-                        if (response === 'success') {
-                            alert('정보가 저장되었습니다.');
-                            bookGrid.fetchData(bookGrid.currentPage, bookGrid.kwd);
-
-                            var bookModal = bootstrap.Modal.getInstance(document.getElementById('bookModal'));
-                            bookModal.hide();
-                        } else {
-                            alert('에러가 발생했습니다.');
-                        }
-                    },
-                    error: function() {
-                        alert('에러가 발생했습니다.');
-                    }
-                });
-            }
-        }
         
         </script>
     </body>

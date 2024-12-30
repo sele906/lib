@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 예약도서 조회</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -36,12 +36,10 @@
 			    width: 100%;
 			    text-align: center;
 			 }
+			 
 			 .pagination {
 				cursor: pointer;
 				font-weight: bold;
-			}
-			.page-item {
-			
 			}
 			.page-link {
 				color: #848484;
@@ -54,6 +52,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -186,16 +185,11 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
+        
+        <%@ include file="../common/Alert.jsp" %> 
         
         <script>
         
@@ -219,21 +213,21 @@
 						    userid: userid
 						}, 
 						success: function (response) {
-						    console.log(response);
+						    
 						    if (response === 'success') {
 						        
-						        alert('예약도서 목록에서 해제되었습니다.');
+						        sweet.successAlert('', '예약도서 목록에서 해제되었습니다.');
 						        
 						        //숨기기
 						        row.addClass('hidden'); 
 		                        
 		                    } else {
-		                        alert('문제가 발생했습니다. 관리자에게 문의하세요');
+		                        sweet.errorAlert('문제가 발생했습니다','관리자에게 문의하세요');
 		                    }
 					    }
 					});
 		        } else {
-		            alert('로그인 후 이용해주세요.');
+		            sweet.warningAlert('', '로그인 후 이용해주세요.');
 		            location.href = '/member/login.do';
 		        }
 	        }

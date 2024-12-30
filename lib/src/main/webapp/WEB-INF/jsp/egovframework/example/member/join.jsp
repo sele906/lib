@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 회원가입</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -18,13 +18,20 @@
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         
-        
         <style>
 			@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap');
 		</style>
+		
+		<style type="text/css">
+			.btnStyle {
+				font-weight: bold;
+			}
+		</style>
+		
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -66,7 +73,7 @@
 										    <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" />
 										    <label for="userid">아이디</label>
 									    </div>
-									    <button type="button" class="btn btn-primary" id="checkUserid" >중복확인</button>
+									    <button type="button" class="btn btn-primary btnStyle" id="checkUserid" >중복확인</button>
 									</div>
                                     
                                     <!-- Passwd  input-->
@@ -125,7 +132,7 @@
 								        <input class="form-control" id="email" name="email" type="email" placeholder="name" />
 								        <label for="email">이메일 주소</label>
 								    </div>
-								    <button type="button" class="btn btn-primary" id="mailChk" >인증하기</button>
+								    <button type="button" class="btn btn-primary btnStyle" id="mailChk" >인증하기</button>
 									</div>
                                     
                                     <!-- Address input-->
@@ -134,7 +141,7 @@
 										    <input class="form-control" id="addr1" name="addr1" type="text" placeholder="주소를 입력하세요" />
 										    <label for="addr1">주소</label>
 									    </div>
-									    <button type="button" class="btn btn-primary" id="findAddr" >주소찾기</button>
+									    <button type="button" class="btn btn-primary btnStyle" id="findAddr" >주소찾기</button>
 									</div>
 									
 									<!-- Detailed address input-->
@@ -144,7 +151,7 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button type="button" class="btn btn-primary btn-lg" id="submitButton" onclick="joinMem()" >가입하기</button></div>
+                                    <div class="d-grid"><button type="button" class="btn btn-primary btn-lg btnStyle" id="submitButton" onclick="joinMem()" >가입하기</button></div>
                                 </form>
                             </div>
                         </div>
@@ -157,13 +164,6 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
@@ -173,6 +173,9 @@
         <script src="/template/user/js/scripts.js"></script>
         
         <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+        
+        <%@ include file="../common/Alert.jsp" %> 
+        
         <!-- javascript -->
     	<script>
     	
@@ -184,8 +187,10 @@
 		    //아이디 중복확인
 		    $("#checkUserid").on('click', function(event){
 		        
-		        if ($("#userid").val().length > 20) {
-		            alert('아이디는 20자 이내로 입력해야 합니다.');
+		        if ($("#userid").val() == '') {
+		            sweet.warningAlert('','아이디를 입력해주세요.');
+		        } else if ($("#userid").val().length > 20) {
+		            sweet.warningAlert('','아이디는 20자 이내로 입력해야 합니다.');
 		            $("#userid").focus();
 		        } else {
 		            $.ajax({
@@ -196,10 +201,10 @@
 			            success: function (data) {
 			                if (data == 'unusable') {
 			                    idChk = false;
-			                    alert('이미 있는 아이디 입니다.');
+			                    sweet.warningAlert('','이미 있는 아이디 입니다.');
 			                } else if (data == 'usable') {
 			                    idChk = true;
-			                    alert('사용가능한 아이디 입니다.');
+			                    sweet.successAlert('','사용가능한 아이디 입니다.');
 			                }
 			            }
 			        });
@@ -240,9 +245,12 @@
 		        var email = $('#email').val();
 		        
 		        if (email == '') { 
-		            alert('이메일을 입력하세요');
+		            sweet.warningAlert('','이메일을 입력하세요');
 		            $("#email").focus();
 		        } else {
+		            
+		            const toast1 = sweet.toast('메일을 보내는 중입니다. 잠시만 기다려주세요...', 5000);
+		            
 		            $.ajax({
 						type: 'post',
 						url: '/member/mailSend.do',
@@ -252,15 +260,22 @@
 						}, 
 						success: function (response) {
 						    if (response != null) {
-						        let checkBox = prompt('메일로 인증 코드를 발송했습니다. 인증코드를 입력해주세요');
-						        if (checkBox == response) {
-						            emailChk = true;
-						            alert('인증되었습니다.');
-						        }
+						        
+						        toast1.close();
+						        
+						        sweet.modal('메일을 발송했습니다.', '인증코드를 입력해주세요.',
+						                function(inputCode){ 
+								            if (inputCode == response) {
+								                sweet.successAlert('','인증되었습니다.');
+							                    emailChk = true;
+							                } else {
+							                    sweet.errorAlert('','인증 코드가 일치하지 않습니다.');
+							                }
+						            	});
 		                    }
 					    },
 					    error: function(error) {
-					        alert('인증에 실패했습니다. 메일을 다시 인증해주세요');
+					        sweet.errorAlert('인증에 실패했습니다.', '다시 인증해주세요');
 						}
 					});
 		        }
@@ -307,67 +322,64 @@
 			
 			//유효성 검사
 	        if ($("#name").val() == '') { //이름
-	            alert('이름을 입력하세요');
+	            sweet.warningAlert('','이름을 입력하세요');
 	            $("#name").focus();
 	        } else if ($("#name").val().length > 20) {
-	            alert('이름은 20자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('','이름은 20자 이내로 입력해야 합니다.');
 	            $("#name").focus();
-	        } else if ($("#year").val() == '') { //연도
-	            alert('연도를 선택하세요');
-	            $("#year").focus();
-	        } else if ($("#month").val() == '') { //월
-	            alert('월을 선택하세요');
-	            $("#month").focus();
-	        } else if ($("#day").val() == '') { //일
-	            alert('날을 선택하세요');
-	            $("#day").focus();
 	        } else if ($("#userid").val() == '') { //아이디
-	            alert('아이디를 입력하세요');
+	            sweet.warningAlert('','아이디를 입력하세요');
 	            $("#userid").focus();
 	        } else if ($("#userid").val().length > 20) {
-	            alert('아이디는 20자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('','아이디는 20자 이내로 입력해야 합니다.');
 	            $("#userid").focus();
 	        } else if (idChk == false) {
-	            alert('아이디 중복확인이 필요합니다');
+	            sweet.warningAlert('','아이디 중복확인이 필요합니다');
 	            $("#userid").focus();
 	        } else if ($("#passwd").val() == '') { //비밀번호
-	            alert('비밀번호를 입력하세요');
+	            sweet.warningAlert('','비밀번호를 입력하세요');
 	            $("#passwd").focus();
 	        } else if ($("#passwd").val().length < 8) {
-	            alert('비밀번호는 8자 이상 입력해야 합니다.');
+	            sweet.warningAlert('','비밀번호는 8자 이상 입력해야 합니다.');
 	            $("#passwd").focus();
 	        } else if ($("#passwd-chk").val() == '') { //비밀번호 확인
-	            alert('비밀번호를 확인하세요');
+	            sweet.warningAlert('','비밀번호를 확인하세요');
 	            $("#passwd-chk").focus();
+	        } else if ($("#year").val() == '') { //연도
+	            sweet.warningAlert('','연도를 선택하세요');
+	            $("#year").focus();
+	        } else if ($("#month").val() == '') { //월
+	            sweet.warningAlert('','월을 선택하세요');
+	            $("#month").focus();
+	        } else if ($("#day").val() == '') { //일
+	            sweet.warningAlert('','날을 선택하세요');
+	            $("#day").focus();
 	        } else if ($("#phone").val() == '') { //전화번호
-	            alert('전화번호를 입력하세요');
+	            sweet.warningAlert('','전화번호를 입력하세요');
 	            $("#phone").focus();
 	        } else if ($("#phone").val().length > 15) {
-	            alert('전화번호는 15자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('','전화번호는 15자 이내로 입력해야 합니다.');
 	            $("#phone").focus();
 	        } else if ($("#email").val() == '') { //이메일
-	            alert('이메일을 입력하세요');
+	            sweet.warningAlert('','이메일을 입력하세요');
 	            $("#email").focus();
 	        } else if (emailChk == false) { //이메일
-	            alert('이메일 인증을 해주세요');
+	            sweet.warningAlert('','이메일 인증을 해주세요');
 	            $("#email").focus();
 	        } else if ($("#email").val().length > 320) {
-	            alert('이메일은 320자 이내로 입력해야 합니다.');
+	            sweet.warningAlert('','이메일은 320자 이내로 입력해야 합니다.');
 	            $("#email").focus();
 	        } else if ($("#addr1").val() == '') { //주소
-	            alert('주소를 입력하세요');
+	            sweet.warningAlert('','주소를 입력하세요');
 	            $("#addr1").focus();
 	        } else if ($("#addr2").val() == '') { //상세주소
-	            alert('상세주소를 입력하세요');
+	            sweet.warningAlert('','상세주소를 입력하세요');
 	            $("#addr2").focus();
 	        } else {
 	            $('#joinForm').submit();
 	        }
-	        
-	        
 		}
-		    
-		    
+		
 		</script>
         
     </body>

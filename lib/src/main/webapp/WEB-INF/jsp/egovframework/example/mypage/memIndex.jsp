@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 회원정보 수정</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -23,17 +23,22 @@
 		</style>
         <style>
 		    .info-link {
-		        text-decoration: none; /* No underline by default */
+		        text-decoration: none; 
 		    }
 		
 		    .info-link:hover {
-		        text-decoration: underline; /* Underline on hover */
+		        text-decoration: underline;
 		    }
+		    
+		    .btnStyle {
+				font-weight: bold;
+			}
 		</style>
         
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -50,12 +55,6 @@
                             <div class="col-lg-8 col-xl-6">
                                 <form id="loginForm" action="/mypage/memInfo.do" method="post">
                                     
-                                    <!-- Userid input-->
-                                    <!-- <div class="form-floating mb-1">
-                                        <input class="form-control" id="userid" name="userid" type="text" placeholder="아이디를 입력하세요" required/>
-                                        <label for="userid">아이디</label>
-                                    </div> -->
-                                    
                                     <!-- Passwd  input-->
 									<div class="form-floating mb-3">
 									    <input class="form-control" id="passwd" name="passwd" type="password" placeholder="비밀번호를 입력하세요" required />
@@ -63,20 +62,17 @@
 									</div>
 
                                     <!-- Submit Button-->
-                                    <div class="d-grid"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">확인</button></div>
+                                    <div class="d-grid"><button class="btn btn-primary btn-lg btnStyle" id="submitButton" type="submit">확인</button></div>
                                 </form>
                                 
-                                <!-- <div class="d-flex justify-content-between mt-3">
-						            <a href="/member/findInfo.do" class="info-link text-muted">아이디/비밀번호 찾기</a>
-						            <a href="/member/join.do" class="info-link text-muted">회원가입</a>
-						        </div> -->
+                                <%@ include file="../common/Alert.jsp" %> 
 						        
 						        <c:if test="${msg eq 'error'}">
-									<script>alert('비밀번호를 확인해주세요.')</script>
+									<script>sweet.warningAlert('', '비밀번호를 확인해주세요.')</script>
 								</c:if>
 								
 								<c:if test="${msg eq 'Memerror'}">
-									<script>alert('회원정보 수정에 실패했습니다. 관리자에게 문의하세요.')</script>
+									<script>sweet.errorAlert('수정에 실패했습니다.', '관리자에게 문의하세요.')</script>
 								</c:if>
                             </div>
                         </div>
@@ -89,32 +85,26 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
         
         <c:if test="${msg eq 'notmatch'}">
-			<script>alert('아이디 혹은 비밀번호가 맞지 않습니다.')</script>
+			<script>sweet.warningAlert('', '아이디 혹은 비밀번호가 맞지 않습니다.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'success'}">
-			<script>alert('가입되었습니다. 아이디와 비밀번호를 입력해주세요.')</script>
+			<script>sweet.successAlert('가입되었습니다.', '아이디와 비밀번호를 입력해주세요.')</script>
 		</c:if>
 		
 		<c:if test="${msg eq 'logout'}">
-			<script>alert('로그아웃 되었습니다.')</script>
+			<script>sweet.successAlert('', '로그아웃 되었습니다.')</script>
 		</c:if>
         
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
         <script src="/template/user/js/scripts.js"></script>
+        
     </body>
 </html>

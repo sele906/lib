@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 아이디/비밀번호 찾기</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -23,14 +23,18 @@
 		</style>
         
         <style>
-        .menuLink {
-        	color: gray;
-        }
+	        .menuLink {
+	        	color: gray;
+	        }
+	        .findBtn {
+	        	font-weight: bold;
+	        }
 		</style>
         
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -57,17 +61,27 @@
 				            </ul>
 				
 				            <div class="tab-content">
+				            
+				            	<!-- 아이디 찾기 -->
 				                <div class="tab-pane fade show active" id="tab1">
 				                    <div class="row gx-5 justify-content-center">
 				                        <div class="col-lg-8 col-xl-9">
-				                            <div class="form-floating mt-5 mb-2">
+				                        
+				                        	<div class="form-floating mt-5 mb-2">
+				                                <input type="text" class="form-control" id="name" placeholder="전화번호를 입력하세요">
+				                            	<label for="name">이름</label>
+				                            </div>
+				                            
+				                            <div class="form-floating my-2">
 				                                <input type="text" class="form-control" id="phone" placeholder="전화번호를 입력하세요">
 				                            	<label for="phone">전화번호</label>
 				                            </div>
-				                            <button class="btn btn-primary w-100 mb-5 btn-lg" id="findId">인증하기</button>
+				                            <button class="btn btn-primary w-100 mb-5 btn-lg findBtn" id="findId">인증하기</button>
 				                        </div>
 				                    </div>
 				                </div>
+				                
+				                <!-- 비밀번호 찾기 -->
 				                <div class="tab-pane fade" id="tab2">
 				                    <div class="row gx-5 justify-content-center">
 				                        <div class="col-lg-8 col-xl-9">
@@ -75,7 +89,7 @@
 				                                <input type="text" class="form-control" id="userid" placeholder="아이디를 입력하세요">
 				                                <label for="userid">아이디</label>
 				                            </div>
-				                            <button class="btn btn-primary w-100 mb-5 btn-lg" id="findPwd">인증하기</button>
+				                            <button class="btn btn-primary w-100 mb-5 btn-lg findBtn" id="findPwd">인증하기</button>
 				                        </div>
 				                    </div>
 				                </div>
@@ -92,16 +106,11 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
+        
+        <%@ include file="../common/Alert.jsp" %> 
         
         <!-- script -->
 		<script>
@@ -110,23 +119,37 @@
 			    //아이디 찾기
 			    $('#findId').on('click', function(event){
 			        
-					if ($("#phone").val() == '') {
-			            alert('전화번호를 입력하세요');
+			        if ($("#name").val() == '') {
+			            sweet.warningAlert('', '이름을 입력하세요');
+			            $("#name").focus();
+			            return;
+			        } else if ($("#phone").val() == '') {
+			            sweet.warningAlert('', '전화번호를 입력하세요');
 			            $("#phone").focus();
+			            return;
 			        } 
 			        
 			        $.ajax({
 						type: 'post',
 						url: '/member/infoFind.do',
 						data: {
+						    name: $("#name").val(),
 						    phone: $("#phone").val(),
 						    type: 'findId'
 						}, 
+						dataType: 'json',
 						success: function (response) {
-						    alert('회원님의 아이디는 ' + response + '입니다.');
+						    
+						    if (response.userid != null) {
+						        sweet.infoAlert('', '회원님의 아이디는 ' + response.userid + '입니다.');
+						    } else if (response == 'error') {
+						        sweet.errorAlert('','잘못된 아이디 또는 비밀번호 입니다.');
+						    } else {
+						        sweet.errorAlert('',('잘못된 아이디 또는 비밀번호 입니다.');
+						    }
 					    },
 					    error: function(error) {
-					        alert('잘못된 전화번호 입니다.');
+					        sweet.errorAlert('','잘못된 아이디 또는 비밀번호 입니다.');
 						}
 					});
 			    });
@@ -135,8 +158,9 @@
 			    $('#findPwd').on('click', function(event){
 	
 			        if ($("#userid").val() == '') {
-			            alert('아이디를 입력하세요');
+			            sweet.warningAlert('','아이디를 입력하세요.');
 			            $("#userid").focus();
+			            return;
 			        } 
 			        
 			        $.ajax({
@@ -146,28 +170,44 @@
 						    userid: $("#userid").val(),
 						    type: 'findEmail'
 						}, 
+						dataType: 'json',
 						success: function (response) {
-				            $.ajax({
-								type: 'post',
-								url: '/member/mailSend.do',
-								data: {
-								    email: response,
-								    userid: $("#userid").val(),
-								    msgType: 'pwdChk'
-								}, 
-								success: function (response) {
-								    if (response == 'success') {
-								        alert('메일로 발송된 임시 비밀번호로 로그인 해주세요');
-								        window.location.href = "/member/login.do";
-								    } else {
-				                        alert('메일발송이 실패했습니다. 관리지에게 문의하세요');
-				                    }
-							    },
-							    error: function(error) {
-							        alert('메일발송이 실패했습니다. 관리지에게 문의하세요');
-								}
-							});
-					    }
+						    
+						    const toast1 = sweet.toast('메일을 보내는 중입니다. 잠시만 기다려주세요...', 5000);
+						    
+						    if (response.email != null) {
+						        $.ajax({
+									type: 'post',
+									url: '/member/mailSend.do',
+									data: {
+									    email: response.email,
+									    userid: $("#userid").val(),
+									    msgType: 'pwdChk'
+									}, 
+									success: function (response) {
+									    
+									    toast1.close();
+									    
+									    if (response == 'success') {
+									        sweet.successAlert('메일이 발송되었습니다.', '임시 비밀번호로 로그인 해주세요.');
+									    } else {
+									        sweet.errorAlert('메일발송이 실패했습니다.', '관리자에게 문의하세요');
+					                    }
+								    },
+								    error: function(error) {
+								        sweet.errorAlert('메일발송이 실패했습니다.', '관리자에게 문의하세요');
+									}
+								});
+						    } else if (response == 'error') {
+						        sweet.errorAlert('','아이디를 확인해주세요.');
+						    } else {
+						        sweet.errorAlert('','아이디를 확인해주세요.');
+						    }
+				            
+					    },
+					    error: function(error) {
+					        sweet.errorAlert('','아이디를 확인해주세요.');
+						}
 					});
 			    });
 			});

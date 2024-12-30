@@ -9,8 +9,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>LiBLIO - 대출 조회/연기</title>
-        <!-- Favicon-->
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+		<!-- Favicon-->
+        <link rel="icon" href="/template/favicon.ico">
         <!-- Bootstrap icons-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -29,9 +29,6 @@
 				cursor: pointer;
 				font-weight: bold;
 			}
-			.page-item {
-			
-			}
 			.page-link {
 				color: #848484;
 			}
@@ -39,6 +36,7 @@
 				background-color: var(--bs-pagination-active-bg);
 	    		color: var(--bs-pagination-active-color);
 			}
+			
 			.emtTable {
 				min-height: 360px;
 			    display: flex;
@@ -50,6 +48,7 @@
     </head>
     <body class="d-flex flex-column">
         <main class="flex-shrink-0">
+        
             <!-- Navigation-->
             <%@ include file="../main/menu.jsp" %>
             
@@ -123,17 +122,16 @@
 								      			<div class="selectBtn">
 								      			
 									      			<c:if test="${row.dueDate >= 28}">
-									      			<button class="btn btn-outline-primary extendsBtn disabled">연장불가</button>
+									      				<button class="btn btn-outline-primary extendsBtn disabled">연장불가</button>
 									      			</c:if>
 									      			
 									      			<c:if test="${row.dueDate < 28}">
-									      			<button class="btn btn-outline-primary extendsBtn">대출연장</button>
+									      				<button class="btn btn-outline-primary extendsBtn">대출연장</button>
 									      			</c:if>
 								      			
 								      				<button class="btn btn-outline-danger returnBtn">반납하기</button>
 								      				<input type="hidden" class="loanId" value="${row.loanId}"/>
 								      				<input type="hidden" class="dateVal" value="${row.returnDate}">
-								      				<!-- <button class="btn btn-outline-danger disabled">연장불가</button> -->
 								      				
 								      			</div>
 								      		</div>
@@ -204,16 +202,11 @@
             <div class="container px-5">
                 <div class="row align-items-center justify-content-between flex-column flex-sm-row">
                     <div class="col-auto"><div class="small m-0 text-white">Copyright &copy; LiBLIO 2024</div></div>
-                    <!-- <div class="col-auto">
-                        <a class="link-light small" href="#!">Privacy</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Terms</a>
-                        <span class="text-white mx-1">&middot;</span>
-                        <a class="link-light small" href="#!">Contact</a>
-                    </div> -->
                 </div>
             </div>
         </footer>
+        
+        <%@ include file="../common/Alert.jsp" %> 
         
         <script type="text/javascript">
         
@@ -233,10 +226,10 @@
 					    loanId: loanId
 					}, 
 					success: function (response) {
-					    console.log(response);
+					    
 					    if (response === 'success') {
 					        
-					        alert('대출연장 되었습니다.');
+					        sweet.successAlert('', '대출연장 되었습니다.');
 					        
 					        const currentDate = new Date(dateElmt.val());
 					        currentDate.setDate(currentDate.getDate() + 7);
@@ -245,7 +238,7 @@
 					        dateElmt.val(newReturnDate);
 					        returnDateSpan.text(newReturnDate);
 	                    } else {
-	                        alert('연장이 불가능합니다.');
+	                        sweet.warningAlert('', '연장이 불가능합니다.');
 	                        
 	                        row.find('.extendsBtn')
 	                           .addClass('disabled')
@@ -268,14 +261,14 @@
 					}, 
 					success: function (response) {
 						var regex = /^[0-9]*$/;
-					    console.log(response);
 					    if (response === 'success') {
-					        
-					        alert('반납 되었습니다.');
+					    	
+					        sweet.successAlert('', '반납 되었습니다.');
 					        $(event.target).closest('tr').hide();
 					        
 	                    } else if (regex.test(response)) {
-	                    	alert('대출기간을 지나 반납하셨습니다. ' + response + '일동안 대여하실 수 없습니다.');
+	                    	
+	                        sweet.warningAlert('연체 상태입니다.', response + '일동안 대여하실 수 없습니다.');
 	                    	$(event.target).closest('tr').hide();
 	                    }
 				    }
