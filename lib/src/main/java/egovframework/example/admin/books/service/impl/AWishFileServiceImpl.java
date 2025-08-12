@@ -20,7 +20,7 @@ public class AWishFileServiceImpl implements AWishFileService {
 
 	@Resource(name = "AWishDAO")
 	private AWishDAO AWishDao;
-	
+	 
 	@Value("${wishPath}")
 	private String wishPath;
 	
