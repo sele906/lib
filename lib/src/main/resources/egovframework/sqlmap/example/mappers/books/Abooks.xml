@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Abooks">
+
+	<!-- 카테고리 코드 -->
+	<select id="data_ctg" resultType="egovMap">
+		<![CDATA[
+			select scls_cd , scls_nm from lib_cls lc 
+			where mcls_cd = 'c0010'
+			or mcls_cd = 'c0020'
+			or mcls_cd = 'c0030'
+		]]>
+	</select>
+
+	<!-- 카테고리 코드 이름 변환 -->
+	<select id="code_change" resultType="String">
+		<![CDATA[
+			select scls_cd from lib_cls
+			where scls_nm like concat('', #{ctgNm} ,'')
+		]]>
+	</select>
+	
+	<!-- 책리스트 -->
+	<select id="books_list" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name, 
+			    b.book_id, 
+			    title, 
+			    author, 
+			    b.ctg_id, 
+			    c.scls_nm AS ctg_nm, 
+			    publisher, 
+			    cheonggu, 
+			    isbn
+			FROM 
+			    lib_books b
+			INNER JOIN 
+			    lib_cls c ON c.scls_cd = b.ctg_id
+			where 
+				(title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			order by 
+				book_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 총검색수 -->
+	<select id="books_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_books b
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+		]]>
+	</select>
+	
+	<!-- 책 등록 -->
+	<insert id="books_insert" parameterType="map">
+		<![CDATA[
+			insert into 
+			lib_books(book_id, title, author, ctg_id, publisher, cheonggu, isbn)
+			values (
+				#{bookId},
+				#{title},
+				#{author},
+				#{ctgId},
+				#{publisher},
+				#{cheonggu},
+				#{isbn}
+			)
+		]]>
+	</insert>
+	
+	<!-- 업데이트 -->
+	<update id="books_update">
+		<![CDATA[
+			update lib_books
+			set 
+			title = #{title},
+			author  = #{author},
+			ctg_id  = #{ctgId},
+			publisher  = #{publisher},
+			cheonggu  = #{cheonggu},
+			isbn = #{isbn}
+			where book_id  = #{bookId}
+		]]>
+	</update>
+	
+	<!-- 파일 넣기 -->
+	<insert id="book_file_insert">
+		<![CDATA[
+			insert into lib_file_book(
+				book_id, bk_file_name, bk_file_ori_name, bk_file_path
+			)
+			values (
+				#{id}, #{fileNm}, #{fileOriNm}, #{filePath}
+			)
+		]]>
+	</insert>
+	
+	<select id="book_file_select" resultType="string">
+		<![CDATA[
+			select bk_file_path from lib_file_book where book_id = #{id}
+		]]>
+	</select>
+	
+	<delete id="book_file_delete">
+		<![CDATA[
+			delete from lib_file_book where book_id = #{id}
+		]]>
+	</delete>
+	
+	<delete id="book_delete">
+		<![CDATA[
+			delete from lib_books where book_id = #{id}
+		]]>
+	</delete>
+
+</mapper>

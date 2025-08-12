@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Afaq">
+
+	<insert id="faq_insert">
+		<![CDATA[
+			insert into lib_faq (
+				faq_id,
+				userid,
+				title,
+				cnt
+			) values (
+				#{faqId},
+				#{userid},
+				#{title},
+				#{cnt}
+			)
+		]]>
+	</insert>
+	
+		<!-- 리스트 -->
+	<select id="faq_list" resultType="egovMap">
+		<![CDATA[
+			select 
+			   	q.faq_id,
+				userid,
+				title,
+				cnt,
+				write_date,
+				COALESCE(
+			        json_agg(f.faq_file_ori_name) FILTER (WHERE f.faq_file_ori_name IS NOT NULL), '[]'
+			    ) AS file_ori_names,
+			    COALESCE(
+			        json_agg(f.faq_file_name) FILTER (WHERE f.faq_file_ori_name IS NOT NULL), '[]'
+			    ) AS file_names
+			from lib_faq q
+			LEFT JOIN 
+			    lib_file_faq f ON q.faq_id = f.faq_id
+			where (title like concat('%', #{sKey}, '%') 
+			or cnt like concat('%', #{sKey}, '%'))
+			GROUP BY 
+			    q.faq_id, userid, title, cnt, write_date
+			order by q.faq_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 총검색수 -->
+	<select id="faq_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_faq f
+			where (title like concat('%', #{sKey}, '%') 
+			or cnt like concat('%', #{sKey}, '%'))
+		]]>
+	</select>
+	
+	<!-- 업데이트 -->
+	<update id="faq_update">
+		<![CDATA[
+			update lib_faq
+			set 
+			userid = #{userid},
+			title = #{title},
+			cnt = #{cnt}
+			where faq_id  = #{faqId}
+		]]>
+	</update>
+	
+	<delete id="faq_delete">
+		<![CDATA[
+			delete from lib_faq
+			where faq_id  = #{faqId}
+		]]>
+	</delete>
+	
+	<insert id="faq_file_insert">
+		<![CDATA[
+			insert into lib_file_faq (
+				faq_id,
+				faq_file_name,
+				faq_file_ori_name,
+				faq_file_path
+			) values (
+				#{faqId},
+				#{faqFileName},
+				#{faqFileOriName},
+				#{faqFilePath}
+			)
+		]]>
+	</insert>
+	
+	<delete id="faq_file_delete">
+		<![CDATA[
+			delete from lib_file_faq
+			where faq_id  = #{id}
+		]]>
+	</delete>
+	
+	<select id="faq_select_file" resultType="egovMap">
+		<![CDATA[
+			select faq_file_ori_name
+			from lib_file_faq f
+			where faq_id  = #{faqId}
+		]]>
+	</select>
+	
+	<select id="select_file_id" resultType="int">
+		<![CDATA[
+			select faq_file_id
+			from lib_file_faq f
+			where faq_file_ori_name  = #{fileName}
+		]]>
+	</select>
+	
+	<delete id="faq_delete_one">
+		<![CDATA[
+			delete from lib_file_faq
+			where faq_file_id  = #{faqFileId}
+		]]>
+	</delete>
+
+</mapper>

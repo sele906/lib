@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="seat">
+
+	<insert id="seat_insert">
+		<![CDATA[
+			insert into lib_multi (seat_num, status, userid)
+			values (
+				#{seatNum},
+				#{status},
+				#{userid}
+			)
+		]]>
+	</insert>
+	
+	<select id="seat_select" resultType="egovMap">
+		<![CDATA[
+			select seat_num from lib_multi
+		]]>
+	</select>
+	
+	<select id="seat_user_select" resultType="egovMap">
+		<![CDATA[
+			select seat_num from lib_multi
+			where userid = #{userid}
+		]]>
+	</select>
+	
+	<select id="seat_not_user_select" resultType="egovMap">
+		<![CDATA[
+			select seat_num from lib_multi
+			where userid <> #{userid}
+		]]>
+	</select>
+	
+	<delete id="seat_delete">
+		<![CDATA[
+			delete from lib_multi
+			where userid = #{userid}
+			and seat_num = #{seatNum}
+		]]>
+	</delete>
+</mapper>

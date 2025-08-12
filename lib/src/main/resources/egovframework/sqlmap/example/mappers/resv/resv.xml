@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="resv">
+
+	<insert id="resv_insert">
+		<![CDATA[
+			insert into lib_resv(
+				book_id,
+				loan_id,
+				userid
+			)
+			values (
+				#{bookId},
+				#{loanId},
+				#{userid}
+			)
+		]]>
+	</insert>
+	
+	<select id="resv_list" resultType="egovMap">
+		<![CDATA[
+			select 
+			resv_id, 
+			COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE r.book_id = f.book_id), '') AS file_name,
+			r.book_id, title, author, publisher,
+			userid 
+			from lib_resv r 
+			inner join lib_books b ON 
+			b.book_id = r.book_id 
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			and userid = #{userid}
+			order by resv_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="resv_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_resv r 
+			inner join lib_books b ON 
+			b.book_id = r.book_id 
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			and userid = #{userid}
+		]]>
+	</select>
+	
+	<!-- 체크 -->
+	<select id="resv_chk_loan" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    COALESCE(MAX(l.loan_state), 'N') AS loan_state
+			FROM 
+			    lib_loans l
+			WHERE 
+			    l.userid = #{userid} 
+			    AND l.book_id = #{bookId}
+		]]>
+	</select>
+	
+	<select id="resv_chk_resv" resultType="int">
+		<![CDATA[
+			select COALESCE(MAX(resv_id), 0) AS resv_id
+			from lib_resv 
+			where userid = #{userid} 
+			AND book_id = #{bookId}
+		]]>
+	</select>
+	
+	<select id="resv_chk_resv_cnt" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_resv
+			where book_id = #{bookId}
+		]]>
+	</select>
+	
+	<select id="resv_user_select" resultType="egovMap">
+		<![CDATA[
+			select userid, book_id 
+			from lib_resv r
+			where userid = #{userid}
+			and r.book_id = (
+			    SELECT book_id
+			    FROM lib_loans
+			    WHERE loan_id = #{loanId}
+			)
+		]]>
+	</select>
+	
+	<delete id="resv_delete">
+		<![CDATA[
+			delete from lib_resv 
+			where userid = #{userid} 
+			and book_id = #{bookId}
+		]]>
+	</delete>
+
+</mapper>

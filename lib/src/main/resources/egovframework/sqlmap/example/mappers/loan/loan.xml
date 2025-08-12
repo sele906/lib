@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loan">
+
+	<insert id="loan_insert">
+		<![CDATA[
+			insert into lib_loans (
+				loan_id,
+				book_id,
+				userid,
+				loan_date,
+				return_date
+			) values (
+				#{loanId},
+				#{bookId},
+				#{userid},
+				#{loanDate},
+				#{returnDate}
+			)
+		]]>
+	</insert>
+	
+	<select id="loan_list" resultType="egovMap">
+		<![CDATA[
+			select 
+			row_number() OVER (ORDER BY loan_id DESC) AS idx, 
+			COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+			loan_id, l.book_id, 
+			title, author, publisher, cheonggu,
+			userid, 
+			loan_date, return_date, due_date, loan_state
+			from lib_loans l
+			inner join lib_books b on
+			b.book_id = l.book_id
+			where loan_state = 'Y'
+			and l.userid = #{userid}
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="loan_count" resultType="int">
+		<![CDATA[
+			select count(*) 
+			from lib_loans
+			where loan_state = 'Y'
+			and userid = #{userid}
+		]]>
+	</select>
+	
+	<select id="loan_date_info" resultType="egovMap">
+		<![CDATA[
+			SELECT return_date, (return_date - loan_date) AS count_date
+			FROM lib_loans
+			WHERE loan_id = #{loanId}
+		]]>
+	</select>
+	
+	<update id="loan_extends">
+		<![CDATA[
+			update lib_loans
+			set return_date = return_date + INTERVAL '7 days'
+			where loan_id = #{loanId}
+		]]>
+	</update>
+	
+	<!-- <update id="loan_return">
+		<![CDATA[
+			update lib_loans
+			set loan_state = 'N'
+			where loan_id = #{loanId}
+		]]>
+	</update> -->
+	
+	<select id="loan_chk_resv" resultType="egovMap">
+		<![CDATA[
+			select r.userid, r.book_id, title, author, email, to_char(resv_date,'HH:MI:SS') as resv_time
+			from lib_resv r 
+			inner join lib_member m on
+			r.userid = m.userid 
+			inner join lib_books b on
+			r.book_id = b.book_id
+			where r.book_id = (
+			    SELECT book_id
+			    FROM lib_loans
+			    WHERE loan_id = #{loanId}
+			)
+			order by resv_time 
+			limit 1
+		]]>
+	</select>
+	
+	<select id="loan_chk_overdue" resultType="egovMap">
+		<![CDATA[
+	        SELECT 
+	        	((#{returnDate} - loan_date) - due_date) as due_count,
+	            CASE 
+	                WHEN (#{returnDate} - loan_date) > due_date THEN 'Y'
+	                ELSE 'N'
+	            END AS overdue_state
+	        FROM lib_loans ll 
+	        WHERE loan_id = #{loanId}
+		]]>
+	</select>
+	
+	<update id="loan_notState_update">
+		<![CDATA[
+			update lib_loans 
+			set 
+			due_date = (#{returnDate} - loan_date),
+			return_date = #{returnDate}
+			where loan_id = #{loanId}
+		]]>
+	</update>
+	
+	<update id="loan_update">
+		<![CDATA[
+			update lib_loans 
+			set 
+			loan_state = 'N',
+			due_date = (#{returnDate} - loan_date),
+			return_date = #{returnDate}
+			where loan_id = #{loanId}
+		]]>
+	</update>
+	
+	<update id="loan_overdue_update">
+		<![CDATA[
+			update lib_loans 
+			set 
+			loan_state = 'N',
+			return_date = #{returnDate}
+			where loan_id = #{loanId}
+		]]>
+	</update>
+	
+	<select id="loan_history" resultType="egovMap">
+		<![CDATA[
+			select 
+			row_number() OVER (ORDER BY loan_id DESC) AS idx, 
+			COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+			loan_id, l.book_id, 
+			title, author, publisher, cheonggu,
+			userid, 
+			loan_date, return_date, loan_state
+			from lib_loans l
+			inner join lib_books b on
+			b.book_id = l.book_id
+			where 
+			loan_state = 'N'
+			and userid = #{userid}
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="loan_history_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_loans l
+			where 
+			loan_state = 'N'
+			and userid = #{userid}
+		]]>
+	</select>
+	
+	<select id="overdue_count" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    o.due_count - (current_date - o.return_date) as due_count,
+			    CASE 
+			        WHEN o.due_count > 0 THEN 'Y'
+			        ELSE 'N'
+			    END AS overdue_state
+			FROM (
+			    SELECT 
+			        return_date,
+			        (return_date - loan_date) - due_date AS due_count
+			    FROM lib_loans 
+			    WHERE userid = #{userid}
+			    AND loan_state = 'N'
+			) AS o
+			ORDER BY o.due_count - (current_date - o.return_date) DESC
+			LIMIT 1
+		]]>
+	</select>
+	
+	<select id="loan_book_count" resultType="egovMap">
+		<![CDATA[
+			select count(book_id)
+			from lib_loans l
+			where userid = #{userid}
+			and loan_state = 'Y'
+		]]>
+	</select>
+
+</mapper>

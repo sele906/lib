@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="stat">
+
+	<!-- 대출/반납 -->
+	<select id="loan_stat" resultType="egovMap">
+		<![CDATA[
+			SELECT
+			    gs.loan_date::date, 'loan' AS state,
+			    COALESCE(COUNT(ll.loan_date), 0) AS count
+			FROM 
+			    generate_series(
+			        CURRENT_DATE - INTERVAL '6 days',  
+			        CURRENT_DATE,                     
+			        '1 day'::interval
+			    ) AS gs(loan_date)
+			LEFT JOIN lib_loans ll
+			    ON gs.loan_date = ll.loan_date::date  
+			GROUP BY gs.loan_date
+			ORDER BY gs.loan_date
+		]]>
+	</select>
+	
+	<select id="return_stat" resultType="egovMap">
+		<![CDATA[
+			SELECT
+			    gs.return_date::date, 'return' AS state,
+			    COALESCE(COUNT(ll.return_date), 0) AS count
+			FROM 
+			    generate_series(
+			        CURRENT_DATE - INTERVAL '6 days',  
+			        CURRENT_DATE,                     
+			        '1 day'::interval
+			    ) AS gs(return_date)
+			LEFT JOIN lib_loans ll
+			    ON gs.return_date = ll.return_date::date   
+			    AND ll.loan_state = 'N'              
+			GROUP BY gs.return_date
+			ORDER BY gs.return_date
+		]]>
+	</select>
+	
+	<insert id="add_login">
+		<![CDATA[
+			insert into lib_login_stat
+				(userid, level, log_time)
+			values (
+				#{userid},
+				#{level},
+				#{loginTime}
+			)
+		]]>
+	</insert>
+	
+	<select id="log_user_stat" resultType="egovMap">
+		<![CDATA[
+			SELECT
+			    gs.log_date::date, 'user' AS log_level,
+			    COALESCE(COUNT(s.log_time), 0) AS count
+			FROM 
+			    generate_series(
+			        CURRENT_DATE - INTERVAL '6 days',
+			        CURRENT_DATE,                   
+			        '1 day'::interval
+			    ) AS gs(log_date)                 
+			LEFT JOIN lib_login_stat s
+			    ON gs.log_date = s.log_time::date    
+			    AND s.level = 'USER'           
+			GROUP BY gs.log_date
+			ORDER BY gs.log_date
+		]]>
+	</select>
+	
+	<select id="log_admin_stat" resultType="egovMap">
+		<![CDATA[
+			SELECT
+			    gs.log_date::date, 'admin' AS log_level,
+			    COALESCE(COUNT(s.log_time), 0) AS count
+			FROM 
+			    generate_series(
+			        CURRENT_DATE - INTERVAL '6 days',
+			        CURRENT_DATE,                   
+			        '1 day'::interval
+			    ) AS gs(log_date)                 
+			LEFT JOIN lib_login_stat s
+			    ON gs.log_date = s.log_time::date    
+			    AND s.level = 'ADMIN'           
+			GROUP BY gs.log_date
+			ORDER BY gs.log_date
+		]]>
+	</select>
+	
+	<select id="book_stat" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    scls_nm as ctg_nm, 
+			    round(count_ctg_id * 1.0 / total_count, 2) AS percent
+			FROM (
+			    SELECT 
+			        ctg_id, 
+			        scls_nm, 
+			        count(ctg_id) AS count_ctg_id,
+			        sum(count(ctg_id)) OVER () AS total_count
+			    FROM 
+			        lib_books b 
+			    INNER JOIN 
+			        lib_cls c ON c.scls_cd = b.ctg_id
+			    GROUP BY 
+			        ctg_id, scls_nm
+			) AS book_stat
+		]]>
+	</select>
+
+</mapper>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="like">
+
+	<insert id="like_add">
+		<![CDATA[
+			insert into lib_liked
+			(book_id, userid) 
+			values 
+			(#{bookId}, #{userid})
+		]]>
+	</insert>
+
+	<select id="like_list" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    l.liked_id, 
+			    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE l.book_id = f.book_id), '') AS file_name,
+			    l.book_id, 
+			    b.title, 
+			    b.author, 
+			    b.publisher
+			FROM 
+			    lib_liked l 
+			INNER JOIN 
+			    lib_books b ON b.book_id = l.book_id 
+			where 
+				(title like CONCAT('%', #{sKey}, '%')
+				or author like CONCAT('%', #{sKey}, '%'))
+			and l.userid = #{userid}
+			order by l.liked_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="like_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_liked l 
+			inner join lib_books b ON 
+			b.book_id = l.book_id 
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			and userid = #{userid}
+		]]>
+	</select>
+	
+	<delete id="like_delete">
+		<![CDATA[
+			delete from lib_liked
+			where book_id = #{bookId}
+			and userid = #{userid}
+		]]>
+	</delete>
+
+</mapper>

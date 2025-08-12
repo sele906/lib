@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Awish">
+
+	<select id="wish_list" resultType="egovMap">
+		<![CDATA[
+			select 
+			COALESCE((SELECT f.wh_file_ori_name FROM lib_wish_file_book f WHERE w.wish_id = f.wish_id), '') AS file_name,
+			w.wish_id, 
+			w.ctg_id,
+			COALESCE(c.scls_nm, '') AS ctg_nm, 
+			title, 
+			author, 
+			publisher,
+			cheonggu, 
+			isbn,
+			userid 
+			from 
+				lib_wish w
+			Left JOIN 
+			    lib_cls c ON 
+				c.scls_cd = w.ctg_id
+			where 
+				(title like CONCAT('%', #{sKey}, '%')
+				or author like CONCAT('%', #{sKey}, '%'))
+			order by 
+				wish_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<select id="wish_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_wish w
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+		]]>
+	</select>
+	
+	<!-- 업데이트 -->
+	<update id="wish_update">
+		<![CDATA[
+			update lib_wish
+			set 
+			title = #{title},
+			author  = #{author},
+			ctg_id  = #{ctgId},
+			publisher  = #{publisher},
+			cheonggu  = #{cheonggu},
+			isbn = #{isbn}
+			where wish_id  = #{wishId}
+		]]>
+	</update>
+	
+	<delete id="wish_delete">
+		<![CDATA[
+			delete from lib_wish where wish_id = #{id}
+		]]>
+	</delete>
+	
+	<!-- 파일 넣기 -->
+	<insert id="wish_file_insert">
+		<![CDATA[
+			insert into lib_wish_file_book(
+				wish_id, wh_file_name, wh_file_ori_name, wh_file_path
+			)
+			values (
+				#{id}, #{fileNm}, #{fileOriNm}, #{filePath}
+			)
+		]]>
+	</insert>
+	
+	<select id="wish_file_select" resultType="string">
+		<![CDATA[
+			select wh_file_path from lib_wish_file_book where wish_id = #{id}
+		]]>
+	</select>
+	
+	<delete id="wish_file_delete">
+		<![CDATA[
+			delete from lib_wish_file_book where wish_id = #{id}
+		]]>
+	</delete>
+	
+</mapper>

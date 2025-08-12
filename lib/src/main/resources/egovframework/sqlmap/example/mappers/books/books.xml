@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="books">
+	
+	<!-- 카테고리 코드 -->
+	<select id="data_ctg" resultType="egovMap">
+		<![CDATA[
+			select scls_cd , scls_nm from lib_cls lc 
+			where mcls_cd = 'c0010'
+			or mcls_cd = 'c0020'
+			or mcls_cd = 'c0030'
+		]]>
+	</select>
+
+	<!-- 책리스트 -->
+	<select id="books_list" resultType="egovMap">
+			SELECT 
+				<choose>
+					<when test="sort == 'new'">
+						ROW_NUMBER() OVER(order by b.book_id desc) AS idx,
+					</when>
+					<when test="sort == 'best'">
+						ROW_NUMBER() OVER(order by COUNT(l.loan_id) desc) AS idx,
+					</when>
+				</choose>
+			    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+			    b.book_id, 
+			    title, 
+			    author, 
+			    b.ctg_id, 
+			    c.scls_nm AS ctg_nm, 
+			    publisher, 
+			    cheonggu, 
+			    isbn,
+			    MAX(l.loan_id) AS loan_id,
+			    COALESCE((SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1), 'N') AS loan_state, 
+			    COUNT(l.loan_id) AS loan_count,
+			    (SELECT count(*) FROM lib_resv WHERE book_id = b.book_id) AS resv_count,
+			    (SELECT book_id FROM lib_liked WHERE userid = #{userid} AND book_id = b.book_id) AS liked_id,
+    			(SELECT book_id FROM lib_resv WHERE userid = #{userid} AND book_id = b.book_id) AS resv_id
+			FROM 
+			    lib_books b
+			INNER JOIN 
+			    lib_cls c ON c.scls_cd = b.ctg_id
+			LEFT JOIN 
+			    lib_loans l ON l.book_id = b.book_id
+			where 
+				(title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			and ctg_id like CONCAT('%', #{ctgId}, '%')
+			
+			<![CDATA[
+			AND title IS NOT NULL AND title <> ''   
+		    AND author IS NOT NULL AND author <> ''   
+		    AND publisher IS NOT NULL AND publisher <> '' 
+		    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+		    ]]>
+		    
+			GROUP BY 
+    			b.book_id, title, author, b.ctg_id, c.scls_nm, publisher, cheonggu, isbn
+			
+			<choose>
+				<when test="sort == 'new'">
+					order by book_id desc
+				</when>
+				<when test="sort == 'best'">
+					order by loan_count desc
+				</when>
+			</choose>
+			
+			limit #{recordCountPerPage} offset #{firstIndex}
+	</select>
+
+	<!-- 총검색수 -->
+	<select id="books_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_books b
+			where 
+			(title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			and ctg_id like CONCAT('%', #{ctgId}, '%')
+			AND title IS NOT NULL AND title <> ''       
+		    AND author IS NOT NULL AND author <> ''     
+		    AND publisher IS NOT NULL AND publisher <> '' 
+		    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+		]]>
+	</select>
+	
+	<select id="books_liked" resultType="egovMap">
+		<![CDATA[
+			select book_id
+			from lib_liked l
+			where userid = #{userid}
+		]]>
+	</select>
+	
+	<!-- 인기리스트 -->
+	<select id="best_list" resultType="egovMap">
+		SELECT 
+			ROW_NUMBER() OVER(order by COUNT(l.loan_id) desc) AS idx,
+		    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+		    b.book_id, 
+		    title, 
+		    author, 
+		    b.ctg_id, 
+		    c.scls_nm AS ctg_nm, 
+		    publisher, 
+		    cheonggu, 
+		    isbn,
+		    MAX(l.loan_id) AS loan_id,
+		    COALESCE((SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1), 'N') AS loan_state, 
+		    COUNT(l.loan_id) AS loan_count,
+		    (SELECT count(*) FROM lib_resv WHERE book_id = b.book_id) AS resv_count,
+		    (SELECT book_id FROM lib_liked WHERE userid = #{userid} AND book_id = b.book_id) AS liked_id,
+   			(SELECT book_id FROM lib_resv WHERE userid = #{userid} AND book_id = b.book_id) AS resv_id
+		FROM 
+		    lib_books b
+		INNER JOIN 
+		    lib_cls c ON c.scls_cd = b.ctg_id
+		LEFT JOIN 
+		    lib_loans l ON l.book_id = b.book_id
+		
+		<![CDATA[
+		AND title IS NOT NULL AND title <> ''   
+	    AND author IS NOT NULL AND author <> ''   
+	    AND publisher IS NOT NULL AND publisher <> '' 
+	    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+	    ]]>
+	    
+		GROUP BY 
+   			b.book_id, title, author, b.ctg_id, c.scls_nm, publisher, cheonggu, isbn
+		order by loan_count desc
+		limit 10 offset 0
+	</select>
+	
+	<!-- 신착리스트 -->
+	<select id="new_list" resultType="egovMap">
+		SELECT 
+			ROW_NUMBER() OVER(order by b.book_id desc) AS idx,
+		    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+		    b.book_id, 
+		    title, 
+		    author, 
+		    b.ctg_id, 
+		    c.scls_nm AS ctg_nm, 
+		    publisher, 
+		    cheonggu, 
+		    isbn,
+		    MAX(l.loan_id) AS loan_id,
+		    COALESCE((SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1), 'N') AS loan_state, 
+		    COUNT(l.loan_id) AS loan_count,
+		    (SELECT count(*) FROM lib_resv WHERE book_id = b.book_id) AS resv_count,
+		    (SELECT book_id FROM lib_liked WHERE userid = #{userid} AND book_id = b.book_id) AS liked_id,
+   			(SELECT book_id FROM lib_resv WHERE userid = #{userid} AND book_id = b.book_id) AS resv_id
+		FROM 
+		    lib_books b
+		INNER JOIN 
+		    lib_cls c ON c.scls_cd = b.ctg_id
+		LEFT JOIN 
+		    lib_loans l ON l.book_id = b.book_id
+		
+		<![CDATA[
+		AND title IS NOT NULL AND title <> ''   
+	    AND author IS NOT NULL AND author <> ''   
+	    AND publisher IS NOT NULL AND publisher <> '' 
+	    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+	    ]]>
+	    
+		GROUP BY 
+   			b.book_id, title, author, b.ctg_id, c.scls_nm, publisher, cheonggu, isbn
+		order by b.book_id desc
+		limit 10 offset 0
+	</select>
+	
+	<select id="sample_best" resultType="egovMap">
+		SELECT 
+		    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+		    b.book_id, 
+		    title, 
+		    author, 
+		    b.ctg_id, 
+		    c.scls_nm AS ctg_nm, 
+		    publisher, 
+		    cheonggu,
+		    MAX(l.loan_id) AS loan_id,
+		    (SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1) AS loan_state,
+		    COUNT(l.loan_id) AS loan_count,
+		    (SELECT count(*) FROM lib_resv WHERE book_id = b.book_id) AS resv_count,
+		    (SELECT book_id FROM lib_liked WHERE userid = #{userid} AND book_id = b.book_id) AS liked_id,
+   			(SELECT book_id FROM lib_resv WHERE userid = #{userid} AND book_id = b.book_id) AS resv_id
+		FROM 
+		    lib_books b
+		INNER JOIN 
+		    lib_cls c ON c.scls_cd = b.ctg_id
+		LEFT JOIN 
+		    lib_loans l ON l.book_id = b.book_id
+		
+		<![CDATA[
+			where (SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id) IS NOT NULL AND (SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id) <> ''  
+			AND title IS NOT NULL AND title <> ''   
+		    AND author IS NOT NULL AND author <> ''   
+		    AND publisher IS NOT NULL AND publisher <> '' 
+		    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+		    and (SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1) = 'N'
+	    ]]>
+	    
+		GROUP BY 
+   			b.book_id, title, author, b.ctg_id, c.scls_nm, publisher, cheonggu
+		order by loan_count desc
+		limit 3 offset 0
+	</select>
+	
+	<select id="sample_new" resultType="egovMap">
+		SELECT 
+		    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name,
+		    b.book_id, 
+		    title, 
+		    author, 
+		    b.ctg_id, 
+		    c.scls_nm AS ctg_nm, 
+		    publisher, 
+		    cheonggu,
+		    MAX(l.loan_id) AS loan_id,
+		    COALESCE((SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1), 'N') AS loan_state, 
+		    COUNT(l.loan_id) AS loan_count,
+		    (SELECT count(*) FROM lib_resv WHERE book_id = b.book_id) AS resv_count,
+		    (SELECT book_id FROM lib_liked WHERE userid = #{userid} AND book_id = b.book_id) AS liked_id,
+   			(SELECT book_id FROM lib_resv WHERE userid = #{userid} AND book_id = b.book_id) AS resv_id
+		FROM 
+		    lib_books b
+		INNER JOIN 
+		    lib_cls c ON c.scls_cd = b.ctg_id
+		LEFT JOIN 
+		    lib_loans l ON l.book_id = b.book_id
+		
+		<![CDATA[
+			where (SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id) IS NOT NULL AND (SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id) <> ''  
+			AND title IS NOT NULL AND title <> ''   
+		    AND author IS NOT NULL AND author <> ''   
+		    AND publisher IS NOT NULL AND publisher <> '' 
+		    AND cheonggu IS NOT NULL AND cheonggu <> '' 
+		    and (SELECT loan_state FROM lib_loans WHERE book_id = b.book_id order by loan_id desc limit 1) = 'N'
+	    ]]>
+	    
+		GROUP BY 
+   			b.book_id, title, author, b.ctg_id, c.scls_nm, publisher, cheonggu
+		order by b.book_id desc
+		limit 3 offset 0
+	</select>
+
+</mapper>

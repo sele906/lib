@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Aseat">
+
+	<!-- 리스트 -->
+	<select id="seat_list" resultType="egovMap">
+		<![CDATA[
+			select 
+				seat_id,
+				userid,
+				seat_num,
+				status,
+				seat_time
+			from lib_multi m
+			where seat_num like concat('%', #{sKey}, '%') 
+			order by seat_time desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 총검색수 -->
+	<select id="seat_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_multi m
+			where seat_num like concat('%', #{sKey}, '%') 
+		]]>
+	</select>
+	
+	<delete id="seat_delete">
+		<![CDATA[
+			delete from lib_multi
+			where seat_id  = #{seatId}
+		]]>
+	</delete>
+
+</mapper>

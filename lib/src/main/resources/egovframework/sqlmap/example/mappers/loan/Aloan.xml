@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Aloan">
+
+	<select id="loans_list" resultType="egovMap">
+		<![CDATA[
+			SELECT 
+			    COALESCE((SELECT f.bk_file_ori_name FROM lib_file_book f WHERE b.book_id = f.book_id), '') AS file_name, 
+			    loan_id, 
+			    l.book_id, 
+			    title, 
+			    author, 
+			    publisher, 
+			    cheonggu, 
+			    l.userid,
+			    loan_date,
+			    return_date,
+			    due_date,
+			    loan_state,
+			    CASE WHEN ((return_date - loan_date) > due_date) THEN 'Y'
+					ELSE 'N'
+				END AS overdue_state
+			FROM 
+			    lib_loans l
+			INNER JOIN 
+			    lib_member m ON m.userid = l.userid 
+			INNER JOIN 
+				lib_books b ON b.book_id = l.book_id 
+			where 
+				(title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			or l.userid like CONCAT('%', #{sKey}, '%')
+			order by 
+				loan_id desc
+			limit #{recordCountPerPage} offset #{firstIndex}
+		]]>
+	</select>
+	
+	<!-- 총검색수 -->
+	<select id="loans_count" resultType="int">
+		<![CDATA[
+			select count(*)
+			from lib_loans l
+			INNER JOIN 
+			    lib_member m ON m.userid = l.userid 
+			INNER JOIN 
+				lib_books b ON b.book_id = l.book_id 
+			where (title like CONCAT('%', #{sKey}, '%')
+			or author like CONCAT('%', #{sKey}, '%'))
+			or l.userid like CONCAT('%', #{sKey}, '%')
+		]]>
+	</select>
+
+	<!-- 업데이트 -->
+	<update id="loan_update">
+		<![CDATA[
+			update lib_loans
+			set 
+			userid = #{userid},
+			loan_date  = #{loanDate},
+			due_date  = (#{returnDate}::DATE - #{loanDate}::DATE),
+			return_date  = #{returnDate},
+			loan_state  = #{loanState}
+			where loan_id  = #{loanId}
+		]]>
+	</update>
+	
+	<update id="loan_state_update">
+		<![CDATA[
+			UPDATE lib_loans
+			SET loan_id = NEXTVAL('SEQ_LOAN_NO')
+			WHERE userid = #{userid}
+			AND loan_date = #{loanDate}
+			AND return_date = #{returnDate}
+			AND loan_state = #{loanState}
+		]]>
+	</update>
+	
+	<delete id="loan_delete">
+		<![CDATA[
+			delete from lib_loans
+			where loan_id  = #{id}
+		]]>
+	</delete>
+	
+	<!-- 업데이트 -->
+	<update id="overdue_redo_update">
+		<![CDATA[
+			update lib_loans 
+			set 
+			loan_state = 'N',
+			due_date = 0,
+			return_date = loan_date
+			where loan_id = #{loanId}
+		]]>
+	</update>
+
+</mapper>
