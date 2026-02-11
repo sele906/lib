@@ -20,6 +20,11 @@
 
 <img src="https://img.shields.io/badge/eclipse-2C2255?style=for-the-badge&logo=eclipseide&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
 
+**Deployment**
+
+<img src="https://img.shields.io/badge/amazon ec2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=nginx&logoColor=white"> <img src="https://img.shields.io/badge/let's encrypt-003A70?style=for-the-badge&logo=letsencrypt&logoColor=white"> <img src="https://img.shields.io/badge/duckdns-FF6600?style=for-the-badge&logo=duckduckgo&logoColor=white">
+
+
 <details>
 <summary><b>유스케이스 다이어그램</b></summary>
 <div markdown="1">
