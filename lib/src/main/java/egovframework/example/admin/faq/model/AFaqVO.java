@@ -2,13 +2,6 @@ package egovframework.example.admin.faq.model;
 
 import java.sql.Date;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
-@Getter
-@Setter
-@ToString
 public class AFaqVO {
 
 	private int faqId;
@@ -16,113 +9,53 @@ public class AFaqVO {
 	private String title;
 	private String cnt;
 	private Date writeDate;
-
-	/**
-	 * @faqId@ getter
-	 * @return	faqId
-	 */
-	/*
 	
 	public int getFaqId() {
-	return faqId;
+		return faqId;
 	}
-	
-	*//**
-		* @faqId@ setter
-		* @param	faqId
-		*/
-	/*
-	
+
 	public void setFaqId(int faqId) {
-	this.faqId = faqId;
+		this.faqId = faqId;
 	}
-	
-	*//**
-		* @userid@ getter
-		* @return	userid
-		*/
-	/*
-	
+
 	public String getUserid() {
-	return userid;
+		return userid;
 	}
-	
-	*//**
-		* @userid@ setter
-		* @param	userid
-		*/
-	/*
+
 	public void setUserid(String userid) {
-	this.userid = userid;
+		this.userid = userid;
 	}
-	
-	*//**
-		* @title@ getter
-		* @return	title
-		*/
-	/*
+
 	public String getTitle() {
-	return title;
+		return title;
 	}
-	
-	*//**
-		* @title@ setter
-		* @param	title
-		*/
-	/*
+
 	public void setTitle(String title) {
-	this.title = title;
+		this.title = title;
 	}
-	
-	*//**
-		* @cnt@ getter
-		* @return	cnt
-		*/
-	/*
+
 	public String getCnt() {
-	return cnt;
+		return cnt;
 	}
-	
-	*//**
-		* @cnt@ setter
-		* @param	cnt
-		*/
-	/*
+
 	public void setCnt(String cnt) {
-	this.cnt = cnt;
+		this.cnt = cnt;
 	}
-	
-	*//**
-		* @writeDate@ getter
-		* @return	writeDate
-		*/
-	/*
-	
+
 	public Date getWriteDate() {
-	return writeDate;
+		return writeDate;
 	}
-	
-	*//**
-		* @writeDate@ setter
-		* @param	writeDate
-		*/
-	/*
-	
+
 	public void setWriteDate(Date writeDate) {
-	this.writeDate = writeDate;
+		this.writeDate = writeDate;
 	}
+
+	@Override
+	public String toString() {
+		return "AFaqVO [faqId=" + faqId + ", userid=" + userid + ", title=" + title + ", cnt=" + cnt + ", writeDate="
+				+ writeDate + "]";
+	}
+
 	
-	*//** 
-		*
-		* @return
-		*
-		* (non-Javadoc)
-		* @see java.lang.Object#toString()
-		*//*
-			
-			@Override
-			public String toString() {
-			return "AFaqVO [faqId=" + faqId + ", userid=" + userid + ", title=" + title + ", cnt=" + cnt + ", writeDate=" + writeDate + "]";
-			}*/
 
 }
