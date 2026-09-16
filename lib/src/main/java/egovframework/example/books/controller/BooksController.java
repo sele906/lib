@@ -114,7 +114,7 @@ public class BooksController {
 		if (loanBook != null) {
 			int loanBookCount = Integer.parseInt(loanBook.get("count").toString());
 			
-			if (loanBookCount > 14) {
+			if (loanBookCount >= 14) {
 				response.put("status", "toomuchbook");
 
 				ObjectMapper objectMapper = new ObjectMapper();
