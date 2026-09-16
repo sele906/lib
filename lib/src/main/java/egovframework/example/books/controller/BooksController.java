@@ -113,7 +113,7 @@ public class BooksController {
 		EgovMap loanBook = loanDao.loanBookCount(userid);
 		if (loanBook != null) {
 			int loanBookCount = Integer.parseInt(loanBook.get("count").toString());
-			System.out.println(loanBookCount);
+			
 			if (loanBookCount > 14) {
 				response.put("status", "toomuchbook");
 

@@ -10,7 +10,7 @@ public class ControllerExceptionAdvice {
 
 	@ExceptionHandler(BadRequestException.class)
 	public ResponseEntity<ErrorResponse> handleBadRequestException(BadRequestException e) {
-		System.out.println("!11111111");
+		
 		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.BAD_REQUEST); // 400
 	}
 

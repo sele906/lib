@@ -243,11 +243,9 @@
 					success: function (response) {
 						
 						if (response.status === 'overdue') {
-						    sweet.successAlert('연체 상태입니다.',  response.dueCount + '일 동안 대여할 수 없습니다.');
-				            location.href = '/main.do';
+						    sweet.successAlert('연체 상태입니다.',  response.dueCount + '일 동안 대여할 수 없습니다.', function() { location.href = '/main.do'; });
 				        } else if (response.status === 'success') {
-				            sweet.successAlert('','대출되었습니다.');
-						    location.href = '/main.do';
+				            sweet.successAlert('','대출되었습니다.', function() { location.href = '/main.do'; });
 	                    }
 				    }
 				});

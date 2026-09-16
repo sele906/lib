@@ -14,7 +14,7 @@ public class TestController {
 
 	@RequestMapping(value = "badRequest.do", method = RequestMethod.GET)
 	public void badRequest() {
-		System.out.println("hello");
+		
 		throw new BadRequestException("Bad Request Example");
 	}
 
@@ -41,7 +41,7 @@ public class TestController {
 
 	@ExceptionHandler
 	public ResponseEntity handleException(NotFoundException e) {
-		System.out.println("hello");
+		
 		return new ResponseEntity<>(new ErrorResponse(e.getMessage()), HttpStatus.NOT_FOUND); // 404 
 	}
 

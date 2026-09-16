@@ -527,8 +527,7 @@
 							    }
 							});
 				        } else {
-				            sweet.successAlert('','로그인 후 이용해주세요.');
-				            location.href = '/member/login.do';
+				            sweet.successAlert('','로그인 후 이용해주세요.', function() { location.href = '/member/login.do'; });
 				        }
 			            
 			        } else if ($(this).hasClass('liked')) {
@@ -559,8 +558,7 @@
 							    }
 							});
 				        } else {
-				            sweet.warningAlert('','로그인 후 이용해주세요.');
-				            location.href = '/member/login.do';
+				            sweet.warningAlert('','로그인 후 이용해주세요.', function() { location.href = '/member/login.do'; });
 				        }
 			        }
 			    });
@@ -586,11 +584,9 @@
 								success: function (response) {
 
 									if (response.status === 'overdue') {
-									    sweet.warningAlert('연체 상태입니다.', response.dueCount + '일 동안 대여할 수 없습니다.');
-							            location.href = '/main.do';
+									    sweet.warningAlert('연체 상태입니다.', response.dueCount + '일 동안 대여할 수 없습니다.', function() { location.href = '/main.do'; });
 							        } else if (response.status === 'toomuchbook') {
-							            sweet.warningAlert('','총 14권을 초과하여 대여할 수 없습니다.');
-							            location.href = '/main.do';
+							            sweet.warningAlert('','총 14권을 초과하여 대여할 수 없습니다.', function() { location.href = '/main.do'; });
 							        } else if (response.status === 'success') {
 							            sweet.successAlert('','대출되었습니다.');
 							        	
@@ -613,8 +609,7 @@
 							    }
 							});
 				        } else {
-				            sweet.warningAlert('', '로그인 후 이용해주세요.');
-				            location.href = '/member/login.do';
+				            sweet.warningAlert('', '로그인 후 이용해주세요.', function() { location.href = '/member/login.do'; });
 				        }
 			            
 			        } else if ($(this).hasClass('resvBtn')) {
@@ -690,8 +685,7 @@
 							    }
 							});
 				        } else {
-				            sweet.warningAlert('','로그인 후 이용해주세요.');
-				            location.href = '/member/login.do';
+				            sweet.warningAlert('','로그인 후 이용해주세요.', function() { location.href = '/member/login.do'; });
 				        }
 			            
 			        }

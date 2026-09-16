@@ -36,7 +36,6 @@ public class MemberController {
 
 	@RequestMapping(value = "login.do", method = RequestMethod.GET)
 	public String login(@RequestParam(name = "msg", required = false) String msg, Model model) throws Exception {
-		System.out.println(passwordEncoder.encode("1"));
 		model.addAttribute("msg", msg);
 		return "member/login";
 	}

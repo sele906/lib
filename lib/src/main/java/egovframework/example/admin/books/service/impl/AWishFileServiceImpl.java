@@ -27,8 +27,6 @@ public class AWishFileServiceImpl implements AWishFileService {
 	@Override
 	public void updateWishImage(int id, String ctgId, MultipartFile multifile) throws Exception {
 		
-		System.out.println(wishPath);
-		
 		if (multifile.getSize() > 0 && !multifile.getOriginalFilename().equals("")) {
 			
 			String fileNm = multifile.getOriginalFilename();

@@ -227,8 +227,7 @@
 					    }
 					});
 		        } else {
-		            sweet.warningAlert('', '로그인 후 이용해주세요.');
-		            location.href = '/member/login.do';
+		            sweet.warningAlert('', '로그인 후 이용해주세요.', function() { location.href = '/member/login.do'; });
 		        }
 	        }
 	        

@@ -166,10 +166,10 @@
 		<![CDATA[
 			SELECT 
 			    o.due_count - (current_date - o.return_date) as due_count,
-			    CASE 
-			        WHEN o.due_count > 0 THEN 'Y'
-			        ELSE 'N'
-			    END AS overdue_state
+			    CASE
+				    WHEN o.due_count - (current_date - o.return_date) > 0 THEN 'Y'
+				    ELSE 'N'
+				END AS overdue_state
 			FROM (
 			    SELECT 
 			        return_date,
